@@ -2,33 +2,47 @@ import React from "react";
 import { ethos } from "ethos-connect";
 import { ILayoutProps } from "types";
 import Link from "next/link";
-import { TwitterIcon } from "components/Icons";
 import { classNames } from "utils/";
 import Logo from "/public/img/logo.png";
 import Image from "next/image";
+import { Montserrat } from "next/font/google";
 
+const font_montserrat = Montserrat({ subsets: ["latin"] });
 export function Sidebar({ children }: ILayoutProps) {
   const Header = () => {
     return (
-      <div className="fixed-header bg-[#FFFFFF] w-full h-18 text-white px-8 py-2 mr-6 rounded-lg">
+      <div className="fixed-header bg-[#FEF7EC] w-full h-20 text-white px-8 py-2 mr-6 rounded-lg">
         <div
           className="flex 
          justify-between"
         >
           <Link href="/">
-            <Image src={Logo} height={75} width={130} alt={"logo"} />
+            <Image src={Logo} height={100} width={180} alt={"logo"} />
           </Link>
 
           <div className="flex h-12 gap-8 mt-2">
             <div
               className={classNames(
                 "flex flex-col items-center justify-center",
-                "text-gray-300 ",
-                "group py-2 text-sm font-medium group-hover:text-[#6ea0ec] hover:fill-[#6ea0ec] hover:text-[#6ea0ec] rounded-2xl cursor-pointer"
+                "text-[#595959]",
+                "group py-2 text-xs font-medium hover:text-[#8d6eec] rounded-2xl cursor-pointer",
+                font_montserrat.className
               )}
             >
-              <a href="https://twitter.com/HolaSui" target="_black">
-                <TwitterIcon width="26" height="26" />
+              <a href="https://twitter.com/Loyalty_GM" target="_black">
+                Discord
+              </a>
+            </div>
+            <div
+              className={classNames(
+                "flex flex-col items-center justify-center",
+                "text-[#595959]",
+                "group py-2 text-xs font-medium group-hover:text-[#6ea0ec] hover:fill-[#6ea0ec] hover:text-[#6ea0ec] rounded-2xl cursor-pointer",
+                font_montserrat.className
+              )}
+            >
+              <a href="https://twitter.com/Loyalty_GM" target="_black">
+                Twitter
               </a>
             </div>
             <ethos.components.AddressWidget />
@@ -42,7 +56,7 @@ export function Sidebar({ children }: ILayoutProps) {
     <div className="mx-4 mt-4">
       <Header />
       <div className="flex flex-1 flex-col">
-        <main className="flex-1 h-full bg-Background">
+        <main className="flex-1 h-full bg-[#FEF7EC]">
           <div className="mx-auto max-w-7xl w-full px-4 sm:pl-[5rem] sm:pr-[1.5rem] md:px-8">{children}</div>
         </main>
       </div>

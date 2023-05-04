@@ -10,6 +10,9 @@ import { PRICE_STACKED, PRICE_UNSTACKED, STAKING_TABLE_ID, classNames, STAKING_P
 import { signTransactionStartStaking, signTransactionEndStaking } from "services/sui";
 import { AlertErrorMessage, AlertSucceed } from "components/Alert/CustomToast";
 import { getExecutionStatus, getExecutionStatusError, getObjectFields } from "@mysten/sui.js";
+import { Montserrat } from "next/font/google";
+
+const font_montserrat = Montserrat({ subsets: ["latin"] });
 
 const Home = () => {
   const { wallet, status } = ethos.useWallet();
@@ -24,7 +27,6 @@ const Home = () => {
   const [openedFrend, setOpenedFrend] = useState(false);
   const [openedUnstaked, setOpenedUnstaked] = useState(false);
   const [waitSui, setWaitSui] = useState(false);
-
   const [totalStaked, setTotalStaked] = useState(0);
   const [totalMyPoints, setTotalMyPoints] = useState(0);
 
@@ -156,30 +158,52 @@ const Home = () => {
 
   const ProjectDescriptionCard = () => {
     return (
-      <div className="flex p-4 py-8 gap-2 h-60 border-2 border-[#F6F6F6] rounded-xl">
+      <div className="flex p-4 py-8 gap-2 h-60 border-2 bg-[#FFFFFF] border-[#F6F6F6] rounded-xl">
         <div className="ml-12 flex flex-col content-center justify-center rounded-2xl">
           <Image src={frensLogo} alt={"logo"} height={185} width={185} />
         </div>
         <div className="w-full ml-4">
           <div className="flex justify-between">
             <div>
-              <p className="text-3xl font-bold">SuiFrend</p>
-              <p>Each staked frens will earn 1 points per minute</p>
+              <p className={classNames("text-3xl font-extrabold text-[#595959]", font_montserrat.className)}>
+                SuiFrend
+              </p>
+              <p className={(font_montserrat.className, "text-[#595959] font-light")}>
+                Each staked frens will earn 1 points per minute
+              </p>
             </div>
             {/* <p>Staking Rules</p> */}
           </div>
           <div className="flex h-24 mt-4 justify-between gap-4">
-            <div className="border bg-[#F6F6F6] w-1/4 rounded-xl flex flex-col justify-center content-center text-center">
-              <p>Total Staked</p>
-              <p className="text-xl font-semibold">{totalStaked ? totalStaked : 0}</p>
+            <div className="bg-[#FEB958] text-white w-1/5 text rounded-xl flex flex-col justify-center content-center text-start px-3">
+              <p className={classNames(font_montserrat.className, "font-extrabold leading-5")}>
+                Total
+                <br />
+                Staked
+              </p>
+              <p className={classNames("text-2xl font-black", font_montserrat.className)}>
+                {totalStaked ? totalStaked : 0}
+              </p>
             </div>
-            <div className="border bg-[#F6F6F6] w-1/4 rounded-xl flex flex-col justify-center content-center text-center">
-              <p>Your Staked</p>
-              <p className="text-xl font-semibold">{stacked?.length ? stacked.length : 0}</p>
+            <div className="bg-[#E15A8C] text-white w-1/5 text rounded-xl flex flex-col justify-center content-center text-start px-3">
+              <p className={classNames(font_montserrat.className, "font-extrabold leading-5")}>
+                Your
+                <br />
+                Staked
+              </p>
+              <p className={classNames("text-2xl font-black", font_montserrat.className)}>
+                {stacked?.length ? stacked.length : 0}
+              </p>
             </div>
-            <div className="border bg-[#F6F6F6] w-1/4 rounded-xl flex flex-col justify-center content-center text-center">
-              <p>Your Hola Points</p>
-              <p className="text-xl font-semibold">{totalMyPoints ? totalMyPoints : 0}</p>
+            <div className=" bg-[#5A5A95] text-white w-1/5 text rounded-xl flex flex-col justify-center content-center text-start px-3">
+              <p className={classNames(font_montserrat.className, "font-extrabold leading-5")}>
+                Your Hola
+                <br />
+                Points
+              </p>
+              <p className={classNames("text-2xl font-black", font_montserrat.className)}>
+                {totalMyPoints ? totalMyPoints : 0}
+              </p>
             </div>
           </div>
         </div>
@@ -189,16 +213,16 @@ const Home = () => {
 
   const StakingRule = () => {
     return (
-      <div className="gap-2 flex text-gray-400 items-top">
-        <p className="text-xs px-2 py-1">Fees:</p>
+      <div className={classNames("gap-2 flex text-[#595959] items-top", font_montserrat.className)}>
+        <p className="text-xs px-2 py-1 font-medium">Fees:</p>
         <span className="inline-flex items-center gap-x-1.5 rounded-full px-2 py-1 text-xs font-medium ring-gray-200">
-          <svg className="h-1.5 w-1.5 fill-green-500" viewBox="0 0 6 6" aria-hidden="true">
+          <svg className="h-1.5 w-1.5 fill-[#FEB958]" viewBox="0 0 6 6" aria-hidden="true">
             <circle cx={3} cy={3} r={3} />
           </svg>
           {PRICE_STACKED} SUI STAKE
         </span>
         <span className="inline-flex items-center gap-x-1.5 rounded-full px-2 py-1 text-xs font-medium ring-gray-200">
-          <svg className="h-1.5 w-1.5 fill-blue-500" viewBox="0 0 6 6" aria-hidden="true">
+          <svg className="h-1.5 w-1.5 fill-[#5A5A95]" viewBox="0 0 6 6" aria-hidden="true">
             <circle cx={3} cy={3} r={3} />
           </svg>
           {PRICE_UNSTACKED} SUI UNSTAKE
@@ -215,13 +239,12 @@ const Home = () => {
           setSelectedFrend(capy);
         }}
       >
-        <div className="flex flex-col items-center gap-2 bg-[#F6F6F6] rounded-xl py-8">
+        <div className="flex flex-col items-center gap-2 bg-[#FFFFFF] rounded-xl py-8">
           <div className="relative">
             <div className="w-40 h-40">
               <Image src={capy.url} alt={capy.description} fill={true} />
             </div>
           </div>
-          <p className="text-center font-medium mt-2">{capy.description}</p>
         </div>
       </button>
     );
@@ -235,13 +258,13 @@ const Home = () => {
           setSelectedStaked(staking);
         }}
       >
-        <div className="flex flex-col items-center gap-2 bg-[#F6F6F6] rounded-xl py-8">
+        <div className="flex flex-col items-center gap-2 bg-[#FFFFFF] rounded-xl py-8">
           <div className="relative">
             <div className={"w-40 h-40"}>
               <Image src={staking.url} alt={"staking"} fill={true} />
             </div>
           </div>
-          <div className="text-center font-medium mt-2">Staking</div>
+          {/* <div className="text-center font-medium mt-2">Staking</div> */}
         </div>
       </button>
     );
@@ -268,18 +291,24 @@ const Home = () => {
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
+            <div className="fixed inset-0 bg-[#5e5e5e] bg-opacity-75 transition-opacity" />
           </Transition.Child>
 
           <div className="fixed inset-0 z-10 overflow-auto">
             <div className="flex min-h-full items-center justify-center">
-              <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-sm sm:p-6">
-                <Dialog.Title as="h3" className="text-base font-semibold leading-6 text-main text-center mb-2">
+              <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-[#FEF7EC] px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-sm sm:p-6">
+                <Dialog.Title
+                  as="h3"
+                  className={classNames(
+                    "text-base leading-6 text-[#595959] text-center mb-2 font-bold",
+                    font_montserrat.className
+                  )}
+                >
                   {"Start staking"}
                 </Dialog.Title>
                 <div className="flex flex-col items-center justify-center">
                   <div className={"mt-2 flex flex-col items-center gap-2"}>
-                    <div className="bg-gray-200 px-2 py-4 rounded-2xl">
+                    <div className="bg-white px-2 py-4 rounded-2xl">
                       <Image
                         className="h-[35vh] rounded-lg w-auto"
                         src={selectedFrend.url}
@@ -293,8 +322,9 @@ const Home = () => {
 
                     <button
                       className={classNames(
-                        "w-full block mx-auto my-4 px-3 text-sm py-2 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-400 cursor-pointer",
-                        waitSui && "opacity-50 cursor-not-allowed"
+                        "w-full block mx-auto my-4 px-3 text-sm py-2 bg-[#FEB958] text-white font-black rounded-md hover:bg-[#e5a44a] cursor-pointer",
+                        waitSui && "opacity-50 cursor-not-allowed",
+                        font_montserrat.className
                       )}
                       onClick={() => {
                         stakeCapy(selectedFrend).then();
@@ -334,18 +364,24 @@ const Home = () => {
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
+            <div className="fixed inset-0 bg-[#5e5e5e] bg-opacity-75 transition-opacity" />
           </Transition.Child>
 
           <div className="fixed inset-0 z-10 overflow-auto">
             <div className="flex min-h-full items-center justify-center">
-              <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-sm sm:p-6">
-                <Dialog.Title as="h3" className="text-base font-semibold leading-6 text-main text-center mb-2">
+              <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-[#FEF7EC] px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-sm sm:p-6">
+                <Dialog.Title
+                  as="h3"
+                  className={classNames(
+                    "text-base leading-6 text-[#595959] text-center mb-2 font-bold",
+                    font_montserrat.className
+                  )}
+                >
                   {"Staking"}
                 </Dialog.Title>
                 <div className="flex flex-col items-center justify-center">
                   <div className={"mt-2 flex flex-col items-center gap-2"}>
-                    <div className="bg-gray-200 px-2 py-4 rounded-2xl">
+                    <div className="bg-white px-2 py-4 rounded-2xl">
                       <Image
                         className="h-[35vh] rounded-lg w-auto"
                         src={selectedStaked.url}
@@ -356,16 +392,18 @@ const Home = () => {
                         priority
                       />
                     </div>
-                    <p>
-                      {/* //current time: {Date.now()} <br /> */}
-                      {/* start time: {selectedStaked.start_time} <br /> */}
-                      Your currect hola points: {Math.floor((Date.now() - selectedStaked.start_time) / 60_000)}
+                    <p className={classNames("font-bold text-center text-[#595959]", font_montserrat.className)}>
+                      Your currect hola points
+                      <p className="text-3xl mt-2 font-extrabold">
+                        {Math.floor((Date.now() - selectedStaked.start_time) / 60_000)}
+                      </p>
                     </p>
 
                     <button
                       className={classNames(
-                        "w-full block mx-auto my-4 px-3 text-sm py-2 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-400 cursor-pointer",
-                        waitSui && "opacity-50 cursor-not-allowed"
+                        "w-full block mx-auto mb-1 mt-2 px-3 text-sm py-2 bg-[#E15A8C] text-white font-black rounded-md hover:bg-[#c8517c] cursor-pointer",
+                        waitSui && "opacity-50 cursor-not-allowed",
+                        font_montserrat.className
                       )}
                       onClick={() => {
                         unstakeCapy(selectedStaked).then();
@@ -373,6 +411,9 @@ const Home = () => {
                     >
                       Unstake
                     </button>
+                    <p className={classNames("mb-4 text-xs", font_montserrat.className)}>
+                      Points will calculated after unstaking
+                    </p>
                     <StakingRule />
                   </div>
                 </div>
@@ -385,7 +426,7 @@ const Home = () => {
   };
 
   return status === EthosConnectStatus.NoConnection ? (
-    <main className="flex min-h-[85vh] flex-col items-center justify-around mt-20 z-10 rounded-lg bg-white">
+    <main className="flex min-h-[85vh] flex-col items-center justify-around mt-20 z-10 rounded-lg bg-[#FEF7EC]">
       <div className="w-full max-w-5xl items-center justify-between font-mono text-sm">
         <p className="text-4xl text-center w-full pt-12 font-bold text-[#5767EF]">
           Connect Your Wallet To Check Your Gochi!
@@ -393,9 +434,9 @@ const Home = () => {
       </div>
     </main>
   ) : (
-    <main className="flex min-h-[85vh] flex-col pl-16 py-6 mt-20 pr-10 z-10 rounded-lg bg-white">
+    <main className="flex min-h-[85vh] flex-col pl-16 py-6 mt-20 pr-10 z-10 rounded-lg bg-[#FEF7EC]">
       <ProjectDescriptionCard />
-      <h1 className="mt-8 text-4xl font-semibold text-main">My Frens</h1>
+      <h1 className={classNames("mt-8 text-4xl font-semibold text-[#595959]", font_montserrat.className)}>My Frens</h1>
       <div className={"grid grid-cols-4 gap-10 mt-8"}>
         {capyies?.map((capy) => (
           <SuifrensCard capy={capy} key={capy.id} />
@@ -404,7 +445,9 @@ const Home = () => {
 
       {stacked?.length !== 0 && (
         <>
-          <h1 className=" text-4xl text-main mt-8 font-semibold">My Staked Frens</h1>
+          <h1 className={classNames("mt-16 text-4xl font-semibold text-[#595959] ", font_montserrat.className)}>
+            My Staked Frens
+          </h1>
           <div className={"grid grid-cols-4 gap-10 mt-8"}>
             {stacked?.map((stack) => (
               <StakedTicketCard staking={stack} key={stack.id} />
