@@ -1,14 +1,19 @@
 import { Fragment, useEffect, useState } from "react";
-import { IStakingTicket, ICapy } from "types";
-import { fetchStakingTickets, fetchSuifrens, suiProvider } from "services/sui";
+import { ICapy, IStakingTicket } from "types";
+import {
+  fetchStakingTickets,
+  fetchSuifrens,
+  signTransactionEndStaking,
+  signTransactionStartStaking,
+  suiProvider,
+} from "services/sui";
 import { ethos, EthosConnectStatus } from "ethos-connect";
 
 import frensLogo from "/public/img/frens-logo.svg";
 import token from "/public/img/points.png";
 import Image from "next/image";
 import { Dialog, Transition } from "@headlessui/react";
-import { PRICE_STACKED, PRICE_UNSTACKED, STAKING_TABLE_ID, classNames, STAKING_POOL_FRENS_ID } from "utils";
-import { signTransactionStartStaking, signTransactionEndStaking } from "services/sui";
+import { classNames, PRICE_STACKED, PRICE_UNSTACKED, STAKING_POOL_FRENS_ID, STAKING_TABLE_ID } from "utils";
 import { AlertErrorMessage, AlertSucceed } from "components/Alert/CustomToast";
 import { getExecutionStatus, getExecutionStatusError, getObjectFields } from "@mysten/sui.js";
 import { Montserrat } from "next/font/google";
@@ -59,46 +64,47 @@ const Home = () => {
         console.error(e);
       }
     }
+
     fetchWalletFrens().then();
   }, [wallet?.address, wallet?.contents?.nfts]);
 
   useEffect(() => {
-    fetchTotalStaked();
-    fetchMyPoints();
+    async function fetchTotalStaked() {
+      if (!wallet?.address) {
+        return;
+      }
+      try {
+        const response = await suiProvider.getObject({ id: STAKING_POOL_FRENS_ID!, options: { showContent: true } });
+        const fields = getObjectFields(response);
+        setTotalStaked(fields?.staked || 0);
+      } catch (e) {
+        setTotalStaked(0);
+      }
+    }
+
+    async function fetchMyPoints() {
+      if (!wallet?.address) {
+        return;
+      }
+      try {
+        const response = await suiProvider.getDynamicFieldObject({
+          parentId: STAKING_TABLE_ID!,
+          name: {
+            type: "address",
+            value: wallet.address,
+          },
+        });
+        const fields = getObjectFields(response);
+        setTotalMyPoints(fields?.value || 0);
+      } catch (e) {
+        console.error(e);
+        setTotalMyPoints(0);
+      }
+    }
+
+    fetchTotalStaked().then();
+    fetchMyPoints().then();
   }, [waitSui, wallet?.contents?.nfts]);
-
-  async function fetchTotalStaked() {
-    if (!wallet?.address) {
-      return;
-    }
-    const response = await suiProvider.getObject({ id: STAKING_POOL_FRENS_ID!, options: { showContent: true } });
-    const fields = getObjectFields(response);
-    if (fields) {
-      setTotalStaked(fields?.staked);
-    } else {
-      setTotalStaked(0);
-    }
-  }
-
-  async function fetchMyPoints() {
-    if (!wallet?.address) {
-      return;
-    }
-    try {
-      const response = await suiProvider.getDynamicFieldObject({
-        parentId: STAKING_TABLE_ID!,
-        name: {
-          type: "address",
-          value: wallet.address,
-        },
-      });
-      const fields = getObjectFields(response);
-      setTotalMyPoints(fields?.value);
-    } catch (e) {
-      console.error(e);
-      setTotalMyPoints(0);
-    }
-  }
 
   async function stakeCapy(capy: ICapy) {
     if (!wallet || !capy) return;
@@ -169,7 +175,7 @@ const Home = () => {
               <p className={classNames("text-3xl font-extrabold text-[#595959]", font_montserrat.className)}>
                 SuiFrens
               </p>
-              <p className={(font_montserrat.className, "text-[#595959] font-light")}>
+              <p className={classNames(font_montserrat.className, "text-[#595959] font-light")}>
                 Each staked frens will earn 1 point per minute
               </p>
             </div>
