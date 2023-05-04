@@ -25,8 +25,8 @@ const Home = () => {
   const { wallet, status } = ethos.useWallet();
 
   // Data states
-  const [capyies, setCapyies] = useState<ICapy[]>();
-  const [stacked, setStaked] = useState<IStakingTicket[]>();
+  const [capyies, setCapyies] = useState<ICapy[] | null>();
+  const [stacked, setStaked] = useState<IStakingTicket[] | null>();
 
   // Dialog states
   const [selectedFrend, setSelectedFrend] = useState<ICapy>();
@@ -40,8 +40,8 @@ const Home = () => {
   useEffect(() => {
     async function fetchWalletFrens() {
       if (!wallet?.address) {
-        setCapyies(undefined);
-        setStaked(undefined);
+        setCapyies(null);
+        setStaked(null);
         return;
       }
       try {
