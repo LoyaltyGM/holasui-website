@@ -332,13 +332,13 @@ const Home = () => {
 
                     <button
                       className={classNames(
-                        "w-full block mx-auto my-4 px-3 text-sm py-2 bg-[#FEB958] text-white font-black rounded-md hover:bg-[#e5a44a] cursor-pointer",
-                        waitSui && "opacity-50 cursor-not-allowed",
+                        "w-full block mx-auto my-4 px-3 text-sm py-2 bg-[#FEB958] text-white font-black rounded-md hover:bg-[#e5a44a] cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed",
                         font_montserrat.className
                       )}
                       onClick={() => {
                         stakeCapy(selectedFrend).then();
                       }}
+                      disabled={waitSui}
                     >
                       Stake
                     </button>
@@ -421,13 +421,13 @@ const Home = () => {
 
                     <button
                       className={classNames(
-                        "w-full block mx-auto mb-1 mt-2 px-3 text-sm py-2 bg-[#E15A8C] text-white font-black rounded-md hover:bg-[#c8517c] cursor-pointer",
-                        waitSui && "opacity-50 cursor-not-allowed",
+                        "w-full block mx-auto mb-1 mt-2 px-3 text-sm py-2 bg-[#E15A8C] text-white font-black rounded-md hover:bg-[#c8517c] cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed",
                         font_montserrat.className
                       )}
                       onClick={() => {
                         unstakeCapy(selectedStaked).then();
                       }}
+                      disabled={waitSui}
                     >
                       Unstake
                     </button>
