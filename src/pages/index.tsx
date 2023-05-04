@@ -10,6 +10,7 @@ import {
 import { ethos, EthosConnectStatus } from "ethos-connect";
 
 import frensLogo from "/public/img/frens-logo.svg";
+import bluemoveLogo from "/public/img/bluemove_logo.svg";
 import token from "/public/img/points.png";
 import Image from "next/image";
 import { Dialog, Transition } from "@headlessui/react";
@@ -461,16 +462,10 @@ const Home = () => {
   ) : (
     <main className="flex min-h-[85vh] flex-col pl-16 py-6 mt-20 pr-10 z-10 rounded-lg bg-[#FEF7EC]">
       <ProjectDescriptionCard />
-      <h1 className={classNames("mt-8 text-4xl font-semibold text-[#595959]", font_montserrat.className)}>My Frens</h1>
-      <div className={"grid grid-cols-4 gap-10 mt-8"}>
-        {capyies?.map((capy) => (
-          <SuifrensCard capy={capy} key={capy.id} />
-        ))}
-      </div>
 
       {stacked?.length !== 0 && (
         <>
-          <h1 className={classNames("mt-16 text-4xl font-semibold text-[#595959] ", font_montserrat.className)}>
+          <h1 className={classNames("mt-8 text-4xl font-semibold text-[#595959] ", font_montserrat.className)}>
             My Staked Frens
           </h1>
           <div className={"grid grid-cols-4 gap-10 mt-8"}>
@@ -478,6 +473,53 @@ const Home = () => {
               <StakedTicketCard staking={stack} key={stack.id} />
             ))}
           </div>
+        </>
+      )}
+
+      <h1 className={classNames("mt-8 text-4xl font-semibold text-[#595959]", font_montserrat.className)}>My Frens</h1>
+      {capyies?.length !== 0 ? (
+        <div className={"grid grid-cols-4 gap-10 mt-8"}>
+          {capyies?.map((capy) => (
+            <SuifrensCard capy={capy} key={capy.id} />
+          ))}
+        </div>
+      ) : (
+        <>
+          {stacked?.length !== 0 ? (
+            <div className="mt-8 text-center">
+              <div className={classNames(font_montserrat.className, "text-4xl font-semibold text-[#595959]")}>
+                All your capies are staked
+              </div>
+              <a href="https://sui.bluemove.net/collection/suifren-1be3ce8d" target="_blank">
+                <div
+                  className={classNames(
+                    "bg-neutral-900 py-4 mt-4 text-white items-center flex content-center justify-center cursor-pointer rounded-xl hover:bg-neutral-800",
+                    font_montserrat.className
+                  )}
+                >
+                  <p className="font-semibold">Get one more capy on</p>
+                  <Image src={bluemoveLogo} alt={"bluemovelogo"} className="h-8 -ml-5" />
+                </div>
+              </a>
+            </div>
+          ) : (
+            <div className="mt-8 text-center">
+              <div className={classNames(font_montserrat.className, "text-4xl font-semibold text-[#595959]")}>
+                You don't have capy :(
+              </div>
+              <a href="https://sui.bluemove.net/collection/suifren-1be3ce8d" target="_blank">
+                <div
+                  className={classNames(
+                    "bg-neutral-900 py-4 mt-4 text-white items-center flex content-center justify-center cursor-pointer rounded-xl hover:bg-neutral-800",
+                    font_montserrat.className
+                  )}
+                >
+                  <p className="font-semibold">Get one capy on</p>
+                  <Image src={bluemoveLogo} alt={"bluemovelogo"} className="h-8 -ml-5" />
+                </div>
+              </a>
+            </div>
+          )}
         </>
       )}
 
