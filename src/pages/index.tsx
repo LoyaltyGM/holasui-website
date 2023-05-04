@@ -166,7 +166,7 @@ const Home = () => {
           <div className="flex justify-between">
             <div>
               <p className={classNames("text-3xl font-extrabold text-[#595959]", font_montserrat.className)}>
-                SuiFrend
+                SuiFrens
               </p>
               <p className={(font_montserrat.className, "text-[#595959] font-light")}>
                 Each staked frens will earn 1 points per minute
@@ -428,8 +428,13 @@ const Home = () => {
   return status === EthosConnectStatus.NoConnection ? (
     <main className="flex min-h-[85vh] flex-col items-center justify-around mt-20 z-10 rounded-lg bg-[#FEF7EC]">
       <div className="w-full max-w-5xl items-center justify-between font-mono text-sm">
-        <p className="text-4xl text-center w-full pt-12 font-bold text-[#5767EF]">
-          Connect Your Wallet To Check Your Gochi!
+        <p
+          className={classNames(
+            "text-4xl text-center w-full pt-12 font-bold text-[#5A5A95]",
+            font_montserrat.className
+          )}
+        >
+          Connect Your Wallet To Unlock Staking!
         </p>
       </div>
     </main>
