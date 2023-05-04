@@ -1,9 +1,11 @@
-import React, { ReactElement } from "react";
+import React from "react";
 import { ethos } from "ethos-connect";
 import { ILayoutProps } from "types";
 import Link from "next/link";
 import { TwitterIcon } from "components/Icons";
 import { classNames } from "utils/";
+import Logo from "/public/img/logo.png";
+import Image from "next/image";
 
 export function Sidebar({ children }: ILayoutProps) {
   const Header = () => {
@@ -14,15 +16,15 @@ export function Sidebar({ children }: ILayoutProps) {
          justify-between"
         >
           <Link href="/">
-            <p className="text-black text-2xl pt-2 font-black">¡Hola Sui!</p>
+            <Image src={Logo} height={75} width={130} alt={"logo"} />
           </Link>
 
-          <div className="flex h-12 gap-8">
+          <div className="flex h-12 gap-8 mt-2">
             <div
               className={classNames(
                 "flex flex-col items-center justify-center",
                 "text-gray-300 ",
-                "group py-2 text-sm font-medium group-hover:text-[#000000] hover:fill-black hover:text-[#000000] rounded-2xl cursor-pointer"
+                "group py-2 text-sm font-medium group-hover:text-[#6ea0ec] hover:fill-[#6ea0ec] hover:text-[#6ea0ec] rounded-2xl cursor-pointer"
               )}
             >
               <a href="https://twitter.com/HolaSui" target="_black">

@@ -22,3 +22,5 @@ export interface IStakingTicket {
   nft_id: string;
   start_time: number;
 }
+
+

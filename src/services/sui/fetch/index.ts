@@ -2,6 +2,7 @@ import { replaceTripleSlash, FRENS_TYPE, STAKING_TICKET_TYPE, convertIPFSUrl } f
 import { SuiNFT } from "ethos-connect";
 import { IStakingTicket, ICapy } from "types";
 import { ConvenenienceSuiObject } from "ethos-connect/dist/types/ConvenienceSuiObject";
+import { suiProvider } from "../suiProvider";
 
 export function fetchSuifrens(nftObjects: SuiNFT[]): ICapy[] | null {
   if (!nftObjects) return null;
@@ -18,14 +19,14 @@ export function fetchSuifren(nftObjects: SuiNFT[], id: string): ICapy | null {
   return initializeSuifren(suifrenNftObject!);
 }
 
-export function fetchStakingTickets(objects: ConvenenienceSuiObject[]): IStakingTicket[] | null {
+export function fetchStakingTickets(objects: SuiNFT[]): IStakingTicket[] | null {
   if (!objects) return null;
   return objects
     .filter((object) => object.type === STAKING_TICKET_TYPE)
     .map((sleepTicketNftObject) => initializeStakingTicket(sleepTicketNftObject));
 }
 
-export function fetchStakingTicket(objects: ConvenenienceSuiObject[], id: string): IStakingTicket | null {
+export function fetchStakingTicket(objects: SuiNFT[], id: string): IStakingTicket | null {
   if (!objects) return null;
 
   const tripTicketNftObject = objects.find((object) => object.objectId === id && object.type === STAKING_TICKET_TYPE);
@@ -42,12 +43,12 @@ function initializeSuifren(nftObject: SuiNFT): ICapy {
   };
 }
 
-function initializeStakingTicket(object: ConvenenienceSuiObject): IStakingTicket {
-  console.log("init", object)
+function initializeStakingTicket(object: SuiNFT): IStakingTicket {
+  
   return {
     id: object?.objectId,
-    name: object?.fields?.name!,
-    url: object?.fields?.url!,
+    name: object?.name!,
+    url: replaceTripleSlash(object?.imageUrl!),
     nft_id: object?.fields?.nft_id!,
     start_time: +object?.fields?.start_time!,
   };

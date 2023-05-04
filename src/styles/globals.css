@@ -28,28 +28,10 @@
 @layer components {
   .fixed-header {
     position: fixed;
-    top: 16px;
-    left: 16px;
+    top: 0;
+    left: 0;
     z-index: 10;
-    width: calc(100% - 32px); /* adjust the padding value as needed */
-  }
-
-  .gradient-trip {
-    background: linear-gradient(-45deg, #ff9473, #d42a6b, #1a91bc, #19af8c);
-    background-size: 400% 400%;
-    animation: gradient 15s ease infinite;
-    height: 100vh;
-  }
-
-  .energy-circle {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 65px;
-    height: 65px;
-    border-radius: 50%;
-    border: 3px solid;
-    background-color: #eaeaea;
+    width: 100%; /* adjust the padding value as needed */
   }
 
   .emoji {

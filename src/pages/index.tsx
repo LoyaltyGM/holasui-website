@@ -1,19 +1,18 @@
 import { Fragment, useEffect, useState } from "react";
 import { IStakingTicket, ICapy } from "types";
-import { fetchStakingTickets, fetchSuifrens } from "services/sui";
+import { fetchStakingTickets, fetchSuifrens, suiProvider } from "services/sui";
 import { ethos, EthosConnectStatus } from "ethos-connect";
-import sleepImage from "/public/img/sleep.png";
+
+import frensLogo from "/public/img/frens-logo.svg";
 import Image from "next/image";
-import { DialogShowNFT } from "components/Dialog";
 import { Dialog, Transition } from "@headlessui/react";
-import { PRICE_STACKED, classNames } from "utils";
+import { PRICE_STACKED, PRICE_UNSTACKED, STAKING_TABLE_ID, classNames, STAKING_POOL_FRENS_ID } from "utils";
 import { signTransactionStartStaking, signTransactionEndStaking } from "services/sui";
 import { AlertErrorMessage, AlertSucceed } from "components/Alert/CustomToast";
-import { getExecutionStatus, getExecutionStatusError } from "@mysten/sui.js";
+import { getExecutionStatus, getExecutionStatusError, getObjectFields } from "@mysten/sui.js";
 
 const Home = () => {
   const { wallet, status } = ethos.useWallet();
-  const { provider } = ethos.useProviderAndSigner();
 
   // Data states
   const [capyies, setCapyies] = useState<ICapy[]>();
@@ -26,6 +25,9 @@ const Home = () => {
   const [openedUnstaked, setOpenedUnstaked] = useState(false);
   const [waitSui, setWaitSui] = useState(false);
 
+  const [totalStaked, setTotalStaked] = useState(0);
+  const [totalMyPoints, setTotalMyPoints] = useState(0);
+
   useEffect(() => {
     async function fetchWalletFrens() {
       if (!wallet?.address) {
@@ -35,13 +37,21 @@ const Home = () => {
       }
       try {
         const nfts = wallet?.contents?.nfts!;
-        const objects = wallet?.contents?.objects!;
-
         const suifrens = fetchSuifrens(nfts);
         if (suifrens) setCapyies(suifrens);
-
-        const staking = fetchStakingTickets(objects);
-        if (staking) setStaked(staking);
+        const staking = fetchStakingTickets(nfts);
+        if (staking) {
+          //setStaked(staking);
+          await Promise.all(
+            staking.map(async (staked) => {
+              const response = await suiProvider.getObject({ id: staked?.nft_id!, options: { showDisplay: true } });
+              const image_url = (response.data?.display?.data as Record<string, string>)?.image_url;
+              console.log(image_url);
+              staked.url = image_url;
+            })
+          );
+          setStaked(staking);
+        }
       } catch (e) {
         console.error(e);
       }
@@ -49,11 +59,48 @@ const Home = () => {
     fetchWalletFrens().then();
   }, [wallet?.address, wallet?.contents?.nfts]);
 
+  useEffect(() => {
+    fetchTotalStaked();
+    fetchMyPoints();
+  }, [waitSui, wallet?.contents?.nfts]);
+
+  async function fetchTotalStaked() {
+    if (!wallet?.address) {
+      return;
+    }
+    const response = await suiProvider.getObject({ id: STAKING_POOL_FRENS_ID!, options: { showContent: true } });
+    const fields = getObjectFields(response);
+    if (fields) {
+      setTotalStaked(fields?.staked);
+    } else {
+      setTotalStaked(0);
+    }
+  }
+
+  async function fetchMyPoints() {
+    if (!wallet?.address) {
+      return;
+    }
+    try {
+      const response = await suiProvider.getDynamicFieldObject({
+        parentId: STAKING_TABLE_ID!,
+        name: {
+          type: "address",
+          value: wallet.address,
+        },
+      });
+      const fields = getObjectFields(response);
+      setTotalMyPoints(fields?.value);
+    } catch (e) {
+      console.error(e);
+      setTotalMyPoints(0);
+    }
+  }
+
   async function stakeCapy(capy: ICapy) {
     if (!wallet || !capy) return;
 
     setWaitSui(true);
-    setOpenedFrend(false);
     try {
       const response = await wallet.signAndExecuteTransactionBlock({
         transactionBlock: signTransactionStartStaking(capy.id),
@@ -83,7 +130,6 @@ const Home = () => {
     if (!wallet || !ticket) return;
 
     setWaitSui(true);
-    setOpenedUnstaked(false);
     try {
       const response = await wallet.signAndExecuteTransactionBlock({
         transactionBlock: signTransactionEndStaking(ticket.id),
@@ -95,7 +141,6 @@ const Home = () => {
       const status = getExecutionStatus(response);
 
       if (status?.status === "failure") {
-        console.log(status.error);
         const error_status = getExecutionStatusError(response);
         if (error_status) AlertErrorMessage(error_status);
       } else {
@@ -113,7 +158,7 @@ const Home = () => {
     return (
       <div className="flex p-4 py-8 gap-2 h-60 border-2 border-[#F6F6F6] rounded-xl">
         <div className="ml-12 flex flex-col content-center justify-center rounded-2xl">
-          <Image src={sleepImage} alt={"logo"} height={150} width={150} />
+          <Image src={frensLogo} alt={"logo"} height={185} width={185} />
         </div>
         <div className="w-full ml-4">
           <div className="flex justify-between">
@@ -121,23 +166,43 @@ const Home = () => {
               <p className="text-3xl font-bold">SuiFrend</p>
               <p>Each staked frens will earn 1 points per minute</p>
             </div>
-            <p>Staking Rules</p>
+            {/* <p>Staking Rules</p> */}
           </div>
           <div className="flex h-24 mt-4 justify-between gap-4">
             <div className="border bg-[#F6F6F6] w-1/4 rounded-xl flex flex-col justify-center content-center text-center">
               <p>Total Staked</p>
-              <p className="text-xl font-semibold">228</p>
+              <p className="text-xl font-semibold">{totalStaked ? totalStaked : 0}</p>
             </div>
             <div className="border bg-[#F6F6F6] w-1/4 rounded-xl flex flex-col justify-center content-center text-center">
               <p>Your Staked</p>
-              <p className="text-xl font-semibold">10</p>
+              <p className="text-xl font-semibold">{stacked?.length ? stacked.length : 0}</p>
             </div>
             <div className="border bg-[#F6F6F6] w-1/4 rounded-xl flex flex-col justify-center content-center text-center">
-              <p>Your Staked Points</p>
-              <p className="text-xl font-semibold">228</p>
+              <p>Your Hola Points</p>
+              <p className="text-xl font-semibold">{totalMyPoints ? totalMyPoints : 0}</p>
             </div>
           </div>
         </div>
+      </div>
+    );
+  };
+
+  const StakingRule = () => {
+    return (
+      <div className="gap-2 flex text-gray-400 items-top">
+        <p className="text-xs px-2 py-1">Fees:</p>
+        <span className="inline-flex items-center gap-x-1.5 rounded-full px-2 py-1 text-xs font-medium ring-gray-200">
+          <svg className="h-1.5 w-1.5 fill-green-500" viewBox="0 0 6 6" aria-hidden="true">
+            <circle cx={3} cy={3} r={3} />
+          </svg>
+          {PRICE_STACKED} SUI STAKE
+        </span>
+        <span className="inline-flex items-center gap-x-1.5 rounded-full px-2 py-1 text-xs font-medium ring-gray-200">
+          <svg className="h-1.5 w-1.5 fill-blue-500" viewBox="0 0 6 6" aria-hidden="true">
+            <circle cx={3} cy={3} r={3} />
+          </svg>
+          {PRICE_UNSTACKED} SUI UNSTAKE
+        </span>
       </div>
     );
   };
@@ -173,7 +238,7 @@ const Home = () => {
         <div className="flex flex-col items-center gap-2 bg-[#F6F6F6] rounded-xl py-8">
           <div className="relative">
             <div className={"w-40 h-40"}>
-              <Image src={sleepImage} alt={"staking"} fill={true} />
+              <Image src={staking.url} alt={"staking"} fill={true} />
             </div>
           </div>
           <div className="text-center font-medium mt-2">Staking</div>
@@ -237,6 +302,7 @@ const Home = () => {
                     >
                       Stake
                     </button>
+                    <StakingRule />
                   </div>
                 </div>
               </Dialog.Panel>
@@ -275,7 +341,7 @@ const Home = () => {
             <div className="flex min-h-full items-center justify-center">
               <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-sm sm:p-6">
                 <Dialog.Title as="h3" className="text-base font-semibold leading-6 text-main text-center mb-2">
-                  {"Unstake"}
+                  {"Staking"}
                 </Dialog.Title>
                 <div className="flex flex-col items-center justify-center">
                   <div className={"mt-2 flex flex-col items-center gap-2"}>
@@ -290,6 +356,11 @@ const Home = () => {
                         priority
                       />
                     </div>
+                    <p>
+                      {/* //current time: {Date.now()} <br /> */}
+                      {/* start time: {selectedStaked.start_time} <br /> */}
+                      Your currect hola points: {Math.floor((Date.now() - selectedStaked.start_time) / 60_000)}
+                    </p>
 
                     <button
                       className={classNames(
@@ -300,8 +371,9 @@ const Home = () => {
                         unstakeCapy(selectedStaked).then();
                       }}
                     >
-                      Unstaking
+                      Unstake
                     </button>
+                    <StakingRule />
                   </div>
                 </div>
               </Dialog.Panel>
