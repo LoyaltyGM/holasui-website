@@ -4,10 +4,10 @@ export function replaceTripleSlash(url: string): string {
 
 // Function to convert IPFS URL to normal URL
 export const convertIPFSUrl = (ipfsUrl: string): string => {
-  const ipfsPrefix = 'ipfs://';
-  const normalUrlPrefix = 'https://ipfs.io/ipfs/';
-
-  if (ipfsUrl.startsWith(ipfsPrefix)) {
+  const ipfsPrefix: string = 'ipfs://';
+  const normalUrlPrefix: string = 'https://ipfs.io/ipfs/';
+  
+  if (ipfsUrl.includes(ipfsPrefix)) {
     const hash = ipfsUrl.slice(ipfsPrefix.length);
     return normalUrlPrefix + hash;
   } else {

@@ -14,7 +14,8 @@ const nextConfig = {
     ignoreDuringBuilds: true,
   },
   images: {
-    domains: ['ipfs.io',"pbs.twimg.com"],
+    dangerouslyAllowSVG: true,
+    domains: ['ipfs.io', "pbs.twimg.com", "api-testnet.suifrens.sui.io", "api-mainnet.suifrens.sui.io"],
   },
   typescript: {
     ignoreBuildErrors: true,

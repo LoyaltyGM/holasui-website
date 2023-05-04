@@ -10,26 +10,15 @@ export interface ILayoutProps {
 
 export interface ICapy {
   id: string;
-  name: string;
-  url: string;
-  link: string;
-  lvl: number;
-  xp: number;
-  energy: number;
-}
-
-export interface IFood {
-  id: string;
-  name: string;
   description: string;
   url: string;
-  xp: number;
-  rarity: string;
-  energy: number;
+  link: string;
 }
 
-export interface ISleepTicket {
+export interface IStakingTicket {
   id: string;
-  suifrens_id: string;
-  timer: number;
+  name: string;
+  url: string;
+  nft_id: string;
+  start_time: number;
 }

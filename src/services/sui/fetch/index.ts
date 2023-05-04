@@ -1,55 +1,55 @@
-import { replaceTripleSlash, SLEEP_TICKET_TYPE, SUIGOTCHI_TYPE } from "utils";
+import { replaceTripleSlash, FRENS_TYPE, STAKING_TICKET_TYPE, convertIPFSUrl } from "utils";
 import { SuiNFT } from "ethos-connect";
-import { ISleepTicket, ICapy } from "types";
+import { IStakingTicket, ICapy } from "types";
 import { ConvenenienceSuiObject } from "ethos-connect/dist/types/ConvenienceSuiObject";
 
 export function fetchSuifrens(nftObjects: SuiNFT[]): ICapy[] | null {
   if (!nftObjects) return null;
   return nftObjects
-    .filter((object) => object.type === SUIGOTCHI_TYPE)
-    .map((suigotchiNftObject) => initializeSuigotchi(suigotchiNftObject));
+    .filter((object) => object.type === FRENS_TYPE)
+    .map((suifrenNftObject) => initializeSuifren(suifrenNftObject));
 }
 
-export function fetchSuigotchi(nftObjects: SuiNFT[], id: string): ICapy | null {
+export function fetchSuifren(nftObjects: SuiNFT[], id: string): ICapy | null {
   if (!nftObjects) return null;
 
-  const suigotchiNftObject = nftObjects.find((object) => object.objectId === id && object.type === SUIGOTCHI_TYPE);
+  const suifrenNftObject = nftObjects.find((object) => object.objectId === id && object.type === FRENS_TYPE);
 
-  return initializeSuigotchi(suigotchiNftObject!);
+  return initializeSuifren(suifrenNftObject!);
 }
 
-export function fetchSleepTickets(objects: ConvenenienceSuiObject[]): ISleepTicket[] | null {
+export function fetchStakingTickets(objects: ConvenenienceSuiObject[]): IStakingTicket[] | null {
   if (!objects) return null;
   return objects
-    .filter((object) => object.type === SLEEP_TICKET_TYPE)
-    .map((sleepTicketNftObject) => initializeSleepTicket(sleepTicketNftObject));
+    .filter((object) => object.type === STAKING_TICKET_TYPE)
+    .map((sleepTicketNftObject) => initializeStakingTicket(sleepTicketNftObject));
 }
 
-export function fetchSleepTicket(objects: ConvenenienceSuiObject[], id: string): ISleepTicket | null {
+export function fetchStakingTicket(objects: ConvenenienceSuiObject[], id: string): IStakingTicket | null {
   if (!objects) return null;
 
-  const tripTicketNftObject = objects.find((object) => object.objectId === id && object.type === SLEEP_TICKET_TYPE);
+  const tripTicketNftObject = objects.find((object) => object.objectId === id && object.type === STAKING_TICKET_TYPE);
 
-  return initializeSleepTicket(tripTicketNftObject!);
+  return initializeStakingTicket(tripTicketNftObject!);
 }
 
-function initializeSuigotchi(nftObject: SuiNFT): ICapy {
+function initializeSuifren(nftObject: SuiNFT): ICapy {
   return {
     id: nftObject?.objectId,
-    name: nftObject?.name!,
-    url: replaceTripleSlash(nftObject?.imageUrl!),
+    description: nftObject?.description!,
+    url: nftObject?.imageUrl!,
     link: nftObject?.link!,
-    energy: +nftObject?.fields?.energy!,
-    xp: +nftObject?.fields?.xp!,
-    lvl: +nftObject?.fields?.lvl!,
   };
 }
 
-function initializeSleepTicket(object: ConvenenienceSuiObject): ISleepTicket {
+function initializeStakingTicket(object: ConvenenienceSuiObject): IStakingTicket {
+  console.log("init", object)
   return {
     id: object?.objectId,
-    suifrens_id: object?.fields?.suigotchi_id!,
-    timer: +object?.fields?.timer!,
+    name: object?.fields?.name!,
+    url: object?.fields?.url!,
+    nft_id: object?.fields?.nft_id!,
+    start_time: +object?.fields?.start_time!,
   };
 }
 
