@@ -17,7 +17,7 @@ export function Sidebar({ children }: ILayoutProps) {
          justify-between"
         >
           <Link href="/">
-            <Image src={Logo} height={100} width={180} alt={"logo"} />
+            <Image src={Logo} height={100} width={180} alt={"logo"} priority />
           </Link>
 
           <div className="flex h-12 gap-8 mt-2">
