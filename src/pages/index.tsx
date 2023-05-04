@@ -4,6 +4,7 @@ import { fetchStakingTickets, fetchSuifrens, suiProvider } from "services/sui";
 import { ethos, EthosConnectStatus } from "ethos-connect";
 
 import frensLogo from "/public/img/frens-logo.svg";
+import token from "/public/img/points.png";
 import Image from "next/image";
 import { Dialog, Transition } from "@headlessui/react";
 import { PRICE_STACKED, PRICE_UNSTACKED, STAKING_TABLE_ID, classNames, STAKING_POOL_FRENS_ID } from "utils";
@@ -175,7 +176,7 @@ const Home = () => {
             {/* <p>Staking Rules</p> */}
           </div>
           <div className="flex h-24 mt-4 justify-between gap-4">
-            <div className="bg-[#FEB958] text-white w-1/5 text rounded-xl flex flex-col justify-center content-center text-start px-3">
+            <div className="bg-[#5A5A95] text-white w-1/5 text rounded-xl flex flex-col justify-center content-center text-start px-3">
               <p className={classNames(font_montserrat.className, "font-extrabold leading-5")}>
                 Total
                 <br />
@@ -195,15 +196,18 @@ const Home = () => {
                 {stacked?.length ? stacked.length : 0}
               </p>
             </div>
-            <div className=" bg-[#5A5A95] text-white w-1/5 text rounded-xl flex flex-col justify-center content-center text-start px-3">
+            <div className="bg-[#FEB958] 5A5A95 E15A8C text-white w-1/5 text rounded-xl flex flex-col justify-center content-center text-start px-3">
               <p className={classNames(font_montserrat.className, "font-extrabold leading-5")}>
                 Your Hola
                 <br />
                 Points
               </p>
-              <p className={classNames("text-2xl font-black", font_montserrat.className)}>
-                {totalMyPoints ? totalMyPoints : 0}
-              </p>
+              <div className="flex gap-2 w-full">
+                <Image src={token} alt={"points"} height={15} width={35} unoptimized={true} />
+                <p className={classNames("text-2xl font-black", font_montserrat.className)}>
+                  {totalMyPoints ? totalMyPoints : 0}
+                </p>
+              </div>
             </div>
           </div>
         </div>
@@ -392,11 +396,21 @@ const Home = () => {
                         priority
                       />
                     </div>
-                    <p className={classNames("font-bold text-center text-[#595959]", font_montserrat.className)}>
+                    <p
+                      className={classNames(
+                        "font-bold text-center text-[#595959] flex flex-col items-center content-center",
+                        font_montserrat.className
+                      )}
+                    >
                       Your currect hola points
-                      <p className="text-3xl mt-2 font-extrabold">
-                        {Math.floor((Date.now() - selectedStaked.start_time) / 60_000)}
-                      </p>
+                      <div className="flex gap-2  items-center">
+                        <div className="h-2/3 pt-2">
+                          <Image src={token} alt={"points"} height={35} width={40} priority />
+                        </div>
+                        <p className="text-3xl mt-2 font-extrabold">
+                          {Math.floor((Date.now() - selectedStaked.start_time) / 60_000)}
+                        </p>
+                      </div>
                     </p>
 
                     <button
@@ -412,7 +426,7 @@ const Home = () => {
                       Unstake
                     </button>
                     <p className={classNames("mb-4 text-xs", font_montserrat.className)}>
-                      Points will calculated after unstaking
+                      Points will be calculated after unstaking
                     </p>
                     <StakingRule />
                   </div>
