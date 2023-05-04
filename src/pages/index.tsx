@@ -8,7 +8,7 @@ import {
   suiProvider,
 } from "services/sui";
 import { ethos, EthosConnectStatus } from "ethos-connect";
-
+import suietIcon from "/public/img/SuietLogo2.svg";
 import frensLogo from "/public/img/frens-logo.svg";
 import bluemoveLogo from "/public/img/bluemove_logo.svg";
 import token from "/public/img/points.png";
@@ -449,14 +449,17 @@ const Home = () => {
   return status === EthosConnectStatus.NoConnection ? (
     <main className="flex min-h-[85vh] flex-col items-center justify-around mt-20 z-10 rounded-lg bg-[#FEF7EC]">
       <div className="w-full max-w-5xl items-center justify-between font-mono text-sm">
-        <p
+        <div
           className={classNames(
-            "text-4xl text-center w-full pt-12 font-bold text-[#5A5A95]",
+            "flex gap-2 text-4xl text-center w-full pt-12 font-bold text-[#5A5A95] items-center content-center justify-center",
             font_montserrat.className
           )}
         >
-          Connect Your Wallet To Unlock Staking!
-        </p>
+          <p>Connect</p>
+          {/* <Image src={suietIcon} alt={"suiet"} height={600} width={120} className="h-28" /> */}
+          <Image src={suietIcon} alt={"suiet"} height={350} width={50} className="h-28" />
+          <p>Wallet To Unlock Staking!</p>
+        </div>
       </div>
     </main>
   ) : (
