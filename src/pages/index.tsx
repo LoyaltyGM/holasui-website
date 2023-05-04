@@ -170,7 +170,7 @@ const Home = () => {
                 SuiFrens
               </p>
               <p className={(font_montserrat.className, "text-[#595959] font-light")}>
-                Each staked frens will earn 1 points per minute
+                Each staked frens will earn 1 point per minute
               </p>
             </div>
             {/* <p>Staking Rules</p> */}
