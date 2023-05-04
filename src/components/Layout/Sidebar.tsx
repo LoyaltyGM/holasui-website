@@ -20,7 +20,7 @@ export function Sidebar({ children }: ILayoutProps) {
             <Image src={Logo} height={100} width={180} alt={"logo"} priority />
           </Link>
 
-          <div className="flex h-12 gap-8 mt-2">
+          <div className="flex h-12 gap-8 mt-2 items-center">
             <div
               className={classNames(
                 "flex flex-col items-center justify-center",
@@ -45,7 +45,9 @@ export function Sidebar({ children }: ILayoutProps) {
                 Twitter
               </a>
             </div>
-            <ethos.components.AddressWidget />
+            <div>
+              <ethos.components.AddressWidget />
+            </div>
           </div>
         </div>
       </div>
