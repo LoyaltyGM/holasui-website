@@ -402,7 +402,7 @@ const Home = () => {
                         priority
                       />
                     </div>
-                    <p
+                    <div
                       className={classNames(
                         "font-bold text-center text-[#595959] flex flex-col items-center content-center",
                         font_montserrat.className
@@ -417,7 +417,7 @@ const Home = () => {
                           {Math.floor((Date.now() - selectedStaked.start_time) / 60_000)}
                         </p>
                       </div>
-                    </p>
+                    </div>
 
                     <button
                       className={classNames(
