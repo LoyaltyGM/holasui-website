@@ -458,7 +458,7 @@ const Home = () => {
           <p>Connect</p>
           {/* <Image src={suietIcon} alt={"suiet"} height={600} width={120} className="h-28" /> */}
           <Image src={suietIcon} alt={"suiet"} height={350} width={50} className="h-28" priority />
-          <p>Wallet To Unlock Staking!</p>
+          <p>Suiet Wallet To Unlock Staking!</p>
         </div>
       </div>
     </main>

@@ -11,7 +11,7 @@ export const STAKING_TABLE_ID = process.env.NEXT_PUBLIC_STAKING_TABLE_ID;
 export const SUI_RPC_URL = process.env.NEXT_PUBLIC_SUI_RPC_URL as string;
 
 
-// PRICE IN SUI(1 and 3)
-export const PRICE_STACKED: number = 1;
-export const PRICE_UNSTACKED: number = 3; 
+// PRICE IN SUI(0.5 and 1)
+export const PRICE_STACKED: number = process.env.NEXT_PUBLIC_PRICE_STAKE as unknown as number | 0.5;
+export const PRICE_UNSTACKED: number = process.env.NEXT_PUBLIC_PRICE_UNSTAKE as unknown as number | 1;; 
 
