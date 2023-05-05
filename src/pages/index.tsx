@@ -14,14 +14,7 @@ import bluemoveLogo from "/public/img/bluemove_logo.svg";
 import token from "/public/img/points.png";
 import Image from "next/image";
 import { Dialog, Transition } from "@headlessui/react";
-import {
-  classNames,
-  formatNumber,
-  PRICE_STACKED,
-  PRICE_UNSTACKED,
-  STAKING_POOL_FRENS_ID,
-  STAKING_TABLE_ID,
-} from "utils";
+import { classNames, PRICE_STACKED, PRICE_UNSTACKED, STAKING_POOL_FRENS_ID, STAKING_TABLE_ID } from "utils";
 import { AlertErrorMessage, AlertSucceed } from "components/Alert/CustomToast";
 import { getExecutionStatus, getExecutionStatusError, getObjectFields } from "@mysten/sui.js";
 import { Montserrat } from "next/font/google";
@@ -32,33 +25,32 @@ const Home = () => {
   const { wallet, status } = ethos.useWallet();
 
   // Data states
-  const [frens, setFrens] = useState<ICapy[] | null>();
-  const [stakedFrens, setStakedFrens] = useState<IStakingTicket[] | null>();
+  const [capyies, setCapyies] = useState<ICapy[] | null>();
+  const [stacked, setStaked] = useState<IStakingTicket[] | null>();
+  const [totalStaked, setTotalStaked] = useState(0);
+  const [totalMyPoints, setTotalMyPoints] = useState(0);
 
   // Dialog states
   const [selectedFrend, setSelectedFrend] = useState<ICapy>();
   const [selectedStaked, setSelectedStaked] = useState<IStakingTicket>();
   const [openedFrend, setOpenedFrend] = useState(false);
   const [openedUnstaked, setOpenedUnstaked] = useState(false);
+  const [openRules, setOpenRules] = useState(false);
   const [waitSui, setWaitSui] = useState(false);
-  const [totalStaked, setTotalStaked] = useState(0);
-  const [totalMyPoints, setTotalMyPoints] = useState(0);
 
   useEffect(() => {
     async function fetchWalletFrens() {
       if (!wallet?.address) {
-        setFrens(null);
-        setStakedFrens(null);
+        setCapyies(null);
+        setStaked(null);
         return;
       }
       try {
         const nfts = wallet?.contents?.nfts!;
         const suifrens = fetchSuifrens(nfts);
-        if (suifrens) setFrens(suifrens);
+        if (suifrens) setCapyies(suifrens);
         const staking = fetchStakingTickets(nfts);
-
         if (staking) {
-          //setStaked(staking);
           await Promise.all(
             staking.map(async (staked) => {
               const response = await suiProvider.getObject({ id: staked?.nft_id!, options: { showDisplay: true } });
@@ -67,7 +59,7 @@ const Home = () => {
               staked.url = image_url;
             })
           );
-          setStakedFrens(staking);
+          setStaked(staking);
         }
       } catch (e) {
         console.error(e);
@@ -104,25 +96,16 @@ const Home = () => {
           },
         });
         const fields = getObjectFields(response);
-
-        const now = Date.now();
-
-        const onchainPoints = fields?.value || 0;
-        const stakedPoints =
-          stakedFrens
-            ?.map((staked) => {
-              return Math.floor((now - staked.start_time) / 60_000);
-            })
-            .reduce((a, b) => a + b, 0) || 0;
-        setTotalMyPoints(onchainPoints + stakedPoints);
+        setTotalMyPoints(fields?.value || 0);
       } catch (e) {
         console.error(e);
+        setTotalMyPoints(0);
       }
     }
 
     fetchTotalStaked().then();
     fetchMyPoints().then();
-  }, [waitSui, wallet?.contents?.nfts, stakedFrens]);
+  }, [waitSui, wallet?.contents?.nfts]);
 
   async function stakeCapy(capy: ICapy) {
     if (!wallet || !capy) return;
@@ -197,7 +180,15 @@ const Home = () => {
                 Each staked frens will earn 1 point per minute
               </p>
             </div>
-            {/* <p>Staking Rules</p> */}
+            <button
+              onClick={() => setOpenRules(true)}
+              className={classNames(
+                "text-md font-light text-[#595959] hover:underline mr-2",
+                font_montserrat.className
+              )}
+            >
+              FAQs
+            </button>
           </div>
           <div className="flex h-24 mt-4 justify-between gap-4">
             <div className="bg-[#5A5A95] text-white w-1/5 text rounded-xl flex flex-col justify-center content-center text-start px-3">
@@ -212,12 +203,12 @@ const Home = () => {
             </div>
             <div className="bg-[#E15A8C] text-white w-1/5 text rounded-xl flex flex-col justify-center content-center text-start px-3">
               <p className={classNames(font_montserrat.className, "font-extrabold leading-5")}>
-                Your
+                You
                 <br />
                 Staked
               </p>
               <p className={classNames("text-2xl font-black", font_montserrat.className)}>
-                {stakedFrens?.length ? stakedFrens.length : 0}
+                {stacked?.length ? stacked.length : 0}
               </p>
             </div>
             <div className="bg-[#FEB958] 5A5A95 E15A8C text-white w-1/5 text rounded-xl flex flex-col justify-center content-center text-start px-3">
@@ -229,7 +220,7 @@ const Home = () => {
               <div className="flex gap-2 w-full">
                 <Image src={token} alt={"points"} height={15} width={35} unoptimized={true} />
                 <p className={classNames("text-2xl font-black", font_montserrat.className)}>
-                  {totalMyPoints ? formatNumber(totalMyPoints) : 0}
+                  {totalMyPoints ? totalMyPoints : 0}
                 </p>
               </div>
             </div>
@@ -463,6 +454,155 @@ const Home = () => {
     );
   };
 
+  const RulesScreen = () => {
+    return (
+      <Transition.Root show={openRules} as={Fragment}>
+        <Dialog
+          as="div"
+          className="relative z-10"
+          onClose={() => {
+            setOpenRules(false);
+          }}
+        >
+          <Transition.Child
+            as={Fragment}
+            enter="ease-out duration-300"
+            enterFrom="opacity-0"
+            enterTo="opacity-100"
+            leave="ease-in duration-200"
+            leaveFrom="opacity-100"
+            leaveTo="opacity-0"
+          >
+            <div className="fixed inset-0 bg-[#5e5e5e] bg-opacity-75 transition-opacity" />
+          </Transition.Child>
+
+          <div className="fixed inset-0 z-10 overflow-auto">
+            <div className="flex min-h-full items-center justify-center">
+              <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-[#FEF7EC] px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-sm sm:p-6">
+                <Dialog.Title
+                  as="h3"
+                  className={classNames(
+                    "text-base leading-6 text-[#595959] text-center mb-2 font-bold",
+                    font_montserrat.className
+                  )}
+                >
+                  FAQs
+                </Dialog.Title>
+                <div className="flex flex-col items-center justify-start">
+                  <div className={"mt-2 flex flex-col items-start gap-2"}>
+                    <p
+                      className={classNames(
+                        "text-left text-[#595959] flex flex-col font-medium items-center content-center",
+                        font_montserrat.className
+                      )}
+                    >
+                      What are Hola Points?
+                    </p>
+                    <p
+                      className={classNames(
+                        "font-normal text-left text-[#595959] text-sm flex flex-col -mt-2 items-center content-center",
+                        font_montserrat.className
+                      )}
+                    >
+                      Hola Points are not tokens, it's points. It's a reward system for Hola users. You can earn Hola
+                      Points by staking frens. The more frens you stake, the more points you earn.
+                    </p>
+
+                    <p
+                      className={classNames(
+                        "text-left text-[#595959] mt-3 flex flex-col font-medium items-center content-center",
+                        font_montserrat.className
+                      )}
+                    >
+                      How can I spend my points?
+                    </p>
+                    <p
+                      className={classNames(
+                        "font-normal text-left text-[#595959] text-sm flex flex-col -mt-2 items-center content-center",
+                        font_montserrat.className
+                      )}
+                    >
+                      TBA.
+                    </p>
+
+                    <p
+                      className={classNames(
+                        "text-left text-[#595959] flex flex-col mt-4 font-medium items-center content-center",
+                        font_montserrat.className
+                      )}
+                    >
+                      Why do you need fees?
+                    </p>
+                    <p
+                      className={classNames(
+                        "font-normal text-left text-[#595959] text-sm flex flex-col -mt-2 items-center content-center",
+                        font_montserrat.className
+                      )}
+                    >
+                      We need fees to continue developing this project, as they help cover costs for servers and other
+                      resources.
+                    </p>
+
+                    <p
+                      className={classNames(
+                        "text-left text-[#595959] flex flex-col mt-4 font-medium items-center content-center",
+                        font_montserrat.className
+                      )}
+                    >
+                      Who developed this project?
+                    </p>
+                    <p
+                      className={classNames(
+                        "font-normal text-left text-[#595959] text-sm flex flex-col -mt-2 items-center content-center",
+                        font_montserrat.className
+                      )}
+                    >
+                      The project was developed by the LoyaltyGM team.
+                    </p>
+
+                    <p
+                      className={classNames(
+                        "text-left text-[#595959] flex flex-col mt-4 font-medium items-center content-center",
+                        font_montserrat.className
+                      )}
+                    >
+                      If I have an NFT project, can I use the Hola Protocol?
+                    </p>
+                    <p
+                      className={classNames(
+                        "font-normal text-left text-[#595959] text-sm -mt-2 items-start content-center",
+                        font_montserrat.className
+                      )}
+                    >
+                      <p>
+                        Yes, if you have an NFT project and want to use the Hola Protocol, please contact us on Twitter
+                      </p>
+                      <a href="https://twitter.com/Loyalty_GM" target="_blank" className="underline">
+                        at @Loyalty_GM to discuss further
+                      </a>
+                    </p>
+
+                    <button
+                      className={classNames(
+                        "w-full block mx-auto mb-1 mt-2 px-3 text-sm py-2 bg-[#E15A8C] text-white font-black rounded-md hover:bg-[#c8517c] cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed",
+                        font_montserrat.className
+                      )}
+                      onClick={() => {
+                        setOpenRules(false);
+                      }}
+                    >
+                      Close
+                    </button>
+                  </div>
+                </div>
+              </Dialog.Panel>
+            </div>
+          </div>
+        </Dialog>
+      </Transition.Root>
+    );
+  };
+
   return status === EthosConnectStatus.NoConnection ? (
     <main className="flex min-h-[85vh] flex-col items-center justify-around mt-20 z-10 rounded-lg bg-[#FEF7EC]">
       <div className="w-full max-w-5xl items-center justify-between font-mono text-sm">
@@ -475,7 +615,7 @@ const Home = () => {
           <p>Connect</p>
           {/* <Image src={suietIcon} alt={"suiet"} height={600} width={120} className="h-28" /> */}
           <Image src={suietIcon} alt={"suiet"} height={350} width={50} className="h-28" priority />
-          <p>Wallet To Unlock Staking!</p>
+          <p>Suiet Wallet To Unlock Staking!</p>
         </div>
       </div>
     </main>
@@ -483,13 +623,13 @@ const Home = () => {
     <main className="flex min-h-[85vh] flex-col pl-16 py-6 mt-20 pr-10 z-10 rounded-lg bg-[#FEF7EC]">
       <ProjectDescriptionCard />
 
-      {stakedFrens?.length !== 0 && (
+      {stacked?.length !== 0 && (
         <>
           <h1 className={classNames("mt-8 text-4xl font-semibold text-[#595959] ", font_montserrat.className)}>
             My Staked Frens
           </h1>
           <div className={"grid grid-cols-4 gap-10 mt-8"}>
-            {stakedFrens?.map((stack) => (
+            {stacked?.map((stack) => (
               <StakedTicketCard staking={stack} key={stack.id} />
             ))}
           </div>
@@ -497,15 +637,15 @@ const Home = () => {
       )}
 
       <h1 className={classNames("mt-8 text-4xl font-semibold text-[#595959]", font_montserrat.className)}>My Frens</h1>
-      {frens?.length !== 0 ? (
+      {capyies?.length !== 0 ? (
         <div className={"grid grid-cols-4 gap-10 mt-8"}>
-          {frens?.map((capy) => (
+          {capyies?.map((capy) => (
             <SuifrensCard capy={capy} key={capy.id} />
           ))}
         </div>
       ) : (
         <>
-          {stakedFrens?.length !== 0 ? (
+          {stacked?.length !== 0 ? (
             <div className="mt-8 text-center">
               <div className={classNames(font_montserrat.className, "text-4xl font-semibold text-[#595959]")}>
                 All your capies are staked
@@ -545,6 +685,7 @@ const Home = () => {
 
       <StakeScreen />
       <UnstakeScreen />
+      <RulesScreen />
     </main>
   );
 };

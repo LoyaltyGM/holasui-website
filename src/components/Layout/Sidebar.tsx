@@ -29,7 +29,7 @@ export function Sidebar({ children }: ILayoutProps) {
                 font_montserrat.className
               )}
             >
-              <a href="https://twitter.com/Loyalty_GM" target="_black">
+              <a href="https://discord.gg/X8SXejkVHs" target="_black">
                 Discord
               </a>
             </div>
