@@ -203,7 +203,7 @@ const Home = () => {
             </div>
             <div className="bg-[#E15A8C] text-white w-1/5 text rounded-xl flex flex-col justify-center content-center text-start px-3">
               <p className={classNames(font_montserrat.className, "font-extrabold leading-5")}>
-                Your
+                You
                 <br />
                 Staked
               </p>
