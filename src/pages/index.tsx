@@ -108,7 +108,7 @@ const Home = () => {
 
         const now = Date.now();
 
-        const onchainPoints = fields?.value || 0;
+        const onchainPoints: number = +fields?.value || 0;
         const stakedPoints =
           stakedFrens
             ?.map((staked) => {
