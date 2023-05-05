@@ -25,8 +25,8 @@ const Home = () => {
   const { wallet, status } = ethos.useWallet();
 
   // Data states
-  const [capyies, setCapyies] = useState<ICapy[] | null>();
-  const [stacked, setStaked] = useState<IStakingTicket[] | null>();
+  const [frens, setFrens] = useState<ICapy[] | null>();
+  const [stakedFrens, setStakedFrens] = useState<IStakingTicket[] | null>();
 
   // Dialog states
   const [selectedFrend, setSelectedFrend] = useState<ICapy>();
@@ -40,15 +40,16 @@ const Home = () => {
   useEffect(() => {
     async function fetchWalletFrens() {
       if (!wallet?.address) {
-        setCapyies(null);
-        setStaked(null);
+        setFrens(null);
+        setStakedFrens(null);
         return;
       }
       try {
         const nfts = wallet?.contents?.nfts!;
         const suifrens = fetchSuifrens(nfts);
-        if (suifrens) setCapyies(suifrens);
+        if (suifrens) setFrens(suifrens);
         const staking = fetchStakingTickets(nfts);
+
         if (staking) {
           //setStaked(staking);
           await Promise.all(
@@ -59,7 +60,7 @@ const Home = () => {
               staked.url = image_url;
             })
           );
-          setStaked(staking);
+          setStakedFrens(staking);
         }
       } catch (e) {
         console.error(e);
@@ -96,16 +97,25 @@ const Home = () => {
           },
         });
         const fields = getObjectFields(response);
-        setTotalMyPoints(fields?.value || 0);
+
+        const now = Date.now();
+
+        const onchainPoints = fields?.value || 0;
+        const stakedPoints =
+          stakedFrens
+            ?.map((staked) => {
+              return Math.floor((now - staked.start_time) / 60_000);
+            })
+            .reduce((a, b) => a + b, 0) || 0;
+        setTotalMyPoints(onchainPoints + stakedPoints);
       } catch (e) {
         console.error(e);
-        setTotalMyPoints(0);
       }
     }
 
     fetchTotalStaked().then();
     fetchMyPoints().then();
-  }, [waitSui, wallet?.contents?.nfts]);
+  }, [waitSui, wallet?.contents?.nfts, stakedFrens]);
 
   async function stakeCapy(capy: ICapy) {
     if (!wallet || !capy) return;
@@ -200,7 +210,7 @@ const Home = () => {
                 Staked
               </p>
               <p className={classNames("text-2xl font-black", font_montserrat.className)}>
-                {stacked?.length ? stacked.length : 0}
+                {stakedFrens?.length ? stakedFrens.length : 0}
               </p>
             </div>
             <div className="bg-[#FEB958] 5A5A95 E15A8C text-white w-1/5 text rounded-xl flex flex-col justify-center content-center text-start px-3">
@@ -466,13 +476,13 @@ const Home = () => {
     <main className="flex min-h-[85vh] flex-col pl-16 py-6 mt-20 pr-10 z-10 rounded-lg bg-[#FEF7EC]">
       <ProjectDescriptionCard />
 
-      {stacked?.length !== 0 && (
+      {stakedFrens?.length !== 0 && (
         <>
           <h1 className={classNames("mt-8 text-4xl font-semibold text-[#595959] ", font_montserrat.className)}>
             My Staked Frens
           </h1>
           <div className={"grid grid-cols-4 gap-10 mt-8"}>
-            {stacked?.map((stack) => (
+            {stakedFrens?.map((stack) => (
               <StakedTicketCard staking={stack} key={stack.id} />
             ))}
           </div>
@@ -480,15 +490,15 @@ const Home = () => {
       )}
 
       <h1 className={classNames("mt-8 text-4xl font-semibold text-[#595959]", font_montserrat.className)}>My Frens</h1>
-      {capyies?.length !== 0 ? (
+      {frens?.length !== 0 ? (
         <div className={"grid grid-cols-4 gap-10 mt-8"}>
-          {capyies?.map((capy) => (
+          {frens?.map((capy) => (
             <SuifrensCard capy={capy} key={capy.id} />
           ))}
         </div>
       ) : (
         <>
-          {stacked?.length !== 0 ? (
+          {stakedFrens?.length !== 0 ? (
             <div className="mt-8 text-center">
               <div className={classNames(font_montserrat.className, "text-4xl font-semibold text-[#595959]")}>
                 All your capies are staked
