@@ -14,7 +14,14 @@ import bluemoveLogo from "/public/img/bluemove_logo.svg";
 import token from "/public/img/points.png";
 import Image from "next/image";
 import { Dialog, Transition } from "@headlessui/react";
-import { classNames, PRICE_STACKED, PRICE_UNSTACKED, STAKING_POOL_FRENS_ID, STAKING_TABLE_ID } from "utils";
+import {
+  classNames,
+  formatNumber,
+  PRICE_STACKED,
+  PRICE_UNSTACKED,
+  STAKING_POOL_FRENS_ID,
+  STAKING_TABLE_ID,
+} from "utils";
 import { AlertErrorMessage, AlertSucceed } from "components/Alert/CustomToast";
 import { getExecutionStatus, getExecutionStatusError, getObjectFields } from "@mysten/sui.js";
 import { Montserrat } from "next/font/google";
@@ -222,7 +229,7 @@ const Home = () => {
               <div className="flex gap-2 w-full">
                 <Image src={token} alt={"points"} height={15} width={35} unoptimized={true} />
                 <p className={classNames("text-2xl font-black", font_montserrat.className)}>
-                  {totalMyPoints ? totalMyPoints : 0}
+                  {totalMyPoints ? formatNumber(totalMyPoints) : 0}
                 </p>
               </div>
             </div>
