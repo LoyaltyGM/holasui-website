@@ -580,7 +580,6 @@ const Home = () => {
                       <a href="https://twitter.com/Loyalty_GM" target="_blank" className="underline">
                         at @Loyalty_GM to discuss further
                       </a>
-                      <p>.</p>
                     </p>
 
                     <button
