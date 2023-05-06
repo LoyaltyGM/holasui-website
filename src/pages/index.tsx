@@ -5,6 +5,8 @@ import {
   fetchSuifrens,
   signTransactionEndStaking,
   signTransactionStartStaking,
+  singTransactionsToBatchStartStaking,
+  singTransactionsToBatchUnstaking,
   suiProvider,
 } from "services/sui";
 import { ethos, EthosConnectStatus } from "ethos-connect";
@@ -45,6 +47,12 @@ const Home = () => {
   const [openedUnstaked, setOpenedUnstaked] = useState(false);
   const [openRules, setOpenRules] = useState(false);
   const [waitSui, setWaitSui] = useState(false);
+
+  // Batch Staking states
+  const [batchStakeMode, setBatchStakeMode] = useState(false);
+  const [batchIdStake, setBatchIdStake] = useState<string[]>([]);
+  const [batchUnstakeMode, setBatchUnstakeMode] = useState(false);
+  const [batchIdUnstake, setBatchIdUnstake] = useState<string[]>([]);
 
   useEffect(() => {
     async function fetchWalletFrens() {
@@ -154,6 +162,40 @@ const Home = () => {
     }
   }
 
+  async function stakeBatchCapy(capy_batch: string[]) {
+    if (!wallet || !capy_batch) return;
+
+    setWaitSui(true);
+    try {
+      const response = await wallet.signAndExecuteTransactionBlock({
+        transactionBlock: singTransactionsToBatchStartStaking(capy_batch),
+        options: {
+          showEffects: true,
+        },
+      });
+
+      const status = getExecutionStatus(response);
+
+      if (status?.status === "failure") {
+        console.log(status.error);
+        const error_status = getExecutionStatusError(response);
+        if (error_status) AlertErrorMessage(error_status);
+      } else {
+        AlertSucceed("Staking");
+        // remove batched capys from the list if success
+        setBatchIdStake([]);
+        setBatchStakeMode(false);
+      }
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setWaitSui(false);
+      setOpenedFrend(false);
+      //setBatchIdStake([]);
+    }
+  }
+
+  // console.log("Batch Id", batchIdStake);
   async function unstakeCapy(ticket: IStakingTicket) {
     if (!wallet || !ticket) return;
 
@@ -179,6 +221,41 @@ const Home = () => {
     } finally {
       setWaitSui(false);
       setOpenedUnstaked(false);
+    }
+  }
+
+  async function unstakeBatchCapy(capy_batch: string[]) {
+    if (!wallet || !capy_batch) return;
+
+    setWaitSui(true);
+    try {
+      const response = await wallet.signAndExecuteTransactionBlock({
+        transactionBlock: singTransactionsToBatchUnstaking(capy_batch),
+        options: {
+          showEffects: true,
+        },
+      });
+
+      const status = getExecutionStatus(response);
+
+      if (status?.status === "failure") {
+        console.log(status.error);
+        const error_status = getExecutionStatusError(response);
+        if (error_status) AlertErrorMessage(error_status);
+      } else {
+        AlertSucceed("Unstaking");
+        // remove batched capys from the list if success
+        setBatchIdUnstake([]);
+        setBatchUnstakeMode(false);
+        // setOpenedUnstaked
+      }
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setWaitSui(false);
+      setOpenedFrend(false);
+
+      //setBatchIdStake([]);
     }
   }
 
@@ -251,7 +328,7 @@ const Home = () => {
   const StakingRule = () => {
     return (
       <div className={classNames("gap-2 flex text-[#595959] items-top", font_montserrat.className)}>
-        <p className="text-xs px-2 py-1 font-medium">Fees:</p>
+        <p className="text-xs px-2 py-1 font-medium">Fees for each:</p>
         <span className="inline-flex items-center gap-x-1.5 rounded-full px-2 py-1 text-xs font-medium ring-gray-200">
           <svg className="h-1.5 w-1.5 fill-[#FEB958]" viewBox="0 0 6 6" aria-hidden="true">
             <circle cx={3} cy={3} r={3} />
@@ -268,15 +345,41 @@ const Home = () => {
     );
   };
 
-  const SuifrensCard = ({ capy }: { capy: ICapy }) => {
+  // handle function for batch mode selection
+  const handleSetBatchIdStake = (
+    id: string,
+    batchIdStake: string[],
+    setBatchIdStake: React.Dispatch<React.SetStateAction<string[]>>
+  ) => {
+    // Check if the id already exists in the array
+    if (!batchIdStake.includes(id)) {
+      // If it doesn't exist, add it to the array
+      setBatchIdStake((prevBatchIdStake) => [...prevBatchIdStake, id]);
+    } else {
+      // If it exists, remove it from the array
+      setBatchIdStake((prevBatchIdStake) => prevBatchIdStake.filter((item) => item !== id));
+    }
+  };
+
+  const SuifrensCard = ({ capy, batchMode }: { capy: ICapy; batchMode: boolean }) => {
     return (
       <button
         onClick={() => {
-          setOpenedFrend(true);
+          batchMode === true ? handleSetBatchIdStake(capy.id, batchIdStake, setBatchIdStake) : setOpenedFrend(true);
           setSelectedFrend(capy);
         }}
       >
-        <div className="flex flex-col items-center gap-2 bg-[#FFFFFF] rounded-xl py-8">
+        <div
+          className={classNames(
+            "flex flex-col items-center  gap-2 bg-[#FFFFFF] rounded-xl py-8 border-2",
+            //"border-green": batchIdStake.includes(capy.id),
+            batchMode === true
+              ? batchIdStake.includes(capy.id)
+                ? "border-[#FEB958]"
+                : "border-[#595959]"
+              : "border-[#FFFFFF]"
+          )}
+        >
           <div className="relative">
             <div className="w-40 h-40">
               <Image src={capy.url} alt={capy.description} fill={true} />
@@ -287,21 +390,31 @@ const Home = () => {
     );
   };
 
-  const StakedTicketCard = ({ staking }: { staking: IStakingTicket }) => {
+  const StakedTicketCard = ({ staking, batchMode }: { staking: IStakingTicket; batchMode: boolean }) => {
     return (
       <button
         onClick={() => {
-          setOpenedUnstaked(true);
+          batchMode === true
+            ? handleSetBatchIdStake(staking.id, batchIdUnstake, setBatchIdUnstake)
+            : setOpenedUnstaked(true);
           setSelectedStaked(staking);
         }}
       >
-        <div className="flex flex-col items-center gap-2 bg-[#FFFFFF] rounded-xl py-8">
+        <div
+          className={classNames(
+            "flex flex-col items-center gap-2 bg-[#FFFFFF] rounded-xl py-8 border-2",
+            batchMode === true
+              ? batchIdUnstake.includes(staking.id)
+                ? "border-[#E15A8C]"
+                : "border-[#595959]"
+              : "border-[#FFFFFF]"
+          )}
+        >
           <div className="relative">
             <div className={"w-40 h-40"}>
               <Image src={staking.url} alt={"staking"} fill={true} />
             </div>
           </div>
-          {/* <div className="text-center font-medium mt-2">Staking</div> */}
         </div>
       </button>
     );
@@ -643,22 +756,92 @@ const Home = () => {
 
       {stakedFrens?.length !== 0 && (
         <>
-          <h1 className={classNames("mt-8 text-4xl font-semibold text-[#595959] ", font_montserrat.className)}>
-            My Staked Frens
-          </h1>
+          <div className="flex justify-between">
+            <h1 className={classNames("mt-8 text-4xl font-semibold text-[#595959] ", font_montserrat.className)}>
+              My Staked Frens
+            </h1>
+            <div className="flex">
+              <p className={classNames("mt-12 px-4 text-sm font-normal", font_montserrat.className)}>
+                {batchUnstakeMode ? (
+                  batchIdUnstake.length === 0 ? (
+                    "Select capy for unstaking"
+                  ) : (
+                    <div className="-mt-1">
+                      <StakingRule />
+                    </div>
+                  )
+                ) : null}
+              </p>
+              <button
+                className={classNames(
+                  "mt-8 text-lg border-[#E15A8C] border-2 px-4 rounded-xl bg-white text-[#E15A8C] hover:bg-[#E15A8C] hover:text-gray-50 hover:border-transparent",
+                  font_montserrat.className
+                )}
+                onClick={() => {
+                  batchUnstakeMode
+                    ? batchIdUnstake.length === 0
+                      ? setBatchUnstakeMode(false)
+                      : unstakeBatchCapy(batchIdUnstake)
+                    : setBatchUnstakeMode(true);
+                }}
+              >
+                {batchUnstakeMode ? (batchIdUnstake.length === 0 ? "Cancel" : "Confirm") : "Batch Unstaking"}
+              </button>
+            </div>
+          </div>
+
           <div className={"grid grid-cols-4 gap-10 mt-8"}>
             {stakedFrens?.map((stack) => (
-              <StakedTicketCard staking={stack} key={stack.id} />
+              <StakedTicketCard staking={stack} key={stack.id} batchMode={batchUnstakeMode} />
             ))}
           </div>
         </>
       )}
 
-      <h1 className={classNames("mt-8 text-4xl font-semibold text-[#595959]", font_montserrat.className)}>My Frens</h1>
+      <div className="flex justify-between">
+        <h1 className={classNames("mt-8 text-4xl font-semibold text-[#595959]", font_montserrat.className)}>
+          My Frens
+        </h1>
+        {frens?.length !== 0 ? (
+          <>
+            <div className="flex">
+              <p className={classNames("mt-12 px-4 text-sm font-normal", font_montserrat.className)}>
+                {batchStakeMode ? (
+                  batchIdStake.length === 0 ? (
+                    "Select capy for staking"
+                  ) : (
+                    <div className="-mt-1">
+                      <StakingRule />
+                    </div>
+                  )
+                ) : null}
+              </p>
+              <button
+                className={classNames(
+                  "mt-8 text-lg bg-white border-[#FEB958] border-2 px-4 rounded-xl text-[#FEB958] hover:bg-[#FEB958] hover:text-gray-50 hover:border-transparent",
+                  font_montserrat.className
+                )}
+                onClick={() => {
+                  batchStakeMode
+                    ? batchIdStake.length === 0
+                      ? setBatchStakeMode(false)
+                      : stakeBatchCapy(batchIdStake)
+                    : setBatchStakeMode(true);
+                }}
+                //
+              >
+                {batchStakeMode ? (batchIdStake.length === 0 ? "Cancel" : "Confirm") : "Batch Staking"}
+              </button>
+            </div>
+          </>
+        ) : (
+          <></>
+        )}
+      </div>
       {frens?.length !== 0 ? (
         <div className={"grid grid-cols-4 gap-10 mt-8"}>
           {frens?.map((capy) => (
-            <SuifrensCard capy={capy} key={capy.id} />
+            <SuifrensCard capy={capy} key={capy.id} batchMode={batchStakeMode} />
           ))}
         </div>
       ) : (
@@ -700,7 +883,9 @@ const Home = () => {
           )}
         </>
       )}
-
+      <p className={classNames("mt-12 text-sm font-light", font_montserrat.className)}>
+        SuiFrens by Mysten Labs CC BY 4.0 license
+      </p>
       <StakeScreen />
       <UnstakeScreen />
       <RulesScreen />
