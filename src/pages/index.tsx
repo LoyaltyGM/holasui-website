@@ -34,7 +34,6 @@ const Home = () => {
   const { wallet, status } = ethos.useWallet();
 
   // Data states
-
   const [frens, setFrens] = useState<ICapy[] | null>();
   const [stakedFrens, setStakedFrens] = useState<IStakingTicket[] | null>();
   const [totalStaked, setTotalStaked] = useState(0);
