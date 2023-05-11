@@ -843,7 +843,7 @@ const Home = () => {
               <div className={classNames(font_montserrat.className, "text-4xl font-semibold text-[#595959]")}>
                 All your capies are staked
               </div>
-              <a href="https://sui.bluemove.net/collection/suifren-1be3ce8d" target="_blank">
+              <a href="https://sui.bluemove.net/collection/suifrens" target="_blank">
                 <div
                   className={classNames(
                     "bg-neutral-900 py-4 mt-4 text-white items-center flex content-center justify-center cursor-pointer rounded-xl hover:bg-neutral-800",
@@ -860,7 +860,7 @@ const Home = () => {
               <div className={classNames(font_montserrat.className, "text-4xl font-semibold text-[#595959]")}>
                 You don't have capy :(
               </div>
-              <a href="https://sui.bluemove.net/collection/suifren-1be3ce8d" target="_blank">
+              <a href="https://sui.bluemove.net/collection/suifrens" target="_blank">
                 <div
                   className={classNames(
                     "bg-neutral-900 py-4 mt-4 text-white items-center flex content-center justify-center cursor-pointer rounded-xl hover:bg-neutral-800",
