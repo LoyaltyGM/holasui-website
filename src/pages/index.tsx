@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useState } from "react";
+import { Dispatch, Fragment, SetStateAction, useEffect, useState } from "react";
 import { ICapy, IStakingTicket } from "types";
 import {
   fetchStakingTickets,
@@ -65,18 +65,16 @@ const Home = () => {
         const nfts = wallet?.contents?.nfts!;
         const suifrens = fetchSuifrens(nfts);
         if (suifrens) setFrens(suifrens);
-        const staking = fetchStakingTickets(nfts);
+        const stakingTickets = fetchStakingTickets(nfts);
+        setStakedFrens(stakingTickets);
 
-        if (staking) {
-          await Promise.all(
-            staking.map(async (staked) => {
+        if (stakingTickets) {
+          Promise.all(
+            stakingTickets.map(async (staked) => {
               const response = await suiProvider.getObject({ id: staked?.nft_id!, options: { showDisplay: true } });
-              const image_url = (response.data?.display?.data as Record<string, string>)?.image_url;
-              console.log(image_url);
-              staked.url = image_url;
+              staked.url = (response.data?.display?.data as Record<string, string>)?.image_url;
             })
-          );
-          setStakedFrens(staking);
+          ).then(() => setStakedFrens(stakingTickets));
         }
       } catch (e) {
         console.error(e);
@@ -349,7 +347,7 @@ const Home = () => {
   const handleSetBatchIdStake = (
     id: string,
     batchIdStake: string[],
-    setBatchIdStake: React.Dispatch<React.SetStateAction<string[]>>
+    setBatchIdStake: Dispatch<SetStateAction<string[]>>
   ) => {
     // Check if the id already exists in the array
     if (!batchIdStake.includes(id)) {
@@ -365,7 +363,7 @@ const Home = () => {
     return (
       <button
         onClick={() => {
-          batchMode === true ? handleSetBatchIdStake(capy.id, batchIdStake, setBatchIdStake) : setOpenedFrend(true);
+          batchMode ? handleSetBatchIdStake(capy.id, batchIdStake, setBatchIdStake) : setOpenedFrend(true);
           setSelectedFrend(capy);
         }}
       >
@@ -373,11 +371,7 @@ const Home = () => {
           className={classNames(
             "flex flex-col items-center  gap-2 bg-[#FFFFFF] rounded-xl py-8 border-2",
             //"border-green": batchIdStake.includes(capy.id),
-            batchMode === true
-              ? batchIdStake.includes(capy.id)
-                ? "border-[#FEB958]"
-                : "border-[#595959]"
-              : "border-[#FFFFFF]"
+            batchMode ? (batchIdStake.includes(capy.id) ? "border-[#FEB958]" : "border-[#595959]") : "border-[#FFFFFF]"
           )}
         >
           <div className="relative">
@@ -394,16 +388,14 @@ const Home = () => {
     return (
       <button
         onClick={() => {
-          batchMode === true
-            ? handleSetBatchIdStake(staking.id, batchIdUnstake, setBatchIdUnstake)
-            : setOpenedUnstaked(true);
+          batchMode ? handleSetBatchIdStake(staking.id, batchIdUnstake, setBatchIdUnstake) : setOpenedUnstaked(true);
           setSelectedStaked(staking);
         }}
       >
         <div
           className={classNames(
             "flex flex-col items-center gap-2 bg-[#FFFFFF] rounded-xl py-8 border-2",
-            batchMode === true
+            batchMode
               ? batchIdUnstake.includes(staking.id)
                 ? "border-[#E15A8C]"
                 : "border-[#595959]"

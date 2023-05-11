@@ -1,8 +1,6 @@
-import { replaceTripleSlash, FRENS_TYPE, STAKING_TICKET_TYPE, convertIPFSUrl } from "utils";
+import { FRENS_TYPE, replaceTripleSlash, STAKING_TICKET_TYPE } from "utils";
 import { SuiNFT } from "ethos-connect";
-import { IStakingTicket, ICapy } from "types";
-import { ConvenenienceSuiObject } from "ethos-connect/dist/types/ConvenienceSuiObject";
-import { suiProvider } from "../suiProvider";
+import { ICapy, IStakingTicket } from "types";
 
 export function fetchSuifrens(nftObjects: SuiNFT[]): ICapy[] | null {
   if (!nftObjects) return null;
@@ -44,7 +42,7 @@ function initializeSuifren(nftObject: SuiNFT): ICapy {
 }
 
 function initializeStakingTicket(object: SuiNFT): IStakingTicket {
-  
+  console.log(object.imageUrl);
   return {
     id: object?.objectId,
     name: object?.name!,
@@ -53,4 +51,3 @@ function initializeStakingTicket(object: SuiNFT): IStakingTicket {
     start_time: +object?.fields?.start_time!,
   };
 }
-
