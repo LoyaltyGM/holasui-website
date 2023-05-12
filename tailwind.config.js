@@ -16,7 +16,12 @@ module.exports = {
         xl: "1440px",
       },
       colors: {
-        main: "#5767EF"
+        bgMain: "#FEF7EC",
+        darkColor: "#171717",
+        redColor: "#E15A8C",
+        yellowColor: "#FEB958",
+        yellowColorHover: "",
+        purpleColor: "#5A5A95",
       },
     },
   },

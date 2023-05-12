@@ -292,7 +292,7 @@ const Home = () => {
                 {totalStaked ? totalStaked : 0}
               </p>
             </div>
-            <div className="bg-[#E15A8C] text-white py-4 mt-2 w-full md:mt-0 md:w-1/4 text rounded-xl flex md:flex-col md:justify-center justify-between content-center text-start px-3">
+            <div className="bg-redColor text-white py-4 mt-2 w-full md:mt-0 md:w-1/4 text rounded-xl flex md:flex-col md:justify-center justify-between content-center text-start px-3">
               <p className={classNames(font_montserrat.className, "font-extrabold md:text-sm md:leading-4")}>
                 You <br className="hidden md:flex" />
                 Staked
@@ -301,7 +301,7 @@ const Home = () => {
                 {stakedFrens?.length ? stakedFrens.length : 0}
               </p>
             </div>
-            <div className="bg-[#FEB958] text-white py-4 mt-2 w-full md:mt-0 md:w-1/4 rounded-xl flex md:flex-col md:justify-center justify-between content-center text-start px-3">
+            <div className="bg-yellowColor text-white py-4 mt-2 w-full md:mt-0 md:w-1/4 rounded-xl flex md:flex-col md:justify-center justify-between content-center text-start px-3">
               <p className={classNames(font_montserrat.className, "font-extrabold md:text-sm md:leading-4 ")}>
                 Your Hola <br className="hidden md:flex" />
                 Points
@@ -324,7 +324,7 @@ const Home = () => {
       <div className={classNames("gap-2 flex text-[#595959] items-top", font_montserrat.className)}>
         <div className="text-xs px-2 py-1 font-medium">Fees for each:</div>
         <span className="inline-flex items-center gap-x-1.5 rounded-full px-2 py-1 text-xs font-medium ring-gray-200">
-          <svg className="h-1.5 w-1.5 fill-[#FEB958]" viewBox="0 0 6 6" aria-hidden="true">
+          <svg className="h-1.5 w-1.5 fill-yellowColor" viewBox="0 0 6 6" aria-hidden="true">
             <circle cx={3} cy={3} r={3} />
           </svg>
           {PRICE_STACKED} SUI STAKE
@@ -366,7 +366,11 @@ const Home = () => {
         <div
           className={classNames(
             "flex flex-col items-center gap-2 bg-[#FFFFFF] rounded-xl py-8 border-2",
-            batchMode ? (batchIdStake.includes(capy.id) ? "border-[#FEB958]" : "border-[#595959]") : "border-[#FFFFFF]"
+            batchMode
+              ? batchIdStake.includes(capy.id)
+                ? "border-yellowColor"
+                : "border-[#595959]"
+              : "border-[#FFFFFF]"
           )}
         >
           <div className="relative">
@@ -389,12 +393,8 @@ const Home = () => {
       >
         <div
           className={classNames(
-            "flex flex-col items-center gap-2 bg-[#FFFFFF] rounded-xl py-8 border-2",
-            batchMode
-              ? batchIdUnstake.includes(staking.id)
-                ? "border-[#E15A8C]"
-                : "border-[#595959]"
-              : "border-[#FFFFFF]"
+            "flex flex-col items-center gap-2 bg-white rounded-xl py-8 border-2",
+            batchMode ? (batchIdUnstake.includes(staking.id) ? "border-redColor" : "border-[#595959]") : "border-white"
           )}
         >
           <div className="relative">
@@ -433,7 +433,7 @@ const Home = () => {
 
           <div className="fixed inset-0 z-10 overflow-auto">
             <div className="flex min-h-full items-center justify-center">
-              <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-[#FEF7EC] px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-sm sm:p-6">
+              <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-bgMain px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-sm sm:p-6">
                 <Dialog.Title
                   as="h3"
                   className={classNames(
@@ -463,7 +463,7 @@ const Home = () => {
 
                     <button
                       className={classNames(
-                        "w-full block mx-auto my-4 px-3 text-sm py-2 bg-[#FEB958] text-white font-black rounded-md hover:bg-[#e5a44a] cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed",
+                        "w-full block mx-auto my-4 px-3 text-sm py-2 bg-yellowColor text-white font-black rounded-md hover:bg-[#e5a44a] cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed",
                         font_montserrat.className
                       )}
                       onClick={() => {
@@ -510,7 +510,7 @@ const Home = () => {
 
           <div className="fixed inset-0 z-10 overflow-auto">
             <div className="flex min-h-full items-center justify-center">
-              <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-[#FEF7EC] px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-sm sm:p-6">
+              <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-bgMain px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-sm sm:p-6">
                 <Dialog.Title
                   className={classNames(
                     "flex justify-between text-base  leading-6 text-[#595959] text-center mb-2 font-bold",
@@ -555,7 +555,7 @@ const Home = () => {
 
                     <button
                       className={classNames(
-                        "w-full block mx-auto mb-1 mt-2 md:px-3 px-2 text-sm py-2 bg-[#E15A8C] text-white font-black rounded-md hover:bg-[#c8517c] cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed",
+                        "w-full block mx-auto mb-1 mt-2 md:px-3 px-2 text-sm py-2 bg-redColor text-white font-black rounded-md hover:bg-[#c8517c] cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed",
                         font_montserrat.className
                       )}
                       onClick={() => {
@@ -603,7 +603,7 @@ const Home = () => {
 
           <div className="fixed inset-0 z-10 overflow-auto">
             <div className="flex min-h-full items-center justify-center">
-              <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-[#FEF7EC] px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-sm sm:p-6">
+              <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-bgMain px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-sm sm:p-6">
                 <Dialog.Title
                   as="h3"
                   className={classNames(
@@ -709,7 +709,7 @@ const Home = () => {
 
                     <button
                       className={classNames(
-                        "w-full block mx-auto mb-1 mt-2 px-3 text-sm py-2 bg-[#E15A8C] text-white font-black rounded-md hover:bg-[#c8517c] cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed",
+                        "w-full block mx-auto mb-1 mt-2 px-3 text-sm py-2 bg-redColor text-white font-black rounded-md hover:bg-[#c8517c] cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed",
                         font_montserrat.className
                       )}
                       onClick={() => {
@@ -729,7 +729,7 @@ const Home = () => {
   };
 
   return status === EthosConnectStatus.NoConnection ? (
-    <main className="flex min-h-[85vh] flex-col items-center justify-around md:mt-20 z-10 rounded-lg bg-[#FEF7EC]">
+    <main className="flex min-h-[85vh] flex-col items-center justify-around md:mt-20 z-10 rounded-lg bg-bgMain">
       <div className="w-full max-w-5xl items-center justify-between font-mono text-sm">
         <div
           className={classNames(
@@ -747,7 +747,7 @@ const Home = () => {
       </div>
     </main>
   ) : (
-    <main className="flex min-h-[85vh] flex-col pl-2 pr-2 md:pl-16 py-6 mt-20 md:pr-10 z-10 rounded-lg bg-[#FEF7EC]">
+    <main className="flex min-h-[85vh] flex-col pl-2 pr-2 md:pl-16 py-6 mt-20 md:pr-10 z-10 rounded-lg bg-bgMain">
       <ProjectDescriptionCard />
 
       {stakedFrens?.length !== 0 && (
@@ -777,7 +777,7 @@ const Home = () => {
               </p>
               <button
                 className={classNames(
-                  "md:mt-8 text-sm md:text-lg border-[#E15A8C] border-2 px-3 py-4 md:py-2 md:px-8 w-full rounded-xl bg-white text-[#E15A8C] hover:bg-[#E15A8C] hover:text-gray-50 hover:border-transparent",
+                  "md:mt-8 text-sm md:text-lg border- border-2 px-3 py-4 md:py-2 md:px-8 w-full rounded-xl bg-white border-redColor text-redColor hover:bg-[#cc5480] hover:text-gray-50 hover:border-transparent",
                   font_montserrat.className
                 )}
                 onClick={() => {
@@ -834,7 +834,7 @@ const Home = () => {
               </p>
               <button
                 className={classNames(
-                  "md:mt-8 text-sm md:text-lg bg-white border-[#FEB958] border-2 px-3 py-4 md:py-2 md:px-8 w-full rounded-xl text-[#FEB958] hover:bg-[#FEB958] hover:text-gray-50 hover:border-transparent",
+                  "md:mt-8 text-sm md:text-lg bg-white border-yellowColor border-2 px-3 py-4 md:py-2 md:px-8 w-full rounded-xl text-yellowColor hover:bg-yellowColor hover:text-gray-50 hover:border-transparent",
                   font_montserrat.className
                 )}
                 onClick={() => {

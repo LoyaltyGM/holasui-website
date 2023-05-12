@@ -12,7 +12,7 @@ const font_montserrat = Montserrat({ subsets: ["latin"] });
 export function Sidebar({ children }: ILayoutProps) {
   const Header = () => {
     return (
-      <div className="fixed-header bg-[#FEF7EC] w-full h-20 text-white pl-6 pr-4 py-2 mr-6 rounded-lg">
+      <div className="fixed-header bg-bgMain w-full h-20 text-white pl-6 pr-4 py-2 mr-6 rounded-lg">
         <div
           className="flex 
          justify-between"
@@ -60,7 +60,7 @@ export function Sidebar({ children }: ILayoutProps) {
     <div className="md:mx-4 mt-4">
       <Header />
       <div className="flex flex-1 flex-col">
-        <main className="flex-1 h-full bg-[#FEF7EC]">
+        <main className="flex-1 h-full bg-bgMain">
           <div className="mx-auto max-w-7xl w-full px-0 sm:pl-[5rem] sm:pr-[1.5rem] md:px-8">{children}</div>
         </main>
       </div>
