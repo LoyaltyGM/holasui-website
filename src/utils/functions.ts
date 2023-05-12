@@ -26,7 +26,7 @@ export function formatNumber(num: number) {
 
   if (shortenedNum.toString().length > 3) {
     // check if it has more than 3 digits
-    shortenedNum = shortenedNum.toFixed(3); // round to 1 decimal place if so
+    shortenedNum = shortenedNum.toFixed(2); // round to 1 decimal place if so
   }
   return shortenedNum + suffixes[suffixNum]; // append the suffix
 }

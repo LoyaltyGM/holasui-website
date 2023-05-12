@@ -27,6 +27,7 @@ import {
 import { AlertErrorMessage, AlertSucceed } from "components/Alert/CustomToast";
 import { getExecutionStatus, getExecutionStatusError, getObjectFields } from "@mysten/sui.js";
 import { Montserrat } from "next/font/google";
+import { XMarkIcon } from "@heroicons/react/24/solid";
 
 const font_montserrat = Montserrat({ subsets: ["latin"] });
 
@@ -192,7 +193,6 @@ const Home = () => {
     }
   }
 
-  // console.log("Batch Id", batchIdStake);
   async function unstakeCapy(ticket: IStakingTicket) {
     if (!wallet || !ticket) return;
 
@@ -258,11 +258,11 @@ const Home = () => {
 
   const ProjectDescriptionCard = () => {
     return (
-      <div className="flex p-4 py-8 gap-2 h-60 border-2 bg-[#FFFFFF] border-[#F6F6F6] rounded-xl">
-        <div className="ml-12 flex flex-col content-center justify-center rounded-2xl">
+      <div className="md:flex md:p-4 md:py-8 py-4 px-2 gap-2 md:h-60 h-[30rem] border-2 bg-[#FFFFFF] border-[#F6F6F6] rounded-xl">
+        <div className="md:ml-12 flex flex-col content-center items-center justify-center rounded-2xl">
           <Image src={frensLogo} alt={"logo"} height={185} width={185} />
         </div>
-        <div className="w-full ml-4">
+        <div className="w-full md:ml-4 py-2">
           <div className="flex justify-between">
             <div>
               <p className={classNames("text-3xl font-extrabold text-[#595959]", font_montserrat.className)}>
@@ -282,36 +282,33 @@ const Home = () => {
               FAQs
             </button>
           </div>
-          <div className="flex h-24 mt-4 justify-between gap-4">
-            <div className="bg-[#5A5A95] text-white w-1/5 text rounded-xl flex flex-col justify-center content-center text-start px-3">
-              <p className={classNames(font_montserrat.className, "font-extrabold leading-5")}>
-                Total
-                <br />
+          <div className="md:flex h-24 mt-4 justify-between gap-4">
+            <div className="bg-[#5A5A95] text-white py-4 w-full md:w-1/4 text rounded-xl flex md:flex-col md:justify-center justify-between content-center text-start px-3">
+              <p className={classNames(font_montserrat.className, "font-extrabold md:text-sm md:leading-4")}>
+                Total <br className="hidden md:flex" />
                 Staked
               </p>
               <p className={classNames("text-2xl font-black", font_montserrat.className)}>
                 {totalStaked ? totalStaked : 0}
               </p>
             </div>
-            <div className="bg-[#E15A8C] text-white w-1/5 text rounded-xl flex flex-col justify-center content-center text-start px-3">
-              <p className={classNames(font_montserrat.className, "font-extrabold leading-5")}>
-                You
-                <br />
+            <div className="bg-[#E15A8C] text-white py-4 mt-2 w-full md:mt-0 md:w-1/4 text rounded-xl flex md:flex-col md:justify-center justify-between content-center text-start px-3">
+              <p className={classNames(font_montserrat.className, "font-extrabold md:text-sm md:leading-4")}>
+                You <br className="hidden md:flex" />
                 Staked
               </p>
               <p className={classNames("text-2xl font-black", font_montserrat.className)}>
                 {stakedFrens?.length ? stakedFrens.length : 0}
               </p>
             </div>
-            <div className="bg-[#FEB958] 5A5A95 E15A8C text-white w-1/5 text rounded-xl flex flex-col justify-center content-center text-start px-3">
-              <p className={classNames(font_montserrat.className, "font-extrabold leading-5")}>
-                Your Hola
-                <br />
+            <div className="bg-[#FEB958] text-white py-4 mt-2 w-full md:mt-0 md:w-1/4 rounded-xl flex md:flex-col md:justify-center justify-between content-center text-start px-3">
+              <p className={classNames(font_montserrat.className, "font-extrabold md:text-sm md:leading-4 ")}>
+                Your Hola <br className="hidden md:flex" />
                 Points
               </p>
-              <div className="flex gap-2 w-full">
-                <Image src={token} alt={"points"} height={15} width={35} unoptimized={true} />
-                <p className={classNames("text-2xl font-black", font_montserrat.className)}>
+              <div className="flex gap-2 md:w-full">
+                <Image src={token} alt={"points"} height={15} width={35} unoptimized={true} className="md:hidden" />
+                <p className={classNames("text-xl md:text-2xl md:pt-0 pt-1 font-black", font_montserrat.className)}>
                   {totalMyPoints ? formatNumber(totalMyPoints) : 0}
                 </p>
               </div>
@@ -325,7 +322,7 @@ const Home = () => {
   const StakingRule = () => {
     return (
       <div className={classNames("gap-2 flex text-[#595959] items-top", font_montserrat.className)}>
-        <p className="text-xs px-2 py-1 font-medium">Fees for each:</p>
+        <div className="text-xs px-2 py-1 font-medium">Fees for each:</div>
         <span className="inline-flex items-center gap-x-1.5 rounded-full px-2 py-1 text-xs font-medium ring-gray-200">
           <svg className="h-1.5 w-1.5 fill-[#FEB958]" viewBox="0 0 6 6" aria-hidden="true">
             <circle cx={3} cy={3} r={3} />
@@ -368,8 +365,7 @@ const Home = () => {
       >
         <div
           className={classNames(
-            "flex flex-col items-center  gap-2 bg-[#FFFFFF] rounded-xl py-8 border-2",
-            //"border-green": batchIdStake.includes(capy.id),
+            "flex flex-col items-center gap-2 bg-[#FFFFFF] rounded-xl py-8 border-2",
             batchMode ? (batchIdStake.includes(capy.id) ? "border-[#FEB958]" : "border-[#595959]") : "border-[#FFFFFF]"
           )}
         >
@@ -403,7 +399,7 @@ const Home = () => {
         >
           <div className="relative">
             <div className={"w-40 h-40"}>
-              <Image src={staking.url} alt={"staking"} fill={true} />
+              <Image src={staking.url} alt={"staking"} fill={true} className="rounded-md" />
             </div>
           </div>
         </div>
@@ -441,11 +437,15 @@ const Home = () => {
                 <Dialog.Title
                   as="h3"
                   className={classNames(
-                    "text-base leading-6 text-[#595959] text-center mb-2 font-bold",
+                    "flex justify-between text-base  leading-6 text-[#595959] text-center mb-2 font-bold",
                     font_montserrat.className
                   )}
                 >
-                  {"Start staking"}
+                  <p className="mt-1"></p>
+                  <p className="mt-1">Start staking</p>
+                  <button onClick={() => setOpenedFrend(false)}>
+                    <XMarkIcon className="flex md:hidden h-7 w-7" />
+                  </button>
                 </Dialog.Title>
                 <div className="flex flex-col items-center justify-center">
                   <div className={"mt-2 flex flex-col items-center gap-2"}>
@@ -512,13 +512,16 @@ const Home = () => {
             <div className="flex min-h-full items-center justify-center">
               <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-[#FEF7EC] px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-sm sm:p-6">
                 <Dialog.Title
-                  as="h3"
                   className={classNames(
-                    "text-base leading-6 text-[#595959] text-center mb-2 font-bold",
+                    "flex justify-between text-base  leading-6 text-[#595959] text-center mb-2 font-bold",
                     font_montserrat.className
                   )}
                 >
-                  {"Staking"}
+                  <p className="mt-1"></p>
+                  <p className={classNames("mt-1")}>Staking</p>
+                  <button onClick={() => setOpenedUnstaked(false)}>
+                    <XMarkIcon className="flex md:hidden h-7 w-7" />
+                  </button>
                 </Dialog.Title>
                 <div className="flex flex-col items-center justify-center">
                   <div className={"mt-2 flex flex-col items-center gap-2"}>
@@ -552,7 +555,7 @@ const Home = () => {
 
                     <button
                       className={classNames(
-                        "w-full block mx-auto mb-1 mt-2 px-3 text-sm py-2 bg-[#E15A8C] text-white font-black rounded-md hover:bg-[#c8517c] cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed",
+                        "w-full block mx-auto mb-1 mt-2 md:px-3 px-2 text-sm py-2 bg-[#E15A8C] text-white font-black rounded-md hover:bg-[#c8517c] cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed",
                         font_montserrat.className
                       )}
                       onClick={() => {
@@ -726,33 +729,42 @@ const Home = () => {
   };
 
   return status === EthosConnectStatus.NoConnection ? (
-    <main className="flex min-h-[85vh] flex-col items-center justify-around mt-20 z-10 rounded-lg bg-[#FEF7EC]">
+    <main className="flex min-h-[85vh] flex-col items-center justify-around md:mt-20 z-10 rounded-lg bg-[#FEF7EC]">
       <div className="w-full max-w-5xl items-center justify-between font-mono text-sm">
         <div
           className={classNames(
-            "flex gap-2 text-4xl text-center w-full pt-12 font-bold text-[#5A5A95] items-center content-center justify-center",
+            "flex flex-col md:flex-row md:gap-2 gap-1 justify-center items-center content-center text-4xl text-center w-full pt-12 font-bold text-[#5A5A95] ",
             font_montserrat.className
           )}
         >
           <p>Connect</p>
-          {/* <Image src={suietIcon} alt={"suiet"} height={600} width={120} className="h-28" /> */}
           <Image src={suietIcon} alt={"suiet"} height={350} width={50} className="h-28" priority />
           <p>Suiet Wallet To Unlock Staking!</p>
+        </div>
+        <div className="mt-4">
+          <ethos.components.AddressWidget />
         </div>
       </div>
     </main>
   ) : (
-    <main className="flex min-h-[85vh] flex-col pl-16 py-6 mt-20 pr-10 z-10 rounded-lg bg-[#FEF7EC]">
+    <main className="flex min-h-[85vh] flex-col pl-2 pr-2 md:pl-16 py-6 mt-20 md:pr-10 z-10 rounded-lg bg-[#FEF7EC]">
       <ProjectDescriptionCard />
 
       {stakedFrens?.length !== 0 && (
         <>
           <div className="flex justify-between">
-            <h1 className={classNames("mt-8 text-4xl font-semibold text-[#595959] ", font_montserrat.className)}>
+            <h1
+              className={classNames("mt-8 md:text-4xl text-xl font-semibold text-[#595959]", font_montserrat.className)}
+            >
               My Staked Frens
             </h1>
-            <div className="flex">
-              <p className={classNames("mt-12 px-4 text-sm font-normal", font_montserrat.className)}>
+            <div className="md:flex">
+              <p
+                className={classNames(
+                  "md:mt-10 mt-9 w-full text-xs md:px-4 md:text-sm font-normal",
+                  font_montserrat.className
+                )}
+              >
                 {batchUnstakeMode ? (
                   batchIdUnstake.length === 0 ? (
                     "Select capy for unstaking"
@@ -765,7 +777,7 @@ const Home = () => {
               </p>
               <button
                 className={classNames(
-                  "mt-8 text-lg border-[#E15A8C] border-2 px-4 rounded-xl bg-white text-[#E15A8C] hover:bg-[#E15A8C] hover:text-gray-50 hover:border-transparent",
+                  "md:mt-8 text-sm md:text-lg border-[#E15A8C] border-2 px-3 py-4 md:py-2 md:px-8 w-full rounded-xl bg-white text-[#E15A8C] hover:bg-[#E15A8C] hover:text-gray-50 hover:border-transparent",
                   font_montserrat.className
                 )}
                 onClick={() => {
@@ -776,12 +788,20 @@ const Home = () => {
                     : setBatchUnstakeMode(true);
                 }}
               >
-                {batchUnstakeMode ? (batchIdUnstake.length === 0 ? "Cancel" : "Confirm") : "Batch Unstaking"}
+                {batchUnstakeMode ? (
+                  batchIdUnstake.length === 0 ? (
+                    "Cancel"
+                  ) : (
+                    "Confirm"
+                  )
+                ) : (
+                  <p className="">Batch Unstaking</p>
+                )}
               </button>
             </div>
           </div>
 
-          <div className={"grid grid-cols-4 gap-10 mt-8"}>
+          <div className={"grid md:grid-cols-4 grid-cols-2 gap-2 md:gap-10 mt-8"}>
             {stakedFrens?.map((stack) => (
               <StakedTicketCard staking={stack} key={stack.id} batchMode={batchUnstakeMode} />
             ))}
@@ -790,13 +810,18 @@ const Home = () => {
       )}
 
       <div className="flex justify-between">
-        <h1 className={classNames("mt-8 text-4xl font-semibold text-[#595959]", font_montserrat.className)}>
+        <h1 className={classNames("mt-8 md:text-4xl text-xl font-semibold text-[#595959]", font_montserrat.className)}>
           My Frens
         </h1>
         {frens?.length !== 0 ? (
           <>
-            <div className="flex">
-              <p className={classNames("mt-12 px-4 text-sm font-normal", font_montserrat.className)}>
+            <div className="md:flex">
+              <p
+                className={classNames(
+                  "md:mt-10 mt-9 w-full text-xs md:px-4 md:text-sm font-normal",
+                  font_montserrat.className
+                )}
+              >
                 {batchStakeMode ? (
                   batchIdStake.length === 0 ? (
                     "Select capy for staking"
@@ -809,7 +834,7 @@ const Home = () => {
               </p>
               <button
                 className={classNames(
-                  "mt-8 text-lg bg-white border-[#FEB958] border-2 px-4 rounded-xl text-[#FEB958] hover:bg-[#FEB958] hover:text-gray-50 hover:border-transparent",
+                  "md:mt-8 text-sm md:text-lg bg-white border-[#FEB958] border-2 px-3 py-4 md:py-2 md:px-8 w-full rounded-xl text-[#FEB958] hover:bg-[#FEB958] hover:text-gray-50 hover:border-transparent",
                   font_montserrat.className
                 )}
                 onClick={() => {
@@ -830,7 +855,7 @@ const Home = () => {
         )}
       </div>
       {frens?.length !== 0 ? (
-        <div className={"grid grid-cols-4 gap-10 mt-8"}>
+        <div className={"grid md:grid-cols-4 grid-cols-2 gap-2 md:gap-10 mt-8"}>
           {frens?.map((capy) => (
             <SuifrensCard capy={capy} key={capy.id} batchMode={batchStakeMode} />
           ))}
@@ -839,7 +864,9 @@ const Home = () => {
         <>
           {stakedFrens?.length !== 0 ? (
             <div className="mt-8 text-center">
-              <div className={classNames(font_montserrat.className, "text-4xl font-semibold text-[#595959]")}>
+              <div
+                className={classNames(font_montserrat.className, "md:text-4xl text-2xl font-semibold text-[#595959]")}
+              >
                 All your capies are staked
               </div>
               <a href="https://sui.bluemove.net/collection/suifrens" target="_blank">
