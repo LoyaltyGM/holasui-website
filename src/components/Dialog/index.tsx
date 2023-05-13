@@ -9,6 +9,11 @@ import { fetchSuifrens } from "services/sui";
 
 const font_montserrat = Montserrat({ subsets: ["latin"] });
 
+type BatchIdTradeType = {
+  id: string;
+  url: string;
+};
+
 const MyCollectionScreen = ({
   wallet,
   opened,
@@ -19,7 +24,7 @@ const MyCollectionScreen = ({
   wallet: any;
   opened: boolean;
   setOpened: any;
-  batchIdTrade: any;
+  batchIdTrade: BatchIdTradeType[];
   setBatchIdTrade: any;
 }) => {
   if (!wallet) return <></>;
@@ -48,27 +53,21 @@ const MyCollectionScreen = ({
     fetchWalletFrens().then();
   }, [wallet?.address, wallet?.contents?.nfts]);
 
-  type BatchIdTradeType = {
-    id: string;
-    url: string;
-  };
-
   const handleSetBatchIdStake = (
     id: string,
     url: string,
-    batchIdStake: string[],
+    batchIdTrade: BatchIdTradeType[],
     setBatchIdTrade: Dispatch<SetStateAction<BatchIdTradeType[]>>
   ) => {
+    console.log("Handle state", batchIdTrade);
     // Check if the id already exists in the array
-    if (!batchIdStake.includes(id)) {
+    if (!batchIdTrade.some((item) => item.id! === id)) {
       // If it doesn't exist, add it to the array
       setBatchIdTrade((prevBatchIdStake) => [...prevBatchIdStake, { id, url }]);
     } else {
       // If it exists, remove it from the array
       setBatchIdTrade((prevBatchIdStake) => prevBatchIdStake.filter((item) => item.id !== id));
     }
-    // Use the url parameter however you need to here
-    console.log(url);
   };
 
   //   console.log("Batch", batchIdTrade);
@@ -125,7 +124,9 @@ const MyCollectionScreen = ({
                               <div
                                 className={classNames(
                                   "border flex flex-col content-center justify-center items-center p-2 rounded-md  cursor-pointer",
-                                  batchIdTrade?.id?.includes(fren.id) ? "border-yellowColor" : "border-darkColor"
+                                  batchIdTrade.some((item) => item.id === fren.id)
+                                    ? "border-yellowColor"
+                                    : "border-darkColor"
                                 )}
                               >
                                 <Image src={fren.url} alt="collection_img" width={90} height={130} className="mt-1" />
