@@ -7,7 +7,8 @@ import { classNames } from "utils";
 import { useState } from "react";
 import { LabeledInput } from "components/Forms/Inputs";
 import token from "/public/img/points.png";
-import MyCollectionScreen from "components/Dialog";
+import { MyCollectionDialog } from "components/Dialog/MyCollectionDialog";
+import { RecieveNFTDialog } from "components/Dialog/RecieveNFTDialog";
 
 const font_montserrat = Montserrat({ subsets: ["latin"] });
 
@@ -183,7 +184,7 @@ const Swap = () => {
           <p className="text-sm">Fees Swap 0.4 sui</p>
         </div>
         {showCollection && (
-          <MyCollectionScreen
+          <MyCollectionDialog
             wallet={wallet}
             opened={showCollection}
             setOpened={setShowCollection}
@@ -192,7 +193,7 @@ const Swap = () => {
           />
         )}
         {showRecivedNFT && (
-          <MyCollectionScreen
+          <RecieveNFTDialog
             wallet={wallet}
             opened={showRecivedNFT}
             setOpened={setShowRecivedNFT}

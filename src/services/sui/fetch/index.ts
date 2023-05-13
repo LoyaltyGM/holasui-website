@@ -32,6 +32,10 @@ export function fetchStakingTicket(objects: SuiNFT[], id: string): IStakingTicke
   return initializeStakingTicket(tripTicketNftObject!);
 }
 
+// export function fetchNFT() {
+//   return()
+// }
+
 function initializeSuifren(nftObject: SuiNFT): ICapy {
   return {
     id: nftObject?.objectId,

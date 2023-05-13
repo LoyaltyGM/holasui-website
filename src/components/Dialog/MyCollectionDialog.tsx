@@ -14,7 +14,7 @@ type BatchIdTradeType = {
   url: string;
 };
 
-const MyCollectionScreen = ({
+export const MyCollectionDialog = ({
   wallet,
   opened,
   setOpened,
@@ -160,5 +160,3 @@ const MyCollectionScreen = ({
     </Transition.Root>
   );
 };
-
-export default MyCollectionScreen;
