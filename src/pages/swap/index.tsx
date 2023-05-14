@@ -3,7 +3,7 @@ import { Montserrat } from "next/font/google";
 import Image from "next/image";
 import { ChevronDownIcon, ArrowLeftIcon } from "@heroicons/react/24/outline";
 import suietIcon from "/public/img/SuietLogo2.svg";
-import { classNames } from "utils";
+import { classNames, formatSuiAddress } from "utils";
 import { useState } from "react";
 import { LabeledInput } from "components/Forms/Inputs";
 import token from "/public/img/points.png";
@@ -25,6 +25,8 @@ const Swap = () => {
   };
 
   const [batchIdTrade, setBatchIdTrade] = useState<BatchIdTradeType[]>([]);
+
+  const [walletAddressToSearch, setWalletAddressToSearch] = useState<string>();
   const [batchIdTradeRecieve, setBatchIdTradeRecieve] = useState<BatchIdTradeType[]>([]);
 
   // dialog wallets
@@ -32,7 +34,6 @@ const Swap = () => {
   const [showRecivedNFT, setShowRecivedNFT] = useState(false);
   const [showCollection, setShowCollection] = useState(false);
 
-  console.log(suiValueWalletOne !== null);
   return status === EthosConnectStatus.NoConnection ? (
     <main className="flex min-h-[85vh] flex-col items-center justify-around md:mt-20 z-10 rounded-lg bg-bgMain">
       <div className="w-full max-w-5xl items-center justify-between font-mono text-sm">
@@ -135,6 +136,11 @@ const Swap = () => {
                   <p>You Recieve</p>
                   <ChevronDownIcon className="h-5 w-5 " />
                 </button>
+                {walletAddressToSearch ? (
+                  <p className="text-sm text-black">{`From Wallet:${formatSuiAddress(walletAddressToSearch)}`}</p>
+                ) : (
+                  <></>
+                )}
                 <div className={"grid md:grid-cols-5 grid-cols-3 gap-2 md:gap-4 md:mt-4 h-[10vh]"}>
                   {batchIdTradeRecieve?.map((fren) => {
                     return (
@@ -199,6 +205,8 @@ const Swap = () => {
             setOpened={setShowRecivedNFT}
             batchIdTrade={batchIdTradeRecieve}
             setBatchIdTrade={setBatchIdTradeRecieve}
+            walletAddressToSearch={walletAddressToSearch}
+            setWalletAddressToSearch={setWalletAddressToSearch}
           />
         )}
       </>

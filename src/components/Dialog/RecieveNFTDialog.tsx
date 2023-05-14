@@ -31,21 +31,30 @@ export const RecieveNFTDialog = ({
   setOpened,
   batchIdTrade,
   setBatchIdTrade,
+  walletAddressToSearch,
+  setWalletAddressToSearch,
 }: {
   wallet: any;
   opened: boolean;
   setOpened: any;
   batchIdTrade: BatchIdTradeType[];
   setBatchIdTrade: any;
+  walletAddressToSearch: string | undefined;
+  setWalletAddressToSearch: any;
 }) => {
   if (!wallet) return <></>;
-
+  console.log("Wallet 2", walletAddressToSearch);
   const [frens, setFrens] = useState<ICapy[] | null>();
-  const [walletAddressToSearch, setWalletAddressToSearch] = useState<string>("");
+  const [tempSearchState, setTempSeachState] = useState<string>("");
+
+  useEffect(() => {
+    if (!walletAddressToSearch) return;
+    fetchMyPoints(walletAddressToSearch).then();
+    console.log("Wallet address to search\n\n", walletAddressToSearch);
+  }, [walletAddressToSearch]);
 
   const nfts = wallet?.contents?.nfts!;
   const suifrens = fetchSuifrens(nfts);
-  console.log(suifrens);
 
   const handleSetBatchIdStake = (
     id: string,
@@ -68,12 +77,18 @@ export const RecieveNFTDialog = ({
     if (!searchWalletAddress) {
       return;
     }
-    console.log(searchWalletAddress);
+    console.log("TEMP SERARCH STATE", tempSearchState);
+    // if we don't have anything in temp search state skip this condition
+    if (tempSearchState) {
+      setWalletAddressToSearch(tempSearchState);
+      console.log(searchWalletAddress);
+    }
     try {
       const response = await suiProvider.getOwnedObjects({
         owner: searchWalletAddress,
         options: { showContent: true, showType: true, showDisplay: true },
       });
+      console.log("Response", response);
       const suifrens = response.data
         .filter((object) => object?.data?.type === FRENS_TYPE)
         .map((suifrenNftObject) => {
@@ -113,7 +128,7 @@ export const RecieveNFTDialog = ({
 
         <div className="fixed inset-0 z-10 overflow-auto">
           <div className="flex min-h-full items-center justify-center">
-            <Dialog.Panel className="max-w-2xl md:h-[65vh] h-[70vh] w-full relative transform overflow-hidden rounded-lg bg-red-300 px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:p-6">
+            <Dialog.Panel className="max-w-2xl md:h-[65vh] h-[70vh] w-full relative transform overflow-hidden rounded-lg bg-bgMain px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:p-6">
               <Dialog.Title
                 as="h3"
                 className={classNames(
@@ -129,20 +144,26 @@ export const RecieveNFTDialog = ({
                 </button>
               </Dialog.Title>
               <div className="flex w-full flex-col items-center justify-center">
-                <div className={"mt-2 flex flex-col items-center gap-2"}>
+                <div className={"mt-2 flex flex-col items-center gap-2 w-full"}>
+                  {walletAddressToSearch && (
+                    <p
+                      className={classNames("text-sm", font_montserrat.className)}
+                    >{`Wallet Collection: ${walletAddressToSearch}`}</p>
+                  )}
                   <div className="flex flex-col">
                     {suifrens ? (
-                      <div className={"grid md:grid-cols-5 grid-cols-3 gap-2 md:gap-4 md:mt-4"}>
+                      <div className={"grid md:grid-cols-5 grid-cols-3 gap-2 md:gap-[1.25rem] md:mt-4"}>
                         {frens?.map((fren) => {
                           return (
                             <button
                               onClick={() => {
                                 handleSetBatchIdStake(fren.id, fren.url, batchIdTrade, setBatchIdTrade);
                               }}
+                              key={fren.id}
                             >
                               <div
                                 className={classNames(
-                                  "border flex flex-col content-center justify-center items-center p-2 rounded-md  cursor-pointer",
+                                  "border flex flex-col content-center justify-center items-center p-2 rounded-md cursor-pointer",
                                   batchIdTrade.some((item) => item.id === fren.id)
                                     ? "border-yellowColor"
                                     : "border-darkColor"
@@ -159,30 +180,32 @@ export const RecieveNFTDialog = ({
                       <p>Loading..</p>
                     )}
                   </div>
-                  <div className="bg-black w-full">
+                  <div className="w-full mt-8 bg-white">
                     <LabeledInput label={""}>
-                      <div className="relative ">
+                      <div className="relative bg-white px-2 my-1">
                         <input
                           type={"text"}
                           name="wallet_address"
-                          className={"input-field w-full px-32 bg-white"}
+                          className={"input-field w-full "}
                           placeholder="Sui Wallet"
-                          onChange={(e) => setWalletAddressToSearch(e.target.value)}
+                          onChange={(e) => setTempSeachState(e.target.value)}
                         />
                       </div>
                     </LabeledInput>
                   </div>
                   <button
                     className={classNames(
-                      "w-full block mx-auto my-4 px-3 text-sm py-2 bg-redColor text-white font-black rounded-md hover:bg-[#e5a44a] cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed",
-                      font_montserrat.className
+                      "w-full block mx-auto mt-2 px-3 text-sm py-2 text-white font-black rounded-md  cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed",
+                      font_montserrat.className,
+                      batchIdTrade?.length === 0
+                        ? "bg-redColor hover:bg-redColor/95"
+                        : "bg-yellowColor hover:bg-[#e5a44a]"
                     )}
                     onClick={() => {
-                      //   setOpened(false);
-                      fetchMyPoints(walletAddressToSearch);
+                      batchIdTrade?.length === 0 ? fetchMyPoints(tempSearchState) : setOpened(false);
                     }}
                   >
-                    Search
+                    {batchIdTrade?.length === 0 ? "Search" : "Confirm Items"}
                   </button>
                 </div>
               </div>

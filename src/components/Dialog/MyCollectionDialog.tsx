@@ -59,7 +59,6 @@ export const MyCollectionDialog = ({
     batchIdTrade: BatchIdTradeType[],
     setBatchIdTrade: Dispatch<SetStateAction<BatchIdTradeType[]>>
   ) => {
-    console.log("Handle state", batchIdTrade);
     // Check if the id already exists in the array
     if (!batchIdTrade.some((item) => item.id! === id)) {
       // If it doesn't exist, add it to the array
@@ -70,7 +69,6 @@ export const MyCollectionDialog = ({
     }
   };
 
-  //   console.log("Batch", batchIdTrade);
   return (
     <Transition.Root show={opened} as={Fragment}>
       <Dialog
