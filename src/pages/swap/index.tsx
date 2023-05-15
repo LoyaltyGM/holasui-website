@@ -97,8 +97,8 @@ const Swap = () => {
                     return (
                       <div
                         className={classNames(
-                          "border flex flex-col content-center justify-center items-center p-2 rounded-md  cursor-pointer",
-                          "border-darkColor"
+                          "border bg-white flex flex-col content-center justify-center items-center p-2 rounded-md  cursor-pointer",
+                          ""
                         )}
                       >
                         <Image src={fren.url} alt="collection_img" width={90} height={130} className="mt-1" />
@@ -106,7 +106,7 @@ const Swap = () => {
                     );
                   })}
                   {suiValueWalletOne !== 0 && suiValueWalletOne !== null ? (
-                    <p className="text-2xl text-center border border-darkColor flex items-center justify-center rounded-md">{`+${suiValueWalletOne} SUI`}</p>
+                    <p className="text-2xl text-center border bg-white flex items-center justify-center rounded-md">{`+${suiValueWalletOne} SUI`}</p>
                   ) : (
                     <></>
                   )}
@@ -153,8 +153,7 @@ const Swap = () => {
                       return (
                         <div
                           className={classNames(
-                            "border flex flex-col md:mt-0 mt-2 content-center justify-center items-center p-2 rounded-md cursor-pointer",
-                            "border-darkColor"
+                            "border flex flex-col bg-white md:mt-0 mt-2 content-center justify-center items-center p-2 rounded-md cursor-pointer"
                           )}
                         >
                           <Image src={fren.url} alt="collection_img" width={90} height={130} className="mt-1" />
@@ -162,7 +161,7 @@ const Swap = () => {
                       );
                     })}
                     {suiValueWalletTwo !== 0 && suiValueWalletTwo !== null ? (
-                      <div className="text-2xl text-center border border-darkColor flex items-center justify-center rounded-md">{`+${suiValueWalletTwo} SUI`}</div>
+                      <div className="text-2xl text-center border bg-white  flex items-center justify-center rounded-md">{`+${suiValueWalletTwo} SUI`}</div>
                     ) : (
                       <></>
                     )}
@@ -199,8 +198,8 @@ const Swap = () => {
         </div>
 
         <div className="flex gap-10 justify-center">
-          <p className="text-sm">Verified Collection</p>
-          <p className="text-sm">Rules</p>
+          <p className="text-sm underline">Verified Collection</p>
+          {/* <p className="text-sm">Rules</p> */}
           <p className="text-sm text-right md:text-center">Fees Swap 0.4 sui</p>
         </div>
         {showCollection && (

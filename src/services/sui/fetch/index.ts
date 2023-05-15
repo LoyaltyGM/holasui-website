@@ -1,11 +1,12 @@
-import { FRENS_TYPE, replaceTripleSlash, STAKING_TICKET_TYPE } from "utils";
+import { FRENS_TYPE, replaceTripleSlash, STAKING_TICKET_TYPE, TYPE_FUDDIES, TYPE_WIZARD } from "utils";
 import { SuiNFT } from "ethos-connect";
 import { ICapy, IStakingTicket } from "types";
 
 export function fetchSuifrens(nftObjects: SuiNFT[]): ICapy[] | null {
   if (!nftObjects) return null;
+  console.log(nftObjects);
   return nftObjects
-    .filter((object) => object.type === FRENS_TYPE)
+    .filter((object) => object.type === FRENS_TYPE) //|| object.type === TYPE_WIZARD || object.type === TYPE_FUDDIES)
     .map((suifrenNftObject) => initializeSuifren(suifrenNftObject));
 }
 
@@ -19,6 +20,7 @@ export function fetchSuifren(nftObjects: SuiNFT[], id: string): ICapy | null {
 
 export function fetchStakingTickets(objects: SuiNFT[]): IStakingTicket[] | null {
   if (!objects) return null;
+  
   return objects
     .filter((object) => object.type === STAKING_TICKET_TYPE)
     .map((sleepTicketNftObject) => initializeStakingTicket(sleepTicketNftObject));

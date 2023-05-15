@@ -7,7 +7,7 @@ import { classNames, formatSuiAddress } from "utils";
 import Image from "next/image";
 import { fetchSuifrens, suiProvider } from "services/sui";
 import { LabeledInput } from "components/Forms/Inputs";
-import { FRENS_TYPE } from "utils";
+import { FRENS_TYPE, TYPE_WIZARD, TYPE_FUDDIES } from "utils";
 
 const font_montserrat = Montserrat({ subsets: ["latin"] });
 
@@ -90,7 +90,11 @@ export const RecieveNFTDialog = ({
       });
       console.log("Response", response);
       const suifrens = response.data
-        .filter((object) => object?.data?.type === FRENS_TYPE)
+        .filter(
+          (object) => object?.data?.type === FRENS_TYPE //||
+          // object?.data?.type === TYPE_WIZARD ||
+          // object?.data?.type === TYPE_FUDDIES
+        )
         .map((suifrenNftObject) => {
           // initializeSuifren(suifrenNftObject);
           //   console.log(suifrenNftObject?.data?.display?.data?.image_url);
@@ -163,7 +167,7 @@ export const RecieveNFTDialog = ({
                             >
                               <div
                                 className={classNames(
-                                  "border flex flex-col content-center justify-center items-center p-2 rounded-md cursor-pointer",
+                                  "border-2 bg-white flex flex-col content-center justify-center items-center p-2 rounded-md cursor-pointer",
                                   batchIdTrade.some((item) => item.id === fren.id)
                                     ? "border-yellowColor"
                                     : "border-darkColor"

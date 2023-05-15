@@ -20,6 +20,23 @@ export function Sidebar({ children }: ILayoutProps) {
           <Link href="/">
             <Image src={Logo} height={100} width={180} alt={"logo"} priority />
           </Link>
+          <div
+            className={classNames(
+              "md:flex hidden md:justify-evenly gap-10 text-darkColor mx-3 font-medium",
+              font_montserrat.className
+            )}
+          >
+            <Link href="/">
+              <div className="block py-2 rounded-md my-3">Staking</div>
+            </Link>
+            <Link href="/swap">
+              <div className="block py-2 rounded-md  my-3">P2P Swap</div>
+            </Link>
+
+            <Link href="/game">
+              <div className="block py-2 rounded-md my-3">Game</div>
+            </Link>
+          </div>
 
           <div className="hidden md:flex h-12 gap-8 mt-2 items-center">
             <div

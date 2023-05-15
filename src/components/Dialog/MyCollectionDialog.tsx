@@ -121,7 +121,7 @@ export const MyCollectionDialog = ({
                             >
                               <div
                                 className={classNames(
-                                  "border flex flex-col content-center justify-center items-center p-2 rounded-md  cursor-pointer",
+                                  "border-2 flex bg-white flex-col content-center justify-center items-center p-2 rounded-md  cursor-pointer",
                                   batchIdTrade.some((item) => item.id === fren.id)
                                     ? "border-yellowColor"
                                     : "border-darkColor"
@@ -140,7 +140,7 @@ export const MyCollectionDialog = ({
                   </div>
                   <button
                     className={classNames(
-                      "w-full block mx-auto my-4 px-3 text-sm py-2 bg-yellowColor text-white font-black rounded-md hover:bg-[#e5a44a] cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed",
+                      "w-full block mx-auto my-4 px-3 text-sm py-2 bg-purpleColor text-white font-black rounded-md hover:bg-purpleColor/90 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed",
                       font_montserrat.className
                     )}
                     onClick={() => {
