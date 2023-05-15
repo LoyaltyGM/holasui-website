@@ -3,6 +3,7 @@ import { ethos } from "ethos-connect";
 import { XMarkIcon, Bars3Icon } from "@heroicons/react/24/solid";
 import { Montserrat } from "next/font/google";
 import { classNames } from "utils";
+import Link from "next/link";
 const font_montserrat = Montserrat({ subsets: ["latin"] });
 
 const HamburgerMenu = () => {
@@ -28,6 +29,24 @@ const HamburgerMenu = () => {
             onClick={toggleMenu}
           />
           <div className="pt-24 w-full text-center">
+            <Link href="/">
+              <div className="block text-white bg-redColor py-3 rounded-md text-2xl my-3 transition-all duration-300 ease-in-out hover:text-gray-300">
+                Staking
+              </div>
+            </Link>
+            <Link href="/swap">
+              <div className="block text-white bg-yellowColor py-3 rounded-md text-2xl my-3 transition-all duration-300 ease-in-out hover:text-gray-300">
+                P2P Swap
+              </div>
+            </Link>
+
+            <Link href="/game">
+              <div className="block text-white bg-purpleColor py-3 rounded-md text-2xl my-3 transition-all duration-300 ease-in-out hover:text-gray-300">
+                Game Capy
+              </div>
+            </Link>
+
+            <div className="block text-white bg-transparent py-3 rounded-md text-2xl my-3 transition-all duration-300 ease-in-out hover:text-gray-300"></div>
             <a
               href="https://discord.gg/X8SXejkVHs"
               target="_black"
