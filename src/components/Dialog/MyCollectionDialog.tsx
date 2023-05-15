@@ -92,7 +92,7 @@ export const MyCollectionDialog = ({
 
         <div className="fixed inset-0 z-10 overflow-auto">
           <div className="flex min-h-full items-center justify-center">
-            <Dialog.Panel className="max-w-2xl md:h-[65vh] h-[70vh] w-full relative transform overflow-hidden rounded-lg bg-bgMain px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:p-6">
+            <Dialog.Panel className="max-w-2xl md:h-[65vh] h-[70vh] w-full relative transform overflow-auto rounded-lg bg-bgMain px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:p-6">
               <Dialog.Title
                 as="h3"
                 className={classNames(

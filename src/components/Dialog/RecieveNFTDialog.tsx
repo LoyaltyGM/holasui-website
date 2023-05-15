@@ -3,7 +3,7 @@ import { Dispatch, Fragment, SetStateAction, useEffect, useState } from "react";
 import { ICapy } from "types";
 import { Montserrat } from "next/font/google";
 import { XMarkIcon } from "@heroicons/react/24/solid";
-import { classNames } from "utils";
+import { classNames, formatSuiAddress } from "utils";
 import Image from "next/image";
 import { fetchSuifrens, suiProvider } from "services/sui";
 import { LabeledInput } from "components/Forms/Inputs";
@@ -128,7 +128,7 @@ export const RecieveNFTDialog = ({
 
         <div className="fixed inset-0 z-10 overflow-auto">
           <div className="flex min-h-full items-center justify-center">
-            <Dialog.Panel className="max-w-2xl md:h-[65vh] h-[70vh] w-full relative transform overflow-hidden rounded-lg bg-bgMain px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:p-6">
+            <Dialog.Panel className="max-w-2xl  md:h-[65vh] h-[70vh] w-full relative transform overflow-auto rounded-lg bg-bgMain px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:p-6">
               <Dialog.Title
                 as="h3"
                 className={classNames(
@@ -136,19 +136,19 @@ export const RecieveNFTDialog = ({
                   font_montserrat.className
                 )}
               >
-                <p className="text-xs mt-3 font-light">Selected ({batchIdTrade.length})</p>
-                <p className="mt-1 md:text-xl text-lg">Choose from collection of your counterparty</p>
+                <p className="md:text-xs text-xs mt-1 font-light">Selected ({batchIdTrade.length})</p>
+                <p className="mt-1 md:text-xl text-sm">Choose from collection of your counterparty</p>
 
                 <button onClick={() => setOpened(false)}>
                   <XMarkIcon className="flex h-7 w-7" />
                 </button>
               </Dialog.Title>
-              <div className="flex w-full flex-col items-center justify-center">
+              <div className="flex  w-full flex-col items-center justify-center">
                 <div className={"mt-2 flex flex-col items-center gap-2 w-full"}>
                   {walletAddressToSearch && (
                     <p
                       className={classNames("text-sm", font_montserrat.className)}
-                    >{`Wallet Collection: ${walletAddressToSearch}`}</p>
+                    >{`Wallet Collection: ${formatSuiAddress(walletAddressToSearch)}`}</p>
                   )}
                   <div className="flex flex-col">
                     {suifrens ? (
