@@ -3,8 +3,10 @@ import { ICapy, IStakingTicket } from "types";
 import {
   fetchStakingTickets,
   fetchSuifrens,
+  signTransactionClaimPoints,
   signTransactionEndStaking,
   signTransactionStartStaking,
+  singTransactionsToBatchClaimPoints,
   singTransactionsToBatchStartStaking,
   singTransactionsToBatchUnstaking,
   suiProvider,
@@ -38,7 +40,8 @@ const Home = () => {
   const [frens, setFrens] = useState<ICapy[] | null>();
   const [stakedFrens, setStakedFrens] = useState<IStakingTicket[] | null>();
   const [totalStaked, setTotalStaked] = useState(0);
-  const [totalMyPoints, setTotalMyPoints] = useState(0);
+  const [totalMyPointsOnchain, setTotalMyPointsOnchain] = useState(0);
+  const [availablePointsToClaim, setAvailablePointsToClaim] = useState(0);
 
   // Dialog states
   const [selectedFrend, setSelectedFrend] = useState<ICapy>();
@@ -121,7 +124,8 @@ const Home = () => {
               return Math.floor((now - staked.start_time) / 60_000);
             })
             .reduce((a, b) => a + b, 0) || 0;
-        setTotalMyPoints(onchainPoints + stakedPoints);
+        setAvailablePointsToClaim(stakedPoints);
+        setTotalMyPointsOnchain(onchainPoints);
       } catch (e) {
         console.error(e);
       }
@@ -256,6 +260,69 @@ const Home = () => {
     }
   }
 
+  async function claimPoints(ticket: IStakingTicket) {
+    if (!wallet || !ticket) return;
+
+    setWaitSui(true);
+    try {
+      const response = await wallet.signAndExecuteTransactionBlock({
+        transactionBlock: signTransactionClaimPoints(ticket.id),
+        options: {
+          showEffects: true,
+        },
+      });
+
+      const status = getExecutionStatus(response);
+
+      if (status?.status === "failure") {
+        const error_status = getExecutionStatusError(response);
+        if (error_status) AlertErrorMessage(error_status);
+      } else {
+        AlertSucceed("Claim");
+      }
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setWaitSui(false);
+      setOpenedUnstaked(false);
+    }
+  }
+
+  async function claimBatchPoints(capy_batch: string[]) {
+    if (!wallet || !capy_batch) return;
+
+    setWaitSui(true);
+    try {
+      const response = await wallet.signAndExecuteTransactionBlock({
+        transactionBlock: singTransactionsToBatchClaimPoints(capy_batch),
+        options: {
+          showEffects: true,
+        },
+      });
+
+      const status = getExecutionStatus(response);
+
+      if (status?.status === "failure") {
+        console.log(status.error);
+        const error_status = getExecutionStatusError(response);
+        if (error_status) AlertErrorMessage(error_status);
+      } else {
+        AlertSucceed("Claim");
+        // remove batched capys from the list if success
+        setBatchIdUnstake([]);
+        setBatchUnstakeMode(false);
+        // setOpenedUnstaked
+      }
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setWaitSui(false);
+      setOpenedFrend(false);
+
+      //setBatchIdStake([]);
+    }
+  }
+
   const ProjectDescriptionCard = () => {
     return (
       <div className="md:flex md:p-4 md:py-8 py-4 px-2 gap-2 md:h-60 h-[30rem] border-2 bg-[#FFFFFF] border-[#F6F6F6] rounded-xl">
@@ -302,15 +369,28 @@ const Home = () => {
               </p>
             </div>
             <div className="bg-yellowColor text-white py-4 mt-2 w-full md:mt-0 md:w-1/4 rounded-xl flex md:flex-col md:justify-center justify-between content-center text-start px-3">
-              <p className={classNames(font_montserrat.className, "font-extrabold md:text-sm md:leading-4 ")}>
-                Your Hola <br className="hidden md:flex" />
-                Points
+              <p
+                className={classNames(font_montserrat.className, "font-extrabold mt-2 md:mt-0 md:text-sm md:leading-4")}
+              >
+                Your Available Hola Points
               </p>
-              <div className="flex gap-2 md:w-full">
-                <Image src={token} alt={"points"} height={15} width={35} unoptimized={true} className="md:hidden" />
-                <p className={classNames("text-xl md:text-2xl md:pt-0 pt-1 font-black", font_montserrat.className)}>
-                  {totalMyPoints ? formatNumber(totalMyPoints) : 0}
-                </p>
+              <div>
+                <div className="flex gap-2 md:w-full">
+                  <Image src={token} alt={"points"} height={15} width={35} unoptimized={true} className="hidden" />
+                  <p className={classNames("text-xl md:text-xl md:pt-0 pt-1 font-black", font_montserrat.className)}>
+                    {totalMyPointsOnchain ? formatNumber(totalMyPointsOnchain) : 0}
+                  </p>
+                </div>
+                <div className="text-left text-xs underline ">
+                  {stakedFrens?.length && availablePointsToClaim ? (
+                    <button
+                      className="underline"
+                      onClick={() => claimBatchPoints(stakedFrens.map((ticket) => ticket.id))}
+                    >{`Claim ${formatNumber(availablePointsToClaim)}`}</button>
+                  ) : (
+                    <button></button>
+                  )}
+                </div>
               </div>
             </div>
           </div>
@@ -552,7 +632,18 @@ const Home = () => {
                         </p>
                       </div>
                     </div>
-
+                    <button
+                      className={classNames(
+                        "w-full block mx-auto mb-1 mt-2 md:px-3 px-2 text-sm py-2 bg-yellowColor text-white font-black rounded-md hover:bg-yellowColorHover cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed",
+                        font_montserrat.className
+                      )}
+                      onClick={() => {
+                        claimPoints(selectedStaked).then();
+                      }}
+                      disabled={waitSui}
+                    >
+                      Claim Points
+                    </button>
                     <button
                       className={classNames(
                         "w-full block mx-auto mb-1 mt-2 md:px-3 px-2 text-sm py-2 bg-redColor text-white font-black rounded-md hover:bg-[#c8517c] cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed",
@@ -565,8 +656,9 @@ const Home = () => {
                     >
                       Unstake
                     </button>
-                    <p className={classNames("mb-4 text-xs", font_montserrat.className)}>
-                      Points will be calculated after unstaking
+
+                    <p className={classNames("mb-4 text-xs text-center", font_montserrat.className)}>
+                      Points will be calculated to your account after unstaking
                     </p>
                     <StakingRule />
                   </div>

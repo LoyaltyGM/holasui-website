@@ -80,5 +80,42 @@ export const singTransactionsToBatchUnstaking = (unstaked_frens_ids: string[]) =
   });  
   return txb;
 }
+
+export const signTransactionClaimPoints = (stacked_ticket_address: string) => {
+  const tx = new TransactionBlock();
+  tx.moveCall({
+    target: `${PACKAGE_ID}::staking::claim_points`,
+    arguments: [
+      tx.pure(stacked_ticket_address), // stake nft address
+      tx.pure(STAKING_HUB_ID), // staking hub
+      tx.pure(STAKING_POOL_FRENS_ID), // staking pool
+      tx.pure("0x6"), // time
+    ],
+    typeArguments: [FRENS_TYPE!], // type of frens
+  });
+
+  return tx;
+};
+
+
+export const singTransactionsToBatchClaimPoints = (staking_ids: string[]) => {
+  // Procure a list of some Sui transfers to make:
+  const txb = new TransactionBlock();
+ 
+  staking_ids.forEach((ticket_id, index) => {
+    txb.moveCall({
+      target: `${PACKAGE_ID}::staking::unstake`,
+      arguments: [
+        txb.object(ticket_id), // frens nft address
+        txb.object(STAKING_HUB_ID!), // staking hub
+        txb.object(STAKING_POOL_FRENS_ID!), // staking pool
+        txb.object("0x6"), // time
+      ],
+      typeArguments: [FRENS_TYPE!], // type of frens
+    });
+  });  
+  return txb;
+}
+
   
 

@@ -21,7 +21,7 @@ export const CustomToast = () => {
   );
 };
 
-export function AlertSucceed(success_type: "Staking" | "Unstaking" | "Open" | "StartTrip" | "EndTrip" | "EndSleep") {
+export function AlertSucceed(success_type: "Staking" | "Unstaking" | "Open" | "Claim") {
   let successTitle;
   switch (success_type) {
     case "Staking":
@@ -29,6 +29,9 @@ export function AlertSucceed(success_type: "Staking" | "Unstaking" | "Open" | "S
       break;
     case "Unstaking":
       successTitle = "You have successfully unstaked your Frens!";
+      break;
+    case "Claim":
+      successTitle = "You have successfully claimed your points!";
       break;
     default:
       successTitle = "Something went wrong";

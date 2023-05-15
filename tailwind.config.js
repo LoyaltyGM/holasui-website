@@ -20,7 +20,7 @@ module.exports = {
         darkColor: "#171717",
         redColor: "#E15A8C",
         yellowColor: "#FEB958",
-        yellowColorHover: "",
+        yellowColorHover: "#e5a44a",
         purpleColor: "#5A5A95",
       },
     },
