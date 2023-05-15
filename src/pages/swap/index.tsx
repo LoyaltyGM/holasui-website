@@ -78,7 +78,7 @@ const Swap = () => {
         <div className="flex flex-col justify-items-center justify-evenly bg-white items-center md:mt-8 mt-4 mb-4 rounded-2xl md:h-[55vh] h-full pb-8 pt-8 px-2 md:px-8 md:py-8 ">
           {/* <p className="text-2xl font-bold mb-4 hidden md:flex">New P2P Swap</p> */}
           <div className="w-full items-center gap-1 md:flex justify-between mb-2">
-            <div className="md:w-1/2 w-full px-3">
+            <div className="md:w-1/2 w-full px-3 md:mb-0 mb-2">
               {/* Your NFT Collection */}
               <div
                 className="h-[45vh] md:h-[30vh] mb-2 flex flex-col justify-between w-full py-4 px-2 font-normal border-2 rounded-lg bg-purpleColor/20 border-purpleColor text-purpleColor"
@@ -116,7 +116,7 @@ const Swap = () => {
               </div>
               {/* Your Sui Value */}
               <LabeledInput label={""}>
-                <div className="relative ">
+                <div className="relative">
                   <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
                     <Image src={ImageSuiToken} alt="token" className="h-5 w-5" aria-hidden="true" />
                   </div>
