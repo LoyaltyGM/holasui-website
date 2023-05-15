@@ -104,7 +104,7 @@ export const singTransactionsToBatchClaimPoints = (staking_ids: string[]) => {
  
   staking_ids.forEach((ticket_id, index) => {
     txb.moveCall({
-      target: `${PACKAGE_ID}::staking::unstake`,
+      target: `${PACKAGE_ID}::staking::claim_points`,
       arguments: [
         txb.object(ticket_id), // frens nft address
         txb.object(STAKING_HUB_ID!), // staking hub

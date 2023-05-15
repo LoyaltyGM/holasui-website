@@ -375,18 +375,26 @@ const Home = () => {
                 Your Available Hola Points
               </p>
               <div>
-                <div className="flex gap-2 md:w-full">
-                  <Image src={token} alt={"points"} height={15} width={35} unoptimized={true} className="hidden" />
+                <div className="flex gap-2 md:w-full md:justify-between">
                   <p className={classNames("text-xl md:text-xl md:pt-0 pt-1 font-black", font_montserrat.className)}>
                     {totalMyPointsOnchain ? formatNumber(totalMyPointsOnchain) : 0}
                   </p>
+                  {stakedFrens?.length && availablePointsToClaim ? (
+                    <button
+                      className="underline text-sm"
+                      onClick={() => claimBatchPoints(stakedFrens.map((ticket) => ticket.id))}
+                    >{`Claim ${formatNumber(availablePointsToClaim)} `}</button>
+                  ) : (
+                    <button></button>
+                  )}
                 </div>
-                <div className="text-left text-xs underline ">
+                {/* //this claim is available only on desktop */}
+                <div className="flex md:hidden text-left text-xs underline ">
                   {stakedFrens?.length && availablePointsToClaim ? (
                     <button
                       className="underline"
                       onClick={() => claimBatchPoints(stakedFrens.map((ticket) => ticket.id))}
-                    >{`Claim ${formatNumber(availablePointsToClaim)}`}</button>
+                    >{`Claim ${formatNumber(availablePointsToClaim)} `}</button>
                   ) : (
                     <button></button>
                   )}
