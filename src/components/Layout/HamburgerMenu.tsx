@@ -42,7 +42,7 @@ const HamburgerMenu = () => {
 
             <Link href="/game">
               <div className="block text-white bg-purpleColor py-3 rounded-md text-2xl my-3 transition-all duration-300 ease-in-out hover:text-gray-300">
-                Game Capy
+                Capy Game
               </div>
             </Link>
 

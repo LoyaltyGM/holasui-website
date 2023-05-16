@@ -22,19 +22,19 @@ export function Sidebar({ children }: ILayoutProps) {
           </Link>
           <div
             className={classNames(
-              "md:flex hidden md:justify-evenly gap-10 text-darkColor mx-3 font-medium",
+              "md:flex hidden md:justify-evenly gap-10 text-darkColor mx-3 mt-1 font-semibold",
               font_montserrat.className
             )}
           >
             <Link href="/">
-              <div className="block py-2 rounded-md my-3">Staking</div>
+              <div className="block py-2 rounded-md my-3 hover:text-yellowColorHover">Staking</div>
             </Link>
             <Link href="/swap">
-              <div className="block py-2 rounded-md  my-3">P2P Swap</div>
+              <div className="block py-2 rounded-md my-3 hover:text-purpleColor">P2P Swap</div>
             </Link>
 
             <Link href="/game">
-              <div className="block py-2 rounded-md my-3">Game</div>
+              <div className="block py-2 rounded-md my-3 hover:text-redColor">Game</div>
             </Link>
           </div>
 
