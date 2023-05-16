@@ -76,16 +76,16 @@ export default function GamePage() {
       try {
         if (!wallet?.address || !iframeRef.current) return;
 
-        setTimeout(() => {
-          //@ts-ignore
-          iframeRef.current.contentWindow?.postMessage(wallet.address, "*");
-        }, 1000);
+        //@ts-ignore
+        iframeRef.current.contentWindow?.postMessage(wallet.address, "*");
       } catch (e) {
         console.error(e);
       }
     }
 
-    setupFrame();
+    setTimeout(() => {
+      setupFrame();
+    }, 1000);
   }, [wallet, wallet?.address, iframeRef?.current]);
 
   async function claimReward() {
