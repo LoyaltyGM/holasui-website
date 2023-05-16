@@ -48,7 +48,7 @@ export default function GamePage() {
   }, [wallet?.contents, wallet?.address]);
 
   useEffect(() => {
-    async function fetchWalletFrens() {
+    async function fetchWalletRewards() {
       if (!wallet?.address) {
         setGameAvailable(false);
         return;
@@ -56,7 +56,6 @@ export default function GamePage() {
       try {
         const nfts = wallet?.contents?.nfts!;
         const rewards = fetchRewards(nfts)?.filter((r) => r?.reward_info_id === GAME_PASS_REWARD_INFO_ID);
-        console.log(rewards);
 
         if (rewards && rewards?.length > 0) {
           setGameAvailable(true);
@@ -69,15 +68,25 @@ export default function GamePage() {
       }
     }
 
-    fetchWalletFrens().then();
+    fetchWalletRewards().then();
   }, [wallet?.address, wallet?.contents]);
 
   useEffect(() => {
-    if (wallet && wallet.address && iframeRef.current) {
-      //@ts-ignore
-      iframeRef.current.contentWindow?.postMessage(wallet.address, "*");
+    function setupFrame() {
+      try {
+        if (!wallet?.address || !iframeRef.current) return;
+
+        setTimeout(() => {
+          //@ts-ignore
+          iframeRef.current.contentWindow?.postMessage(wallet.address, "*");
+        }, 1000);
+      } catch (e) {
+        console.error(e);
+      }
     }
-  }, [wallet, iframeRef]);
+
+    setupFrame();
+  }, [wallet, wallet?.address, iframeRef?.current]);
 
   async function claimReward() {
     if (!wallet) return;
