@@ -71,22 +71,16 @@ export default function GamePage() {
     fetchWalletRewards().then();
   }, [wallet?.address, wallet?.contents]);
 
-  useEffect(() => {
-    function setupFrame() {
-      try {
-        if (!wallet?.address || !iframeRef.current) return;
+  function setupFrame() {
+    try {
+      if (!wallet?.address || !iframeRef.current) return;
 
-        //@ts-ignore
-        iframeRef.current.contentWindow?.postMessage(wallet.address, "*");
-      } catch (e) {
-        console.error(e);
-      }
+      //@ts-ignore
+      iframeRef.current.contentWindow?.postMessage(wallet.address, "*");
+    } catch (e) {
+      console.error(e);
     }
-
-    setTimeout(() => {
-      setupFrame();
-    }, 1000);
-  }, [wallet, wallet?.address, iframeRef?.current]);
+  }
 
   async function claimReward() {
     if (!wallet) return;
@@ -139,6 +133,7 @@ export default function GamePage() {
           src="https://bitby.click/jumper2-min.html"
           className="w-full md:h-[65vh] h-[45vh] rounded-md"
           title="Game iframe"
+          onLoad={setupFrame}
         />
       ) : (
         <div className="flex flex-col mt-20 items-center justify-start w-full h-full">
