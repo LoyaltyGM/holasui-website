@@ -33,7 +33,6 @@ export const MyCollectionDialog = ({
 
   const nfts = wallet?.contents?.nfts!;
   const suifrens = fetchSuifrens(nfts);
-  console.log(suifrens);
 
   useEffect(() => {
     async function fetchWalletFrens() {

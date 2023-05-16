@@ -43,14 +43,13 @@ export const RecieveNFTDialog = ({
   setWalletAddressToSearch: any;
 }) => {
   if (!wallet) return <></>;
-  console.log("Wallet 2", walletAddressToSearch);
+
   const [frens, setFrens] = useState<ICapy[] | null>();
   const [tempSearchState, setTempSeachState] = useState<string>("");
 
   useEffect(() => {
     if (!walletAddressToSearch) return;
     fetchMyPoints(walletAddressToSearch).then();
-    console.log("Wallet address to search\n\n", walletAddressToSearch);
   }, [walletAddressToSearch]);
 
   const nfts = wallet?.contents?.nfts!;
