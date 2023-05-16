@@ -114,12 +114,12 @@ export default function GamePage() {
 
   return (
     <main className="flex min-h-[65vh] flex-col pl-16 py-6 mt-24 md:mt-28 pr-10 z-10 rounded-lg bg-[#5e96dd]">
-      <div className="z-10 flex w-full max-w-5xl items-center justify-between font-mono text-sm">
+      <div className="flex w-full max-w-5xl items-center justify-between font-mono text-sm">
         <p className={classNames(font_montserrat.className, "text-4xl font-bold text-white")}>Welcome to Capy Game</p>
         {gameAvailable ? (
           <div
             className={classNames(
-              "border-2 py-4 border-yellowColor font-bold text-yellowColor hover:bg-yellowColor hover:text-white px-4 rounded-md ",
+              "border-2 py-4 border-yellowColor font-bold text-yellowColor hover:bg-yellowColor z-[5] hover:text-white px-4 rounded-md",
               font_montserrat.className
             )}
           >
