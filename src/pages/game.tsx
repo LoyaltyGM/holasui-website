@@ -3,8 +3,7 @@ import { Montserrat } from "next/font/google";
 import { classNames, formatNumber, GAME_PASS_REWARD_INFO_ID, STAKING_TABLE_ID } from "utils";
 import { ethos } from "ethos-connect";
 import { fetchRewards, signTransactionClaimGamePass, suiProvider } from "services/sui";
-import { getObjectFields } from "@mysten/sui.js";
-import { getExecutionStatus, getExecutionStatusError } from "@mysten/sui.js/src";
+import { getExecutionStatus, getExecutionStatusError, getObjectFields } from "@mysten/sui.js";
 import { AlertErrorMessage, AlertSucceed } from "../components/Alert/CustomToast";
 
 const font_montserrat = Montserrat({ subsets: ["latin"] });
