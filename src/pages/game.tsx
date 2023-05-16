@@ -6,6 +6,8 @@ import { fetchRewards, signTransactionClaimGamePass, suiProvider } from "service
 import { getExecutionStatus, getExecutionStatusError, getObjectFields } from "@mysten/sui.js";
 import { AlertErrorMessage, AlertSucceed } from "../components/Alert/CustomToast";
 import { LeaderboardDialog } from "components/Dialog/LeaderboardDialog";
+import token from "/public/img/points.png";
+import Image from "next/image";
 
 const font_montserrat = Montserrat({ subsets: ["latin"] });
 
@@ -107,8 +109,20 @@ export default function GamePage() {
 
   return (
     <main className="flex min-h-[65vh] flex-col pl-16 py-6 mt-24 md:mt-32 pr-10 z-10 rounded-lg bg-white">
-      <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm">
+      <div className="z-10 flex w-full max-w-5xl items-center justify-between font-mono text-sm">
         <p className={classNames(font_montserrat.className, "text-4xl font-bold")}>Welcome to Capy Game</p>
+        {gameAvailable ? (
+          <div
+            className={classNames(
+              "border-2 py-4 border-yellowColor font-bold text-yellowColor hover:bg-yellowColor hover:text-white px-4 rounded-md",
+              font_montserrat.className
+            )}
+          >
+            <button onClick={() => setIsOpenLeaderboard(true)}>Leaderboard</button>
+          </div>
+        ) : (
+          <></>
+        )}
       </div>
       {gameAvailable ? (
         <iframe
@@ -118,30 +132,29 @@ export default function GamePage() {
           title="Game iframe"
         />
       ) : (
-        <div className="flex flex-col items-center justify-center w-full h-full">
-          <p className={classNames(font_montserrat.className, "text-2xl")}>
-            To play this game you need 1000 Hola points
-          </p>
-          <p className={classNames("text-xl md:text-xl md:pt-0 pt-1", font_montserrat.className)}>
-            Your points: {totalMyPointsOnchain ? formatNumber(totalMyPointsOnchain) : 0}
-          </p>
-          <div
-            className={classNames(
-              "border-2 py-4 border-yellowColor font-bold text-yellowColor hover:bg-yellowColor hover:text-white px-4 rounded-md",
-              font_montserrat.className
-            )}
-          >
-            <button onClick={() => setIsOpenLeaderboard(true)}>Leaderboard</button>
+        <div className="flex flex-col mt-20 items-center justify-start w-full h-full">
+          <div>
+            <Image src={token} alt={"points"} height={35} width={40} priority />
           </div>
-          <button
-            disabled={waitSui || !totalMyPointsOnchain || totalMyPointsOnchain < 1000}
-            className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-md disabled:opacity-50 disabled:cursor-not-allowed"
-            onClick={() => {
-              claimReward().then();
-            }}
-          >
-            Claim Pass
-          </button>
+          <div>
+            <p className={classNames(font_montserrat.className, "text-2xl font-semibold text-darkColor")}>
+              To play this game you need 1000 <Image src={token} alt={"points"} height={35} width={40} priority /> Hola
+              points
+            </p>
+            <p className={classNames("text-xl md:text-xl md:pt-0 pt-1", font_montserrat.className)}>
+              Your points: {totalMyPointsOnchain ? formatNumber(totalMyPointsOnchain) : 0}
+            </p>
+
+            <button
+              disabled={waitSui || !totalMyPointsOnchain || totalMyPointsOnchain < 1000}
+              className="mt-4 px-4 py-2 w-1/2 bg-purpleColor text-white rounded-md disabled:opacity-50 disabled:cursor-not-allowed"
+              onClick={() => {
+                claimReward().then();
+              }}
+            >
+              Claim Pass
+            </button>
+          </div>
         </div>
       )}
       {isOpenLeaderboard && (
