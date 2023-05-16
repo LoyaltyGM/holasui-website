@@ -132,7 +132,6 @@ export default function GamePage() {
           ref={iframeRef}
           src="https://bitby.click/jumper2-min.html"
           className="w-full md:h-[65vh] h-[45vh] rounded-md"
-          title="Game iframe"
           onLoad={setupFrame}
         />
       ) : (
