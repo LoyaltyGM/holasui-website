@@ -1,10 +1,8 @@
 import { Dialog, Transition } from "@headlessui/react";
-import { Fragment, useState, useEffect } from "react";
-import { ICapy } from "types";
+import { Fragment, useEffect, useState } from "react";
 import { Montserrat } from "next/font/google";
 import { XMarkIcon } from "@heroicons/react/24/solid";
 import { classNames } from "utils";
-import { fetchSuifrens } from "services/sui";
 
 const font_montserrat = Montserrat({ subsets: ["latin"] });
 
@@ -24,7 +22,8 @@ export const LeaderboardDialog = ({ wallet, opened, setOpened }: { wallet: any; 
       fetch("https://bitby.click/jumper/scores/get")
         .then((response) => response.json())
         .then((json: LeaderboardEntry[]) => {
-          const sortedData = json.sort((a, b) => b.s - a.s);
+          // first 50 of leaderboard
+          const sortedData = json.sort((a, b) => b.s - a.s).slice(0, 50);
           setData(sortedData);
         })
         .catch((error) => console.error("Error:", error));
