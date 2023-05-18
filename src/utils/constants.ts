@@ -24,3 +24,4 @@ export const PRICE_UNSTACKED: number = process.env.NEXT_PUBLIC_PRICE_UNSTAKE as 
 
 // ==== ESCROW ====
 export const ESCROW_HUB_ID = process.env.NEXT_PUBLIC_SWAP_HUB_ID as string;
+export const PRICE_ESCROW: number = process.env.NEXT_PUBLIC_PRICE_UNSTAKE as unknown as number | 0.4;
