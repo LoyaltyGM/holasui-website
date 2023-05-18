@@ -113,8 +113,8 @@ export const signTransactionAcceptOffer = ({
       typeArguments: [FRENS_TYPE],
     });
   }
-
-  const [feeCoin] = tx.splitCoins(tx.gas, [tx.pure(PRICE_ESCROW * 1e9, "u64")]);
+  
+  const [feeCoin] = tx.splitCoins(tx.gas, [tx.pure(0.1 * 1e9, "u64")]);
   tx.moveCall({
     target: `${PACKAGE_ID_TEST_ESCROW}::escrow::exchange`,
     arguments: [tx.object(ESCROW_HUB_ID), tx.object(offerId), feeCoin],

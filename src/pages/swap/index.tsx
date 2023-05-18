@@ -12,7 +12,11 @@ import ImageSuietIcon from "/public/img/SuietLogo2.svg";
 import ImageSuiToken from "/public/img/SuiToken.png";
 import { getExecutionStatus, getExecutionStatusError } from "@mysten/sui.js";
 import { AlertErrorMessage, AlertSucceed } from "../../components/Alert/CustomToast";
-import { signTransactionCreateOffer } from "../../services/sui/transactions/p2p";
+import {
+  signTransactionCreateOffer,
+  signTransactionAcceptOffer,
+  signTransactionCreatorCancelOffer,
+} from "../../services/sui/transactions/p2p";
 
 const font_montserrat = Montserrat({ subsets: ["latin"] });
 
@@ -60,6 +64,41 @@ const Swap = () => {
 
       const status = getExecutionStatus(response);
 
+      if (status?.status === "failure") {
+        console.log(status.error);
+        const error_status = getExecutionStatusError(response);
+        if (error_status) AlertErrorMessage(error_status);
+      } else {
+        AlertSucceed("CreateOffer");
+      }
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setWaitSui(false);
+    }
+  }
+
+  async function acceptOffer() {
+    if (!wallet || !recipientAddress) return;
+    console.log("createOffer");
+    setWaitSui(true);
+    try {
+      const response = await wallet.signAndExecuteTransactionBlock({
+        transactionBlock: signTransactionAcceptOffer({
+          offerId: "0xe2cba66bc9dd227848b4217c4c4313515055e248df126f859dc04727119dd475",
+          recipient_coin_amount: 0,
+          recipient_objects: [
+            "0xb5cdddf741ecde5a523157995f32fabfb02b1ca546bbc5a74d9fde0a2d116fc7",
+            "0x9dadc80073fba81f92d10d79add2bd508dc462f54d6a94f6a3d5bdc252d12d5a",
+          ],
+        }),
+        options: {
+          showEffects: true,
+        },
+      });
+
+      const status = getExecutionStatus(response);
+      console.log(status);
       if (status?.status === "failure") {
         console.log(status.error);
         const error_status = getExecutionStatusError(response);
@@ -239,6 +278,13 @@ const Swap = () => {
             className="w-full py-3 bg-redColor text-white font-medium mt-2 rounded-md disabled:opacity-50"
           >
             Create Offer
+          </button>
+          <button
+            onClick={acceptOffer}
+            disabled={waitSui}
+            className="w-full py-3 bg-yellowColor  text-white font-medium mt-2 rounded-md disabled:opacity-50"
+          >
+            Accept Offer
           </button>
         </div>
 
