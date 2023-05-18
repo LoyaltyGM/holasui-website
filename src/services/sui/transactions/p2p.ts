@@ -50,15 +50,16 @@ export const signTransactionCreateOffer = ({
     });
   });
 
-  console.log("splitCoins");
-  const [coin] = tx.splitCoins(tx.gas, [tx.pure(creator_coin_amount * 1e9, "u64")]);
-
-  console.log("escrow::update_creator_coin");
-  offer = tx.moveCall({
-    target: `${PACKAGE_ID_TEST_ESCROW}::escrow::update_creator_coin`,
-    arguments: [offer, coin],
-    typeArguments: [FRENS_TYPE],
-  });
+  if (creator_coin_amount > 0) {
+    console.log("splitCoins");
+    const [coin] = tx.splitCoins(tx.gas, [tx.pure(creator_coin_amount * 1e9, "u64")]);
+    console.log("escrow::update_creator_coin");
+    offer = tx.moveCall({
+      target: `${PACKAGE_ID_TEST_ESCROW}::escrow::update_creator_coin`,
+      arguments: [offer, coin],
+      typeArguments: [FRENS_TYPE],
+    });
+  }
 
   console.log("escrow::share_offer");
 
@@ -104,12 +105,14 @@ export const signTransactionAcceptOffer = ({
     });
   });
 
-  const [recipientCoin] = tx.splitCoins(tx.gas, [tx.pure(recipient_coin_amount * 1e9, "u64")]);
-  tx.moveCall({
-    target: `${PACKAGE_ID_TEST_ESCROW}::escrow::update_recipient_coin`,
-    arguments: [tx.object(ESCROW_HUB_ID), tx.object(offerId), recipientCoin],
-    typeArguments: [FRENS_TYPE],
-  });
+  if (recipient_coin_amount > 0) {
+    const [recipientCoin] = tx.splitCoins(tx.gas, [tx.pure(recipient_coin_amount * 1e9, "u64")]);
+    tx.moveCall({
+      target: `${PACKAGE_ID_TEST_ESCROW}::escrow::update_recipient_coin`,
+      arguments: [tx.object(ESCROW_HUB_ID), tx.object(offerId), recipientCoin],
+      typeArguments: [FRENS_TYPE],
+    });
+  }
 
   const [feeCoin] = tx.splitCoins(tx.gas, [tx.pure(PRICE_ESCROW * 1e9, "u64")]);
   tx.moveCall({
