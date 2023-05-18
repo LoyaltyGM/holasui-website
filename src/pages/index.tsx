@@ -841,7 +841,7 @@ const Home = () => {
           <Image src={suietIcon} alt={"suiet"} height={350} width={50} className="h-28" priority />
           <p>Suiet Wallet To Unlock Staking!</p>
         </div>
-        <div className="mt-4">
+        <div className="flex justify-center">
           <ethos.components.AddressWidget />
         </div>
       </div>
