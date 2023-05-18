@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Montserrat } from "next/font/google";
-import { classNames, formatNumber, GAME_PASS_REWARD_INFO_ID, STAKING_TABLE_ID } from "utils";
+import { classNames, formatNumber, GAME_PASS_REWARD_INFO_ID, FRENS_STAKING_POOL_POINTS_TABLE_ID } from "utils";
 import { ethos, EthosConnectStatus } from "ethos-connect";
 import { fetchRewards, signTransactionClaimGamePass, suiProvider } from "services/sui";
 import { getExecutionStatus, getExecutionStatusError, getObjectFields } from "@mysten/sui.js";
@@ -30,7 +30,7 @@ export default function GamePage() {
       }
       try {
         const response = await suiProvider.getDynamicFieldObject({
-          parentId: STAKING_TABLE_ID!,
+          parentId: FRENS_STAKING_POOL_POINTS_TABLE_ID!,
           name: {
             type: "address",
             value: wallet.address,

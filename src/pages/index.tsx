@@ -23,8 +23,8 @@ import {
   formatNumber,
   PRICE_STACKED,
   PRICE_UNSTACKED,
-  STAKING_POOL_FRENS_ID,
-  STAKING_TABLE_ID,
+  FRENS_STAKING_POOL_ID,
+  FRENS_STAKING_POOL_POINTS_TABLE_ID,
 } from "utils";
 import { AlertErrorMessage, AlertSucceed } from "components/Alert/CustomToast";
 import { getExecutionStatus, getExecutionStatusError, getObjectFields } from "@mysten/sui.js";
@@ -93,7 +93,7 @@ const Home = () => {
         return;
       }
       try {
-        const response = await suiProvider.getObject({ id: STAKING_POOL_FRENS_ID!, options: { showContent: true } });
+        const response = await suiProvider.getObject({ id: FRENS_STAKING_POOL_ID!, options: { showContent: true } });
         const fields = getObjectFields(response);
         setTotalStaked(fields?.staked || 0);
       } catch (e) {
@@ -107,7 +107,7 @@ const Home = () => {
       }
       try {
         const response = await suiProvider.getDynamicFieldObject({
-          parentId: STAKING_TABLE_ID!,
+          parentId: FRENS_STAKING_POOL_POINTS_TABLE_ID!,
           name: {
             type: "address",
             value: wallet.address,
