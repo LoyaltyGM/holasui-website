@@ -802,7 +802,7 @@ const Home = () => {
                       <p>
                         Yes, if you have an NFT project and want to use the Hola Protocol, please contact us on Twitter
                       </p>
-                      <a href="https://twitter.com/Loyalty_GM" target="_blank" className="underline">
+                      <a href="https://twitter.com/Hola_Sui" target="_blank" className="underline">
                         at @Loyalty_GM to discuss further
                       </a>
                     </p>

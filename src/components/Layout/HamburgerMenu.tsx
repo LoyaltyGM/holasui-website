@@ -55,7 +55,7 @@ const HamburgerMenu = () => {
               Discord
             </a>
             <a
-              href="https://twitter.com/Loyalty_GM"
+              href="https://twitter.com/Hola_Sui"
               target="_black"
               className="block text-white bg-blue-400 py-3 rounded-md text-2xl my-3 transition-all duration-300 ease-in-out hover:text-gray-300"
             >
