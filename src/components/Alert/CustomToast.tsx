@@ -21,7 +21,9 @@ export const CustomToast = () => {
   );
 };
 
-export function AlertSucceed(success_type: "Staking" | "Unstaking" | "Open" | "Claim" | "ClaimGamePass") {
+export function AlertSucceed(
+  success_type: "Staking" | "Unstaking" | "Open" | "Claim" | "ClaimGamePass" | "CreateOffer"
+) {
   let successTitle;
   switch (success_type) {
     case "Staking":
@@ -35,6 +37,9 @@ export function AlertSucceed(success_type: "Staking" | "Unstaking" | "Open" | "C
       break;
     case "ClaimGamePass":
       successTitle = "Now you can play the game!";
+      break;
+    case "CreateOffer":
+      successTitle = "You have successfully created an offer!";
       break;
     default:
       successTitle = "Something went wrong";

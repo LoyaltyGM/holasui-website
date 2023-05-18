@@ -3,11 +3,10 @@ import { Dispatch, Fragment, SetStateAction, useEffect, useState } from "react";
 import { ICapy } from "types";
 import { Montserrat } from "next/font/google";
 import { XMarkIcon } from "@heroicons/react/24/solid";
-import { classNames, formatSuiAddress } from "utils";
+import { classNames, convertIPFSUrl, formatSuiAddress, FRENS_TYPE } from "utils";
 import Image from "next/image";
 import { fetchSuifrens, suiProvider } from "services/sui";
 import { LabeledInput } from "components/Forms/Inputs";
-import { FRENS_TYPE, TYPE_WIZARD, TYPE_FUDDIES } from "utils";
 
 const font_montserrat = Montserrat({ subsets: ["latin"] });
 
@@ -20,7 +19,7 @@ function initializeSuifren(nftObject: any): ICapy {
   return {
     id: nftObject?.data?.objectId,
     description: nftObject?.data?.display?.data?.description!,
-    url: nftObject?.data?.display?.data?.image_url!,
+    url: convertIPFSUrl(nftObject?.data?.display?.data?.image_url!),
     link: "none",
   };
 }

@@ -49,6 +49,7 @@ export const MyCollectionDialog = ({
         console.error(e);
       }
     }
+
     fetchWalletFrens().then();
   }, [wallet?.address, wallet?.contents?.nfts]);
 
@@ -114,6 +115,7 @@ export const MyCollectionDialog = ({
                         {frens?.map((fren) => {
                           return (
                             <button
+                              key={fren.id}
                               onClick={() => {
                                 handleSetBatchIdStake(fren.id, fren.url, batchIdTrade, setBatchIdTrade);
                               }}
