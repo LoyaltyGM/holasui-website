@@ -2,21 +2,18 @@ import { ethos, EthosConnectStatus } from "ethos-connect";
 import { Montserrat } from "next/font/google";
 import Image from "next/image";
 import { ChevronDownIcon } from "@heroicons/react/24/outline";
-
-import { classNames, formatSuiAddress } from "utils";
-import { useState } from "react";
+import { classNames, ESCROW_HUB_ID, formatSuiAddress } from "utils";
+import { useEffect, useState } from "react";
 import { LabeledInput } from "components/Forms/Inputs";
 import { MyCollectionDialog } from "components/Dialog/MyCollectionDialog";
 import { RecieveNFTDialog } from "components/Dialog/RecieveNFTDialog";
 import ImageSuietIcon from "/public/img/SuietLogo2.svg";
 import ImageSuiToken from "/public/img/SuiToken.png";
-import { getExecutionStatus, getExecutionStatusError } from "@mysten/sui.js";
-import { AlertErrorMessage, AlertSucceed } from "../../components/Alert/CustomToast";
-import {
-  signTransactionCreateOffer,
-  signTransactionAcceptOffer,
-  signTransactionCreatorCancelOffer,
-} from "../../services/sui/transactions/p2p";
+import { getExecutionStatus, getExecutionStatusError, getObjectFields } from "@mysten/sui.js";
+import { AlertErrorMessage, AlertSucceed } from "components/Alert/CustomToast";
+import { signTransactionAcceptOffer, signTransactionCreateOffer } from "services/sui/transactions/p2p";
+import { IOffer } from "../../types";
+import { suiProvider } from "../../services/sui";
 
 const font_montserrat = Montserrat({ subsets: ["latin"] });
 
@@ -28,6 +25,7 @@ type TradeObjectType = {
 const Swap = () => {
   const { wallet, status } = ethos.useWallet();
   const [waitSui, setWaitSui] = useState(false);
+  const [allOffers, setAllOffers] = useState<IOffer[]>([]);
   // const [activateSwap, setActivateSwap] = useState(false);
   // const [activateHistory, setActivateHistory] = useState(false);
 
@@ -42,6 +40,30 @@ const Swap = () => {
   // dialog wallets
   const [showRecivedNFT, setShowRecivedNFT] = useState(false);
   const [showCollection, setShowCollection] = useState(false);
+
+  useEffect(() => {
+    async function fetchHistory() {
+      if (!wallet) return;
+      try {
+        const response = await suiProvider.getDynamicFields({
+          parentId: ESCROW_HUB_ID,
+        });
+        Promise.all(
+          response?.data?.map(async (df): Promise<IOffer> => {
+            const suiObject = await suiProvider.getObject({ id: df?.objectId!, options: { showContent: true } });
+
+            return getObjectFields(suiObject) as IOffer;
+          })
+        ).then((offers) => {
+          setAllOffers(offers);
+        });
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    fetchHistory().then();
+  }, [wallet, waitSui]);
 
   async function createOffer() {
     if (!wallet || !recipientAddress) return;
