@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import { LabeledInput } from "components/Forms/Inputs";
 import { MyCollectionDialog } from "components/Dialog/MyCollectionDialog";
 import { RecieveNFTDialog } from "components/Dialog/RecieveNFTDialog";
-import ImageSuietIcon from "/public/img/SuietLogo2.svg";
+import ImageSuietIcon from "/public/img/SuietLogo.svg";
 import ImageSuiToken from "/public/img/SuiToken.png";
 import { getExecutionStatus, getExecutionStatusError, getObjectFields } from "@mysten/sui.js";
 import { AlertErrorMessage, AlertSucceed } from "components/Alert/CustomToast";
@@ -169,7 +169,7 @@ const Swap = () => {
               Swap NFTs secure and without third-parties companies!
             </p>
           </div>
-          <button className="w-32 font-bold rounded-lg border-2 border-yellowColor text-yellowColor hover:bg-yellowColor hover:text-white py-4">
+          <button className="w-32  font-bold rounded-lg border-2 border-yellowColor text-yellowColor hover:bg-yellowColor hover:text-white py-4">
             View History
           </button>
         </div>

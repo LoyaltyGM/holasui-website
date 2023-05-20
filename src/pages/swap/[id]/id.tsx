@@ -10,7 +10,7 @@ import { MyCollectionDialog } from "components/Dialog/MyCollectionDialog";
 import { RecieveNFTDialog } from "components/Dialog/RecieveNFTDialog";
 
 import ImageToken from "/public/img/points.png";
-import ImageSuietIcon from "/public/img/SuietLogo2.svg";
+import ImageSuietIcon from "/public/img/SuietLogo.svg";
 import ImageSuiToken from "/public/img/SuiToken.png";
 
 const font_montserrat = Montserrat({ subsets: ["latin"] });

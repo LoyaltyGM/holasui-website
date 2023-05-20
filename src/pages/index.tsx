@@ -12,7 +12,7 @@ import {
   suiProvider,
 } from "services/sui";
 import { ethos, EthosConnectStatus } from "ethos-connect";
-import suietIcon from "/public/img/SuietLogo2.svg";
+import suietIcon from "/public/img/SuietLogo.svg";
 import frensLogo from "/public/img/frens-logo.svg";
 import bluemoveLogo from "/public/img/bluemove_logo.svg";
 import token from "/public/img/points.png";
@@ -75,7 +75,7 @@ const Home = () => {
           Promise.all(
             stakingTickets.map(async (staked) => {
               const response = await suiProvider.getObject({ id: staked?.nft_id!, options: { showDisplay: true } });
-              staked.url = (response.data?.display?.data as Record<string, string>)?.image_url;
+              staked.url = (response.data?.display?.data! as Record<string, string>)?.image_url!;
             })
           ).then(() => setStakedFrens(stakingTickets));
         }
@@ -382,7 +382,7 @@ const Home = () => {
                   {stakedFrens?.length && availablePointsToClaim ? (
                     <button
                       className="underline text-sm"
-                      onClick={() => claimBatchPoints(stakedFrens.map((ticket) => ticket.id))}
+                      onClick={() => claimBatchPoints(stakedFrens?.map((ticket) => ticket.id))}
                     >{`Claim ${formatNumber(availablePointsToClaim)} `}</button>
                   ) : (
                     <button></button>
@@ -393,7 +393,7 @@ const Home = () => {
                   {stakedFrens?.length && availablePointsToClaim ? (
                     <button
                       className="underline"
-                      onClick={() => claimBatchPoints(stakedFrens.map((ticket) => ticket.id))}
+                      onClick={() => claimBatchPoints(stakedFrens?.map((ticket) => ticket.id))}
                     >{`Claim ${formatNumber(availablePointsToClaim)} `}</button>
                   ) : (
                     <button></button>
@@ -555,7 +555,7 @@ const Home = () => {
                         font_montserrat.className
                       )}
                       onClick={() => {
-                        stakeCapy(selectedFrend).then();
+                        stakeCapy(selectedFrend!).then();
                       }}
                       disabled={waitSui}
                     >
@@ -646,7 +646,7 @@ const Home = () => {
                         font_montserrat.className
                       )}
                       onClick={() => {
-                        claimPoints(selectedStaked).then();
+                        claimPoints(selectedStaked!).then();
                       }}
                       disabled={waitSui}
                     >
@@ -658,7 +658,7 @@ const Home = () => {
                         font_montserrat.className
                       )}
                       onClick={() => {
-                        unstakeCapy(selectedStaked).then();
+                        unstakeCapy(selectedStaked!).then();
                       }}
                       disabled={waitSui}
                     >
