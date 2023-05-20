@@ -38,7 +38,7 @@ const Swap = () => {
   const [recipientObjectIds, setRecipientObjectIds] = useState<TradeObjectType[]>([]);
 
   // dialog wallets
-  const [showRecivedNFT, setShowRecivedNFT] = useState(false);
+  const [showReceivedNFT, setShowReceivedNFT] = useState(false);
   const [showCollection, setShowCollection] = useState(false);
 
   useEffect(() => {
@@ -236,7 +236,7 @@ const Swap = () => {
               {/* Your NFT Collection */}
               <div
                 className="h-[45vh] md:h-[30vh] mb-2 flex flex-col justify-between w-full py-4 px-2 font-normal border-2 rounded-lg bg-yellowColor/20 border-yellowColor text-yellowColor "
-                onClick={() => setShowRecivedNFT(true)}
+                onClick={() => setShowReceivedNFT(true)}
               >
                 <button className="bg-yellowColor content-center items-center rounded-md font-bold text-white w-full flex justify-between px-3 py-2">
                   <p>You Recieve</p>
@@ -324,11 +324,11 @@ const Swap = () => {
             setBatchIdTrade={setCreatorObjectIds}
           />
         )}
-        {showRecivedNFT && (
+        {showReceivedNFT && (
           <RecieveNFTDialog
             wallet={wallet}
-            opened={showRecivedNFT}
-            setOpened={setShowRecivedNFT}
+            opened={showReceivedNFT}
+            setOpened={setShowReceivedNFT}
             batchIdTrade={recipientObjectIds}
             setBatchIdTrade={setRecipientObjectIds}
             walletAddressToSearch={recipientAddress}
