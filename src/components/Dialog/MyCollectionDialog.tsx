@@ -129,7 +129,7 @@ export const MyCollectionDialog = ({
                                 )}
                               >
                                 <Image src={fren.url} alt="collection_img" width={90} height={130} className="mt-1" />
-                                <p className="mt-1">{`${fren.description}`}</p>
+                                <p className="mt-1">{classNames(fren.description ? `${fren.description}` : "")}</p>
                               </div>
                             </button>
                           );

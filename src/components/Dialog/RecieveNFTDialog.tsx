@@ -44,7 +44,7 @@ export const RecieveNFTDialog = ({
   if (!wallet) return <></>;
 
   const [frens, setFrens] = useState<ICapy[] | null>();
-  const [tempSearchState, setTempSeachState] = useState<string>("");
+  const [tempSearchState, setTempSearchState] = useState<string>("");
 
   useEffect(() => {
     if (!walletAddressToSearch) return;
@@ -75,7 +75,7 @@ export const RecieveNFTDialog = ({
     if (!searchWalletAddress) {
       return;
     }
-    console.log("TEMP SERARCH STATE", tempSearchState);
+    console.log("TEMP SEARCH STATE", tempSearchState);
     // if we don't have anything in temp search state skip this condition
     if (tempSearchState) {
       setWalletAddressToSearch(tempSearchState);
@@ -94,9 +94,6 @@ export const RecieveNFTDialog = ({
           // object?.data?.type === TYPE_FUDDIES
         )
         .map((suifrenNftObject) => {
-          // initializeSuifren(suifrenNftObject);
-          //   console.log(suifrenNftObject?.data?.display?.data?.image_url);
-          //   console.log(suifrenNftObject?.data?.objectId);
           return initializeSuifren(suifrenNftObject);
         });
 
@@ -172,7 +169,7 @@ export const RecieveNFTDialog = ({
                                 )}
                               >
                                 <Image src={fren.url} alt="collection_img" width={90} height={130} className="mt-1" />
-                                <p className="mt-1">{`${fren.description}`}</p>
+                                <p className="mt-1">{classNames(fren.description ? `${fren.description}` : '')}</p>
                               </div>
                             </button>
                           );
@@ -190,7 +187,7 @@ export const RecieveNFTDialog = ({
                           name="wallet_address"
                           className={"input-field w-full "}
                           placeholder="Sui Wallet"
-                          onChange={(e) => setTempSeachState(e.target.value)}
+                          onChange={(e) => setTempSearchState(e.target.value)}
                         />
                       </div>
                     </LabeledInput>
