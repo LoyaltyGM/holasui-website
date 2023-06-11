@@ -16,7 +16,7 @@ export default function App({ Component, pageProps }: AppProps) {
 
       <EthosConnectProvider
         ethosConfiguration={{
-          chain: Chain.SUI_TESTNET, // Optional. Defaults to sui:devnet and sui:testnet - permanent testnet
+          chain: Chain.SUI_MAINNET, // Optional. Defaults to sui:devnet and sui:testnet - permanent testnet
           network: SUI_RPC_URL,
           hideEmailSignIn: true, // Optional.  Defaults to false
           preferredWallets: ["Suiet"],

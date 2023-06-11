@@ -12,7 +12,6 @@ import {
   suiProvider,
 } from "services/sui";
 import { ethos, EthosConnectStatus } from "ethos-connect";
-import suietIcon from "/public/img/SuietLogo.svg";
 import frensLogo from "/public/img/frens-logo.svg";
 import bluemoveLogo from "/public/img/bluemove_logo.svg";
 import token from "/public/img/points.png";
@@ -26,10 +25,11 @@ import {
   FRENS_STAKING_POOL_ID,
   FRENS_STAKING_POOL_POINTS_TABLE_ID,
 } from "utils";
-import { AlertErrorMessage, AlertSucceed } from "components/Alert/CustomToast";
+import { AlertErrorMessage, AlertSucceed, NoConnectWallet } from "components";
 import { getExecutionStatus, getExecutionStatusError, getObjectFields } from "@mysten/sui.js";
 import { Montserrat } from "next/font/google";
 import { XMarkIcon } from "@heroicons/react/24/solid";
+
 
 const font_montserrat = Montserrat({ subsets: ["latin"] });
 
@@ -829,23 +829,7 @@ const Home = () => {
   };
 
   return status === EthosConnectStatus.NoConnection ? (
-    <main className="flex min-h-[85vh] flex-col items-center justify-around md:mt-20 z-10 rounded-lg bg-bgMain">
-      <div className="w-full max-w-5xl items-center justify-between font-mono text-sm">
-        <div
-          className={classNames(
-            "flex flex-col md:flex-row md:gap-2 gap-1 justify-center items-center content-center text-4xl text-center w-full pt-12 font-bold text-[#5A5A95] ",
-            font_montserrat.className
-          )}
-        >
-          <p>Connect</p>
-          <Image src={suietIcon} alt={"suiet"} height={350} width={50} className="h-28" priority />
-          <p>Suiet Wallet To Unlock Staking!</p>
-        </div>
-        <div className="flex justify-center">
-          <ethos.components.AddressWidget />
-        </div>
-      </div>
-    </main>
+      <NoConnectWallet title={'Staking!'}/>
   ) : (
     <main className="flex min-h-[85vh] flex-col pl-2 pr-2 md:pl-16 py-6 mt-20 md:pr-10 z-10 rounded-lg bg-bgMain">
       <ProjectDescriptionCard />

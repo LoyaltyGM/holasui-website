@@ -17,7 +17,8 @@ module.exports = {
       },
       colors: {
         bgMain: "#FEF7EC",
-        darkColor: "#171717",
+        blackColor: "#171717",
+        grayColor: "#595959",
         redColor: "#E15A8C",
         yellowColor: "#FEB958",
         yellowColorHover: "#e5a44a",

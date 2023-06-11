@@ -4,8 +4,7 @@ import { classNames, formatNumber, GAME_PASS_REWARD_INFO_ID, FRENS_STAKING_POOL_
 import { ethos, EthosConnectStatus } from "ethos-connect";
 import { fetchRewards, signTransactionClaimGamePass, suiProvider } from "services/sui";
 import { getExecutionStatus, getExecutionStatusError, getObjectFields } from "@mysten/sui.js";
-import { AlertErrorMessage, AlertSucceed } from "../components/Alert/CustomToast";
-import { LeaderboardDialog } from "components/Dialog/LeaderboardDialog";
+import { AlertErrorMessage, AlertSucceed, LeaderboardDialog } from "components";
 import token from "/public/img/points.png";
 import gifCapy from "/public/img/gif_for_game.gif";
 import Image from "next/image";

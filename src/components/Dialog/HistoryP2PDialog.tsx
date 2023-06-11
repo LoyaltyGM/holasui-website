@@ -4,6 +4,7 @@ import {ICapy, IOffer} from "types";
 import {Montserrat} from "next/font/google";
 import {XMarkIcon} from "@heroicons/react/24/solid";
 import {classNames} from "utils";
+import Link from "next/link";
 import Image from "next/image";
 import {fetchSuifrens} from "services/sui";
 
@@ -23,7 +24,9 @@ export const HistoryP2PDialog = (
     }) => {
     if (!wallet && !offers) return <></>;
 
-    const [offersDisplay, setOffersDisplay] = useState<IOffer[] | null>();
+    const [activeTab, setActiveTab] = useState('sent');
+    const [sentOffers, setSentOffers] = useState<IOffer[] | null>();
+    const [receivedOffers, setReceivedOffers] = useState<IOffer[] | null>();
 
     useEffect(() => {
         async function fetchWalletOffers() {
@@ -31,8 +34,11 @@ export const HistoryP2PDialog = (
                 return;
             }
             try {
-                console.log("Offers", offers);
-                setOffersDisplay(offers);
+                const sent = offers.filter(offer => offer.creator === wallet.address);
+                const received = offers.filter(offer => offer.recipient !== wallet.address);
+
+                setSentOffers(sent);
+                setReceivedOffers(received);
             } catch (e) {
                 console.error(e);
             }
@@ -40,6 +46,11 @@ export const HistoryP2PDialog = (
 
         fetchWalletOffers().then();
     }, [wallet?.address, wallet?.contents?.nfts, offers]);
+
+    const generateLink = (offer: IOffer) => {
+        return "/swap/" + offer.id; // replace this with your actual link generation function
+    };
+
 
 
     return (
@@ -66,7 +77,7 @@ export const HistoryP2PDialog = (
                 <div className="fixed inset-0 z-10 overflow-auto">
                     <div className="flex min-h-full items-center justify-center">
                         <Dialog.Panel
-                            className="max-w-2xl md:h-[65vh] h-[70vh] w-full relative transform overflow-auto rounded-lg bg-bgMain px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:p-6">
+                            className="max-w-5xl md:h-[65vh] h-[70vh] w-full relative transform overflow-auto rounded-lg bg-bgMain px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:p-6">
                             <Dialog.Title
                                 as="h3"
                                 className={classNames(
@@ -82,15 +93,58 @@ export const HistoryP2PDialog = (
                                 </button>
                             </Dialog.Title>
                             <div className="flex flex-col items-center justify-center">
-                                <div className="flex flex-col bg-black w-full text-white">
-                                    <p>sassasaa</p>
-                                    {offersDisplay ? <div
-                                        className="flex bg-red-300 w-full flex-row items-center justify-between">
-                                        {offersDisplay?.map((offer: IOffer) => {
-                                            return (
-                                                <p className={"text-xl text-black"}>{offer.active}</p>)
-                                        })}
-                                    </div> : <div className={"bg-yellow-200 w-full h-8"}></div>}
+                                <div className="flex flex-col w-full text-white">
+                                    <div className={'flex justify-between gap-10 mb-5'}>
+                                        <button onClick={() => setActiveTab('sent')} className={classNames('px-4 w-1/2 font-medium py-2 rounded-xl', activeTab === 'sent' ? "text-redColor underline" : "text-[#7E7E7E]")}>Sent Offers</button>
+                                        <button onClick={() => setActiveTab('received')} className={classNames('px-4 w-1/2 font-medium py-2 rounded-xl', activeTab === 'received' ? "text-redColor underline" : "text-[#7E7E7E]")}>Received Offers</button>
+                                    </div>
+                                    {activeTab === 'sent' && sentOffers && (
+                                        <table className={'text-black'}>
+                                            <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Wallet Address</th>
+                                                <th>Active</th>
+                                                <th>Link</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody className={"text-black"}>
+                                            {sentOffers.map((offer, index) => (
+                                                <tr key={offer.id}>
+                                                    <td>{index + 1}</td>
+                                                    <td>{offer.recipient}</td>
+                                                    <td>{offer.active ? 'Yes' : 'No'}</td>
+                                                    {offer.id ? <td><Link href={generateLink(offer)}>Details</Link></td> : <></>}
+                                                </tr>
+                                            ))}
+                                            </tbody>
+                                        </table>
+                                    )}
+                                    {activeTab === 'received' && receivedOffers && (
+                                        <table className={'text-black'}>
+                                            <thead className={'mb-2'}>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Wallet Address</th>
+                                                <th>Active</th>
+                                                <th>Link</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody className={'space-y-2'}>
+                                            {receivedOffers.map((offer, index) => (
+                                                <tr key={offer.id?.id!}>
+                                                    <td>{index + 1}</td>
+                                                    <td>{offer.recipient}</td>
+                                                    <td>{offer.active ? 'Yes' : 'No'}</td>
+                                                    {offer.id ? <td><Link href={"/swap/" + offer.id?.id}>Details</Link></td> : <></>}
+
+
+
+                                                </tr>
+                                            ))}
+                                            </tbody>
+                                        </table>
+                                    )}
                                 </div>
                                 <div className={"mt-2 flex flex-col items-center gap-2"}>
 

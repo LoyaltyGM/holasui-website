@@ -4,7 +4,6 @@ import { ICapy, IReward, IStakingTicket } from "types";
 
 export function fetchSuifrens(nftObjects: SuiNFT[]): ICapy[] | null {
   if (!nftObjects) return null;
-  console.log(nftObjects);
   return nftObjects
     .filter((object) => object.type === FRENS_TYPE) //|| object.type === TYPE_WIZARD || object.type === TYPE_FUDDIES)
     .map((suifrenNftObject) => initializeSuifren(suifrenNftObject));
@@ -51,7 +50,6 @@ function initializeSuifren(nftObject: SuiNFT): ICapy {
 }
 
 function initializeStakingTicket(object: SuiNFT): IStakingTicket {
-  console.log(object.imageUrl);
   return {
     id: object?.objectId,
     name: object?.name!,

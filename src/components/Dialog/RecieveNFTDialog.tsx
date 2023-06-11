@@ -165,7 +165,7 @@ export const RecieveNFTDialog = ({
                                   "border-2 bg-white flex flex-col content-center justify-center items-center p-2 rounded-md cursor-pointer",
                                   batchIdTrade.some((item) => item.id === fren.id)
                                     ? "border-yellowColor"
-                                    : "border-darkColor"
+                                    : "border-blackColor"
                                 )}
                               >
                                 <Image src={fren.url} alt="collection_img" width={90} height={130} className="mt-1" />

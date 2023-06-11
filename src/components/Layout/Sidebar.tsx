@@ -22,7 +22,7 @@ export function Sidebar({ children }: ILayoutProps) {
           </Link>
           <div
             className={classNames(
-              "md:flex hidden md:justify-evenly gap-10 text-darkColor mx-3 mt-1 font-semibold",
+              "md:flex hidden md:justify-evenly gap-10 text-blackColor mx-3 mt-1 font-semibold",
               font_montserrat.className
             )}
           >
