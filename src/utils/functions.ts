@@ -43,3 +43,7 @@ export function formatSuiAddress(address: string, startLength = 2, endLength = 3
   const end = address.slice(-endLength);
   return `${start}...${end}`;
 }
+
+export function formatSuiNumber(num: number): number {
+  return num / 1000000000;
+}

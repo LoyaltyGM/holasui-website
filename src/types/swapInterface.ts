@@ -31,12 +31,13 @@ export interface IOffer {
     id: string;
     active: boolean;
     object_bag: any;
+    status: number;
     //
     creator: string;
-    creator_object_ids: string[];
-    creator_coin_amount: number;
+    creator_items: any;
+    creator_coin: number;
     //
     recipient: string;
-    recipient_object_ids: string[];
+    recipient_items_ids: any;
     recipient_coin_amount: number;
 }
