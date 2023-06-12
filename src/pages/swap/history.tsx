@@ -101,7 +101,7 @@ const History = () => {
       </div>
       <SwitchTab />
       {activeTab === "sent" && sentOffers && (
-        <table className={"text-grayColor"}>
+        <table className={"text-grayColor border-separate border-spacing-y-2"}>
           <thead>
             <tr className={"text-grayColor font-light ml-2"}>
               <th scope="col" className="py-3.5 text-left text-sm font-semibold">
@@ -129,8 +129,7 @@ const History = () => {
               .map((offer, index) => (
                 <tr
                   key={offer.id}
-                  className={"bg-white border-lightGrayColor rounded-full border mb-10"}
-                  style={{ borderRadius: "50px" }}
+                  className={"bg-white border-lightGrayColor rounded-full border "}
                 >
                   <td className={"px-3 py-5 text-sm text-gray-500"}>{index + 1}</td>
                   <td className={"whitespace-nowrap px-3 py-5 text-sm text-gray-500"}>
@@ -184,7 +183,7 @@ const History = () => {
         </table>
       )}
       {activeTab === "received" && receivedOffers && (
-          <table className={"text-grayColor"}>
+          <table className={"text-grayColor border-separate border-spacing-y-2"}>
             <thead>
             <tr className={"text-grayColor font-light ml-2"}>
               <th scope="col" className="py-3.5 text-left text-sm font-semibold">
@@ -212,8 +211,7 @@ const History = () => {
                 .map((offer, index) => (
                     <tr
                         key={offer.id}
-                        className={"bg-white border-lightGrayColor rounded-full border mb-10"}
-                        style={{ borderRadius: "50px" }}
+                        className={"bg-white border-amber-950 rounded-full border"}
                     >
                       <td className={"px-3 py-5 text-sm text-gray-500"}>{index + 1}</td>
                       <td className={"whitespace-nowrap px-3 py-5 text-sm text-gray-500"}>
