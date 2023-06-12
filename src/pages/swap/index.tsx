@@ -96,17 +96,14 @@ const Swap = () => {
   }
 
   async function acceptOffer() {
-    if (!wallet || !recipientAddress) return;
+    if (!wallet) return;
     setWaitSui(true);
     try {
       const response = await wallet.signAndExecuteTransactionBlock({
         transactionBlock: signTransactionExchangeEscrow({
-          escrowId: "0xe2cba66bc9dd227848b4217c4c4313515055e248df126f859dc04727119dd475",
-          recipient_coin_amount: 0,
-          recipient_objects: [
-            "0xb5cdddf741ecde5a523157995f32fabfb02b1ca546bbc5a74d9fde0a2d116fc7",
-            "0x9dadc80073fba81f92d10d79add2bd508dc462f54d6a94f6a3d5bdc252d12d5a",
-          ],
+          escrowId: "0xbc33bccddfb618f822a3e4fe5f429a33bb6d1157e7764d46cc8875e93851b5cd",
+          recipient_coin_amount: 0.1,
+          recipient_objects: ["0x740d986ee3f595e9e1421eb1c97e39a311ad3f244459c43ce22a7d7e205cc6bd"],
         }),
         options: {
           showEffects: true,
@@ -211,6 +208,7 @@ const Swap = () => {
           Create Offer
         </button>
 
+        <button onClick={acceptOffer}>accept</button>
         <div className="flex gap-10 justify-center">
           <p className="text-sm underline">Verified Collection</p>
           <p className="text-sm text-right md:text-center">Fees Swap 0.4 sui</p>

@@ -24,7 +24,10 @@ export const signTransactionCreateEscrow = ({
     target: `${PACKAGE_ID_TEST_ESCROW}::escrow::create`,
     arguments: [
       tx.pure(ESCROW_HUB_ID),
-      tx.pure(creator_objects),
+      tx.makeMoveVec({
+        type: FRENS_TYPE,
+        objects: creator_objects.map((creator_object_id) => tx.pure(creator_object_id)),
+      }),
       coin,
       tx.pure(recipient),
       tx.pure(recipient_object_ids),
@@ -63,7 +66,15 @@ export const signTransactionExchangeEscrow = ({
 
   tx.moveCall({
     target: `${PACKAGE_ID_TEST_ESCROW}::escrow::exchange`,
-    arguments: [tx.object(ESCROW_HUB_ID), tx.pure(escrowId), tx.pure(recipient_objects), coin],
+    arguments: [
+      tx.object(ESCROW_HUB_ID),
+      tx.pure(escrowId),
+      tx.makeMoveVec({
+        type: FRENS_TYPE,
+        objects: recipient_objects.map((recipient_object_id) => tx.pure(recipient_object_id)),
+      }),
+      coin,
+    ],
     typeArguments: [FRENS_TYPE],
   });
 
