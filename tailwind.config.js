@@ -9,6 +9,9 @@ module.exports = {
   darkMode: false, // or 'media' or 'class'
   theme: {
     extend: {
+      fontFamily:{
+       sans: ['var(--montserrat-font)'],
+      },
       screens: {
         sm: "480px",
         md: "768px",

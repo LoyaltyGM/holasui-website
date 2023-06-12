@@ -42,7 +42,7 @@ export function Sidebar({ children }: ILayoutProps) {
             <div
               className={classNames(
                 "flex flex-col items-center justify-center",
-                "text-[#595959]",
+                "text-grayColor",
                 "group py-2 text-xs font-medium hover:text-[#8d6eec] rounded-2xl cursor-pointer",
                 font_montserrat.className
               )}
@@ -54,7 +54,7 @@ export function Sidebar({ children }: ILayoutProps) {
             <div
               className={classNames(
                 "flex flex-col items-center justify-center",
-                "text-[#595959]",
+                "text-grayColor",
                 "group py-2 text-xs font-medium group-hover:text-[#6ea0ec] hover:fill-[#6ea0ec] hover:text-[#6ea0ec] rounded-2xl cursor-pointer",
                 font_montserrat.className
               )}

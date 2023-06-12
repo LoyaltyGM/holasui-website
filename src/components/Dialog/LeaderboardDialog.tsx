@@ -58,7 +58,7 @@ export const LeaderboardDialog = ({ wallet, opened, setOpened }: { wallet: any; 
               <Dialog.Title
                 as="h3"
                 className={classNames(
-                  "flex justify-between text-base leading-6 text-[#595959] text-center mb-2 font-bold",
+                  "flex justify-between text-base leading-6 text-grayColor text-center mb-2 font-bold",
                   font_montserrat.className
                 )}
               >

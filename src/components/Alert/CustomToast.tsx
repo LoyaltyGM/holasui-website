@@ -1,4 +1,5 @@
 import toast, { ToastBar, Toaster } from "react-hot-toast";
+import {AlertMessageType} from "../../types";
 
 /**
  * Beautiful notifications to your React app
@@ -22,7 +23,7 @@ export const CustomToast = () => {
 };
 
 export function AlertSucceed(
-  success_type: "Staking" | "Unstaking" | "Open" | "Claim" | "ClaimGamePass" | "CreateOffer"
+  success_type: AlertMessageType,
 ) {
   let successTitle;
   switch (success_type) {

@@ -1,12 +1,10 @@
 import {Dialog, Transition} from "@headlessui/react";
-import {Dispatch, Fragment, SetStateAction, useEffect, useState} from "react";
-import {ICapy, IOffer} from "types";
+import {Fragment, useEffect, useState} from "react";
+import {IOffer} from "types";
 import {Montserrat} from "next/font/google";
 import {XMarkIcon} from "@heroicons/react/24/solid";
 import {classNames} from "utils";
 import Link from "next/link";
-import Image from "next/image";
-import {fetchSuifrens} from "services/sui";
 
 const font_montserrat = Montserrat({subsets: ["latin"]});
 
@@ -81,7 +79,7 @@ export const HistoryP2PDialog = (
                             <Dialog.Title
                                 as="h3"
                                 className={classNames(
-                                    "flex justify-between text-base leading-6 text-[#595959] text-center mb-2 font-bold",
+                                    "flex justify-between text-base leading-6 text-grayColor text-center mb-2 font-bold",
                                     font_montserrat.className
                                 )}
                             >
