@@ -22,6 +22,7 @@ module.exports = {
         bgMain: "#FEF7EC",
         blackColor: "#171717",
         grayColor: "#595959",
+        lightGrayColor: "#AAAAAA",
         redColor: "#E15A8C",
         yellowColor: "#FEB958",
         yellowColorHover: "#e5a44a",

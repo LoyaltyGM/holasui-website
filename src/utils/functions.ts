@@ -7,11 +7,13 @@ export const convertIPFSUrl = (ipfsUrl: string): string => {
   const ipfsPrefix: string = "ipfs://";
   const normalUrlPrefix: string = "https://ipfs.io/ipfs/";
 
-  if (ipfsUrl.includes(ipfsPrefix)) {
+  if (ipfsUrl?.includes(ipfsPrefix)) {
     const hash = ipfsUrl.slice(ipfsPrefix.length);
     return normalUrlPrefix + hash;
   } else {
-    throw new Error("Invalid IPFS URL");
+    return ipfsUrl;
+    // console.log(ipfsUrl)
+    // throw new Error("Invalid IPFS URL");
   }
 };
 

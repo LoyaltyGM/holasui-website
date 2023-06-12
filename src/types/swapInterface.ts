@@ -1,3 +1,5 @@
+import {Dispatch, SetStateAction} from "react";
+
 export type TradeObjectType = {
     id: string;
     url: string;
@@ -10,6 +12,19 @@ export interface ISwapInformation {
     coinAmount: number | null;
     recipientAddress?: string;
     isRecipient?: boolean;
+}
+
+export interface ISwapCollectionDialog {
+    wallet: any;
+    opened: boolean;
+    setOpened: Dispatch<SetStateAction<boolean>>;
+    batchIdTrade: TradeObjectType[];
+    setBatchIdTrade: Dispatch<SetStateAction<TradeObjectType[]>>;
+}
+
+export interface ISwapRecipientCollectionDialog extends ISwapCollectionDialog {
+    walletAddressToSearch: string | undefined;
+    setWalletAddressToSearch: Dispatch<SetStateAction<string | undefined>>;
 }
 
 export interface IOffer {

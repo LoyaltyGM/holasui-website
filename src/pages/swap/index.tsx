@@ -2,11 +2,10 @@ import {ethos, EthosConnectStatus} from "ethos-connect";
 import {Montserrat} from "next/font/google";
 import {useEffect, useState} from "react";
 import {getExecutionStatus, getExecutionStatusError, getObjectFields} from "@mysten/sui.js";
-
 import {suiProvider, signTransactionAcceptOffer, signTransactionCreateOffer} from "services/sui";
 import {
     MyCollectionDialog,
-    RecieveNFTDialog,
+    RecipientCollectionDialog,
     HistoryP2PDialog,
     NoConnectWallet,
     SwapInformation,
@@ -14,9 +13,10 @@ import {
     AlertSucceed
 } from "components";
 import {IOffer, TradeObjectType} from "types";
-import {classNames, ESCROW_HUB_ID} from "utils";
+import {classNames, ESCROW_HUB_ID, formatSuiAddress} from "utils";
+import {XMarkIcon} from "@heroicons/react/24/outline";
 
-const font_montserrat = Montserrat({subsets: ["latin"]});
+
 
 const Swap = () => {
     const {wallet, status} = ethos.useWallet();
@@ -67,7 +67,7 @@ const Swap = () => {
 
     async function createOffer() {
         if (!wallet || !recipientAddress) return;
-        console.log("createOffer");
+
         setWaitSui(true);
         try {
             const response = await wallet.signAndExecuteTransactionBlock({
@@ -102,7 +102,6 @@ const Swap = () => {
 
     async function acceptOffer() {
         if (!wallet || !recipientAddress) return;
-        console.log("createOffer");
         setWaitSui(true);
         try {
             const response = await wallet.signAndExecuteTransactionBlock({
@@ -159,23 +158,40 @@ const Swap = () => {
     ) : (
         <main
             className={classNames(
-                "flex min-h-[100vh] md:min-h-[65vh] flex-col pl-2 pr-2 md:pl-16 py-6 md:mt-14 mt-18 md:pr-10 z-10 rounded-lg ",
-                font_montserrat.className,
-                "mt-8"
+                "flex min-h-[100vh] md:min-h-[65vh] flex-col pl-2 pr-2 md:pl-16 py-6 md:mt-14 mt-18 md:pr-10 z-10 rounded-lg mt-8 ",
             )}
         >
             <>
                 <Title/>
                 <div
-                    className="flex flex-col justify-items-center justify-evenly bg-white items-center md:mt-8 mt-4 mb-4 rounded-2xl md:h-[55vh] h-full pb-8 pt-8 px-2 md:px-8 md:py-8 ">
-                    <div className="w-full items-center gap-1 md:flex justify-between mb-2">
+                    className="flex gap-10 justify-items-center justify-evenly items-center rounded-2xl md:h-[50vh] h-full">
+                    <div
+                        className="w-full bg-white rounded-xl border-purpleColor border-2 items-center gap-1 justify-between mb-4 py-2">
+
+                        <p className={'px-3 mb-4 mt-2 text-blackColor font-medium'}>Your offer</p>
+
                         <SwapInformation
                             userObjectIds={creatorObjectIds}
                             setShowCollection={setShowCollection}
                             setCoinAmount={setCreatorCoinAmount}
                             coinAmount={creatorCoinAmount}
                         />
-
+                    </div>
+                    <div
+                        className="w-full bg-white rounded-xl border-redColor border-2 items-center gap-1 justify-between mb-4 py-2">
+                        <div className={'flex justify-between content-center items-center'}>
+                            <p className={'px-3 mb-4 mt-2 text-blackColor font-medium'}>You want to get</p>
+                            <div className={'px-3 flex content-center items-center gap-1'}>
+                                {recipientAddress && (
+                                    <p className="text-sm text-grayColor">{`${formatSuiAddress(recipientAddress)}`}</p>)}
+                                {recipientAddress && <XMarkIcon className={'w-5 h-5 text-grayColor cursor-pointer'} onClick={()=>{
+                                    setRecipientAddress('');
+                                    setRecipientObjectIds([]);
+                                    setRecipientCoinAmount(null);
+                                }
+                                }/>}
+                            </div>
+                        </div>
                         {/* //Counterparty wallet address */}
                         <SwapInformation
                             userObjectIds={recipientObjectIds}
@@ -186,18 +202,19 @@ const Swap = () => {
                             isRecipient={true}
                         />
                     </div>
-                    <button
-                        onClick={createOffer}
-                        disabled={waitSui}
-                        className="w-full py-3 bg-redColor text-white font-medium mt-2 rounded-md disabled:opacity-50"
-                    >
-                        Create Offer
-                    </button>
+
+
                 </div>
+                <button
+                    onClick={createOffer}
+                    disabled={waitSui || (!creatorObjectIds.length && !creatorCoinAmount) || (!recipientObjectIds.length && !recipientCoinAmount)}
+                    className="w-[200px] py-3 bg-[#5AAC67] text-white font-medium mb-4 rounded-md disabled:opacity-40 disabled:cursor-not-allowed"
+                >
+                    Create Offer
+                </button>
 
                 <div className="flex gap-10 justify-center">
                     <p className="text-sm underline">Verified Collection</p>
-                    {/* <p className="text-sm">Rules</p> */}
                     <p className="text-sm text-right md:text-center">Fees Swap 0.4 sui</p>
                 </div>
                 {showCollection && (
@@ -210,7 +227,7 @@ const Swap = () => {
                     />
                 )}
                 {showReceivedNFT && (
-                    <RecieveNFTDialog
+                    <RecipientCollectionDialog
                         wallet={wallet}
                         opened={showReceivedNFT}
                         setOpened={setShowReceivedNFT}
