@@ -108,9 +108,11 @@ const Swap = () => {
             Swap NFTs secure and without third-parties companies!
           </p>
         </div>
-        <button className="w-40 font-semibold rounded-lg border-2 h-12 border-grayColor text-blackColor bg-white hover:bg-yellowColor hover:border-yellowColor hover:text-white">
-          <Link href={"./swap/history"}>View History</Link>
-        </button>
+        <Link href={"./swap/history"}>
+          <button className="w-40 font-semibold rounded-lg border-2 h-12 border-grayColor text-blackColor bg-white hover:bg-yellowColor hover:border-yellowColor hover:text-white">
+            View History
+          </button>
+        </Link>
       </div>
     );
   };
@@ -178,7 +180,7 @@ const Swap = () => {
           Create Offer
         </button>
 
-        <button onClick={acceptOffer}>accept</button>
+        {/*<button onClick={acceptOffer}>accept</button>*/}
         <div className="flex gap-10 justify-center">
           <p className="text-sm underline">Verified Collection</p>
           <p className="text-sm text-right md:text-center">Fees Swap 0.4 sui</p>

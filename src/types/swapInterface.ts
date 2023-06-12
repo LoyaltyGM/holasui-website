@@ -5,6 +5,13 @@ export type TradeObjectType = {
     url: string;
 };
 
+export type TabType = "sent" | "received";
+
+export interface IDetailOfferProps {
+  offer_id: IOffer;
+}
+
+
 export interface ISwapInformation {
     userObjectIds: TradeObjectType[];
     setShowCollection: any;

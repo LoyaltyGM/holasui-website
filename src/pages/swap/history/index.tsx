@@ -1,9 +1,9 @@
 import { ethos, EthosConnectStatus } from "ethos-connect";
-import { NoConnectWallet } from "components";
-import { classNames, ESCROW_HUB_ID, formatSuiAddress, formatSuiNumber } from "utils";
+import { NoConnectWallet } from "../../../components";
+import { classNames, ESCROW_HUB_ID, formatSuiAddress, formatSuiNumber } from "../../../utils";
 import { useEffect, useState } from "react";
-import { IOffer } from "types";
-import { suiProvider } from "services/sui";
+import {IOffer, TabType} from "../../../types";
+import { suiProvider } from "../../../services/sui";
 import { getObjectFields } from "@mysten/sui.js";
 import { useRouter } from "next/router";
 import { ArrowLeftIcon } from "@heroicons/react/24/outline";
@@ -11,17 +11,17 @@ import Link from "next/link";
 import ImageSuiToken from "/public/img/SuiToken.png";
 import Image from "next/image";
 
-const History = () => {
+const Index = () => {
   const { status, wallet } = ethos.useWallet();
-  const [offers, setOffers] = useState<IOffer[]>([]);
   const router = useRouter();
 
-  const [activeTab, setActiveTab] = useState("sent");
+  const [activeTab, setActiveTab] = useState<TabType>("sent");
   const [sentOffers, setSentOffers] = useState<IOffer[] | null>();
   const [receivedOffers, setReceivedOffers] = useState<IOffer[] | null>();
 
   const generateLink = (offer: IOffer) => {
-    return "/swap/" + offer.id; // replace this with your actual link generation function
+    //@ts-ignore
+    return "/swap/history/" + offer.id?.id!; // replace this with your actual link generation function
   };
 
   useEffect(() => {
@@ -41,7 +41,6 @@ const History = () => {
             return getObjectFields(suiObject) as IOffer;
           })
         ).then((offers) => {
-          setOffers(offers);
           const sent = offers.filter((offer) => offer.creator === wallet.address);
           const received = offers.filter((offer) => offer.recipient !== wallet.address);
 
@@ -55,9 +54,6 @@ const History = () => {
 
     fetchHistory().then();
   }, [wallet]);
-
-  const AwaitingTableHeader = []
-
 
   const SwitchTab = () => {
     return (
@@ -83,7 +79,6 @@ const History = () => {
       </div>
     );
   };
-  console.log("sentOffers", sentOffers);
   return status === EthosConnectStatus.NoConnection ? (
     <NoConnectWallet title={"P2P Swap!"} />
   ) : (
@@ -96,7 +91,7 @@ const History = () => {
         <ArrowLeftIcon className={"stroke-[2px] h-5 w-5"} />
         <p className={"text-sm font-medium"}>Back</p>
       </button>
-      <div className={"mt-10 mb-8 font-extrabold text-3xl"}>
+      <div className={"mt-10 mb-8 text-blackColor font-extrabold text-3xl"}>
         <p>Swap History</p>
       </div>
       <SwitchTab />
@@ -247,11 +242,11 @@ const History = () => {
                       {offer.status === 0 ? "Inactive" : offer.status === 1 ? "Active" : "Completed"}
                     </span>
                       </td>
-                      <td className={"whitespace-nowrap px-2 py-5 text-sm text-purpleColor"}>
+                      <td className={"whitespace-nowrap px-2 py-5 text-sm text-redColor"}>
                         <Link href={generateLink(offer)}>
                           <div
                               className={
-                                "border-purpleColor hover:bg-purpleColor hover:text-white border rounded-lg content-center flex items-center justify-center py-2"
+                                "border-redColor hover:bg-redColor hover:text-white border rounded-lg content-center flex items-center justify-center py-2"
                               }
                           >
                             Learn more
@@ -268,4 +263,4 @@ const History = () => {
   );
 };
 
-export default History;
+export default Index;
