@@ -1,5 +1,5 @@
 import { TransactionBlock } from "@mysten/sui.js";
-import { ESCROW_HUB_ID, FRENS_TYPE, PACKAGE_ID_TEST_ESCROW } from "utils";
+import { ESCROW_HUB_ID, FRENS_TYPE, PACKAGE_ID_TEST_ESCROW, PRICE_ESCROW } from "utils";
 
 export const signTransactionCreateEscrow = ({
   creator_objects,
@@ -63,7 +63,7 @@ export const signTransactionExchangeEscrow = ({
   const tx = new TransactionBlock();
 
   const [coin] = tx.splitCoins(tx.gas, [tx.pure(recipient_coin_amount * 1e9, "u64")]);
-  const [feeCoin] = tx.splitCoins(tx.gas, [tx.pure(0.4 * 1e9, "u64")]);
+  const [feeCoin] = tx.splitCoins(tx.gas, [tx.pure(PRICE_ESCROW * 1e9, "u64")]);
 
   tx.moveCall({
     target: `${PACKAGE_ID_TEST_ESCROW}::escrow::exchange`,

@@ -1,9 +1,9 @@
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, useEffect, useState } from "react";
-import { ICapy, handleSetBatchIdForSwap, ISwapRecipientCollectionDialog } from "types";
+import { handleSetBatchIdForSwap, ICapy, ISwapRecipientCollectionDialog } from "types";
 import { Montserrat } from "next/font/google";
 import { XMarkIcon } from "@heroicons/react/24/solid";
-import { classNames, convertIPFSUrl, formatSuiAddress, FRENS_TYPE, TYPE_WIZARD } from "utils";
+import { classNames, convertIPFSUrl, formatSuiAddress, FRENS_TYPE } from "utils";
 import Image from "next/image";
 import { fetchSuifrens, suiProvider } from "services/sui";
 import { LabeledInput } from "components/Forms/Inputs";
@@ -58,9 +58,9 @@ export const RecipientCollectionDialog = ({
       console.log("RESPONSE", response.data);
       const suifrens = response.data
         .filter(
-            (object) => object?.data?.type === FRENS_TYPE //||
-             //object?.data?.type === TYPE_WIZARD
-            // object?.data?.type === TYPE_FUDDIES
+          (object) => object?.data?.type === FRENS_TYPE //||
+          //object?.data?.type === TYPE_WIZARD
+          // object?.data?.type === TYPE_FUDDIES
         )
         .map((suifrenNftObject) => {
           return initializeSuifren(suifrenNftObject);
