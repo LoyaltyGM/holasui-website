@@ -8,4 +8,11 @@ export interface ILayoutProps {
   footer?: boolean;
 }
 
-export type AlertMessageType = "Staking" | "Unstaking" | "Open" | "Claim" | "CreateOffer";
+export type AlertMessageType =
+  | "Staking"
+  | "Unstaking"
+  | "Open"
+  | "Claim"
+  | "CreateOffer"
+  | "CancelOffer"
+  | "AcceptOffer";

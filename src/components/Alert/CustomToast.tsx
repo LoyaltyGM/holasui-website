@@ -37,6 +37,12 @@ export function AlertSucceed(success_type: AlertMessageType) {
     case "CreateOffer":
       successTitle = "You have successfully created an offer!";
       break;
+    case "CancelOffer":
+      successTitle = "You have successfully canceled an offer!";
+      break;
+    case "AcceptOffer":
+      successTitle = "You have exchanged items!";
+      break;
     default:
       successTitle = "Something went wrong";
       break;

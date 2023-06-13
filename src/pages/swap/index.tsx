@@ -1,7 +1,7 @@
 import { ethos, EthosConnectStatus } from "ethos-connect";
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 import { getExecutionStatus, getExecutionStatusError } from "@mysten/sui.js";
-import { signTransactionCreateEscrow, signTransactionExchangeEscrow } from "services/sui";
+import { signTransactionCreateEscrow } from "services/sui";
 import {
   AlertErrorMessage,
   AlertSucceed,
@@ -32,9 +32,8 @@ const Swap = () => {
   const [showReceivedNFT, setShowReceivedNFT] = useState(false);
   const [showCollection, setShowCollection] = useState(false);
 
-  useEffect(() => {
+  useEffect(() => {}, []);
 
-  }, [])
   async function createOffer() {
     if (!wallet || !recipientAddress) return;
     setWaitSui(true);
@@ -59,46 +58,6 @@ const Swap = () => {
         const error_status = getExecutionStatusError(response);
         if (error_status) AlertErrorMessage(error_status);
       } else {
-        AlertSucceed("CreateOffer");
-
-      }
-    } catch (e) {
-      console.error(e);
-    } finally {
-      setWaitSui(false);
-    }
-  }
-
-  async function acceptOffer() {
-    if (!wallet) return;
-    setWaitSui(true);
-    try {
-      const response = await wallet.signAndExecuteTransactionBlock({
-        transactionBlock: signTransactionExchangeEscrow({
-          escrowId: "0x0cf0831bb6a1ed1690bdf2f2e224137575baf5c4a7b1f13661ec094bf3c8fff7",
-          recipient_coin_amount: 0.2,
-          recipient_objects: [
-            "0x8cb0f6f396d1354396047c3d053dff65c8f3bbf78a2ef44b54f174b542f91353",
-            "0x390da08119de7f874b2478655e9d40ef5d0c77bde1da70eba3ed5c4ca70ecd76",
-          ],
-        }),
-        options: {
-          showEffects: true,
-        },
-      });
-
-      const status = getExecutionStatus(response);
-      console.log(status);
-      if (status?.status === "failure") {
-        console.log(status.error);
-        const error_status = getExecutionStatusError(response);
-        if (error_status) AlertErrorMessage(error_status);
-      } else {
-        setCreatorObjectIds([]);
-        setCreatorCoinAmount(null);
-        setRecipientAddress("");
-        setRecipientObjectIds([]);
-        setRecipientCoinAmount(null);
         AlertSucceed("CreateOffer");
       }
     } catch (e) {

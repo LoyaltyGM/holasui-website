@@ -1,11 +1,11 @@
 import type { GetServerSideProps, NextPage } from "next";
 import { useEffect, useState } from "react";
 import { ethos, EthosConnectStatus } from "ethos-connect";
-import { CopyTextButton, NoConnectWallet } from "components";
+import { AlertErrorMessage, AlertSucceed, CopyTextButton, NoConnectWallet } from "components";
 import { classNames, convertIPFSUrl, formatSuiAddress, formatSuiNumber } from "utils";
 import { IOffer, TradeObjectType } from "types";
-import { suiProvider } from "services/sui";
-import { getObjectFields } from "@mysten/sui.js";
+import { signTransactionCancelEscrow, signTransactionExchangeEscrow, suiProvider } from "services/sui";
+import { getExecutionStatus, getExecutionStatusError, getObjectFields } from "@mysten/sui.js";
 import { LinkIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
 import ImageSuiToken from "/public/img/SuiToken.png";
@@ -36,6 +36,7 @@ export const getServerSideProps: GetServerSideProps<IDetailOfferProps> = async (
 const DetailSwapOffer: NextPage<IDetailOfferProps> = ({ offerId }) => {
   const [offer, setOffer] = useState<IOffer>();
   const { status, wallet } = ethos.useWallet();
+  const [waitSui, setWaitSui] = useState(false);
 
   const [recipientObjects, setRecipientObjects] = useState<TradeObjectType[]>([]);
   const [creatorObjects, setCreatorObjects] = useState<TradeObjectType[]>([]);
@@ -86,7 +87,6 @@ const DetailSwapOffer: NextPage<IDetailOfferProps> = ({ offerId }) => {
       if (!offer) return;
 
       const tradeObjects: TradeObjectType[] = [];
-      console.log( getObjectFields(offer.creator_items_ids)?.contents);
       await Promise.all(
         getObjectFields(offer.creator_items_ids)?.contents?.map(async (objectId: string) => {
           const object = getObjectFields(
@@ -96,7 +96,6 @@ const DetailSwapOffer: NextPage<IDetailOfferProps> = ({ offerId }) => {
             })
           );
 
-          console.log(object);
           const tradeObject = {
             id: objectId,
             url: convertIPFSUrl(object?.url),
@@ -112,6 +111,64 @@ const DetailSwapOffer: NextPage<IDetailOfferProps> = ({ offerId }) => {
     fetchRecipientObjects().then();
     fetchCreatorObjects().then();
   }, [offer]);
+
+  async function acceptOffer() {
+    if (!wallet || !offer) return;
+    setWaitSui(true);
+    try {
+      const response = await wallet.signAndExecuteTransactionBlock({
+        transactionBlock: signTransactionExchangeEscrow({
+          escrowId: offerId,
+          recipient_coin_amount: formatSuiNumber(offer?.recipient_coin_amount),
+          recipient_objects: getObjectFields(offer.creator_items_ids)?.contents,
+        }),
+        options: {
+          showEffects: true,
+        },
+      });
+
+      const status = getExecutionStatus(response);
+      console.log(status);
+      if (status?.status === "failure") {
+        console.log(status.error);
+        const error_status = getExecutionStatusError(response);
+        if (error_status) AlertErrorMessage(error_status);
+      } else {
+        AlertSucceed("AcceptOffer");
+      }
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setWaitSui(false);
+    }
+  }
+
+  async function cancelOffer() {
+    if (!wallet || !offer) return;
+    setWaitSui(true);
+    try {
+      const response = await wallet.signAndExecuteTransactionBlock({
+        transactionBlock: signTransactionCancelEscrow(offerId),
+        options: {
+          showEffects: true,
+        },
+      });
+
+      const status = getExecutionStatus(response);
+      console.log(status);
+      if (status?.status === "failure") {
+        console.log(status.error);
+        const error_status = getExecutionStatusError(response);
+        if (error_status) AlertErrorMessage(error_status);
+      } else {
+        AlertSucceed("CancelOffer");
+      }
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setWaitSui(false);
+    }
+  }
 
   const OfferInformation = ({
     userObjectIds,
@@ -191,6 +248,26 @@ const DetailSwapOffer: NextPage<IDetailOfferProps> = ({ offerId }) => {
           />
         </div>
       </div>
+
+      {offer.status == 1 && wallet?.address == offer.recipient && (
+        <button
+          onClick={() => acceptOffer()}
+          disabled={waitSui}
+          className="w-[200px] py-3 bg-[#5AAC67] text-white font-medium mb-4 rounded-md disabled:opacity-40 disabled:cursor-not-allowed"
+        >
+          Accept
+        </button>
+      )}
+
+      {offer.status == 1 && wallet?.address == offer.creator && (
+        <button
+          onClick={() => cancelOffer()}
+          disabled={waitSui}
+          className="w-[200px] py-3 bg-[#5AAC67] text-white font-medium mb-4 rounded-md disabled:opacity-40 disabled:cursor-not-allowed"
+        >
+          Cancel
+        </button>
+      )}
     </main>
   ) : (
     <div className={"flex flex-col items-center justify-center mt-40"}>
