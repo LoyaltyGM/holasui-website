@@ -1,12 +1,11 @@
 import { TransactionBlock } from "@mysten/sui.js";
 import {
+  FRENS_STAKING_POOL_ID,
   FRENS_TYPE,
-  GAME_PASS_REWARD_INFO_ID,
   PACKAGE_ID_V1,
   PRICE_STACKED,
   PRICE_UNSTACKED,
-  STAKING_HUB_ID,
-  FRENS_STAKING_POOL_ID,
+  STAKING_HUB_ID
 } from "utils/constants";
 
 // start sleep
@@ -128,18 +127,4 @@ export const singTransactionsToBatchClaimPoints = (staking_ids: string[]) => {
     });
   });
   return txb;
-};
-
-export const signTransactionClaimGamePass = () => {
-  const tx = new TransactionBlock();
-  tx.moveCall({
-    target: `${PACKAGE_ID_V1}::staking::claim_reward`,
-    arguments: [
-      tx.pure(FRENS_STAKING_POOL_ID), // staking pool
-      tx.pure(GAME_PASS_REWARD_INFO_ID), // staking hub
-    ],
-    typeArguments: [FRENS_TYPE!], // type of frens
-  });
-
-  return tx;
 };

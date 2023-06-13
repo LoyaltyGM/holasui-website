@@ -9,6 +9,7 @@ import { Montserrat } from "next/font/google";
 import HamburgerMenu from "./HamburgerMenu";
 
 const font_montserrat = Montserrat({ subsets: ["latin"] });
+
 export function Sidebar({ children }: ILayoutProps) {
   const Header = () => {
     return (
@@ -31,10 +32,6 @@ export function Sidebar({ children }: ILayoutProps) {
             </Link>
             <Link href="/swap">
               <div className="block py-2 rounded-md my-3 hover:text-purpleColor">P2P Swap</div>
-            </Link>
-
-            <Link href="/game">
-              <div className="block py-2 rounded-md my-3 hover:text-redColor">Game</div>
             </Link>
           </div>
 

@@ -16,11 +16,9 @@ export const PACKAGE_ID_V1 = "0xeebdb577b6e4505caaf2b1235a0243e3314082a634218f21
 export const PACKAGE_ID_TEST_ESCROW = "0xae8617a5387dfecdc4f2b6125960d089cdea32b4e5dadc6be213640b2a272ff0";
 export const STAKING_HUB_ID = "0xc359293e60947b8ce6d7e3fe93bc475f7811b90e650e362650bc51f40db55954";
 export const STAKING_TICKET_TYPE = `${PACKAGE_ID_V0}::staking::StakingTicket`;
-export const REWARD_OBJECT_TYPE = `${PACKAGE_ID_V1}::staking::Reward`;
 // FRENS POOL
 export const FRENS_STAKING_POOL_ID = "0xd2421e54a1fb642900d30cba6d64bc4f5deaafec9eb507d6060d465efc8af3ea";
 export const FRENS_STAKING_POOL_POINTS_TABLE_ID = "0x2c7a680cb2bb1262b064f58b95c3aa12311c241b752af822370ac0505f3b97f0";
-export const GAME_PASS_REWARD_INFO_ID = "0x3208d1fd94e08f9b91c7c8d43743769f6644563f6d9f3c9ed8477d9773471bf1";
 export const PRICE_STACKED: number = 0.5;
 export const PRICE_UNSTACKED: number = 1;
 
