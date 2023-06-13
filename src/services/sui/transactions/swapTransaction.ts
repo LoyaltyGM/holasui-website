@@ -63,11 +63,13 @@ export const signTransactionExchangeEscrow = ({
   const tx = new TransactionBlock();
 
   const [coin] = tx.splitCoins(tx.gas, [tx.pure(recipient_coin_amount * 1e9, "u64")]);
+  const [feeCoin] = tx.splitCoins(tx.gas, [tx.pure(0.4 * 1e9, "u64")]);
 
   tx.moveCall({
     target: `${PACKAGE_ID_TEST_ESCROW}::escrow::exchange`,
     arguments: [
       tx.object(ESCROW_HUB_ID),
+      feeCoin,
       tx.pure(escrowId),
       tx.makeMoveVec({
         type: FRENS_TYPE,

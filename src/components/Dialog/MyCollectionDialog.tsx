@@ -1,12 +1,11 @@
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, useEffect, useState } from "react";
-import { ICapy, ISwapCollectionDialog} from "types";
+import { handleSetBatchIdForSwap, ICapy, ISwapCollectionDialog } from "types";
 import { Montserrat } from "next/font/google";
 import { XMarkIcon } from "@heroicons/react/24/solid";
 import { classNames } from "utils";
 import Image from "next/image";
 import { fetchSuifrens } from "services/sui";
-import { handleSetBatchIdForSwap } from "types";
 
 const font_montserrat = Montserrat({ subsets: ["latin"] });
 
@@ -103,7 +102,9 @@ export const MyCollectionDialog = ({
                                 )}
                               >
                                 <Image src={fren.url} alt="collection_img" width={90} height={130} className="mt-1" />
-                                <p className="mt-1 text-sm">{classNames(fren.description ? `${fren.description}` : "")}</p>
+                                <p className="mt-1 text-sm">
+                                  {classNames(fren.description ? `${fren.description}` : "")}
+                                </p>
                               </div>
                             </button>
                           );

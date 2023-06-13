@@ -101,9 +101,9 @@ const Swap = () => {
     try {
       const response = await wallet.signAndExecuteTransactionBlock({
         transactionBlock: signTransactionExchangeEscrow({
-          escrowId: "0xbc33bccddfb618f822a3e4fe5f429a33bb6d1157e7764d46cc8875e93851b5cd",
-          recipient_coin_amount: 0.1,
-          recipient_objects: ["0x740d986ee3f595e9e1421eb1c97e39a311ad3f244459c43ce22a7d7e205cc6bd"],
+          escrowId: "0x623347d3dce0028d0ba59c38d152089819b52a1b3bd96659c2c4fd74202a9552",
+          recipient_coin_amount: 0.2,
+          recipient_objects: ["0x45cab8a1e87c5581e825554dab06b14ed4bb1bfbf37e2ce3635c41c7dc4596e4"],
         }),
         options: {
           showEffects: true,
