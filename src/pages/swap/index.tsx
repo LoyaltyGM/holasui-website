@@ -1,24 +1,23 @@
 import { ethos, EthosConnectStatus } from "ethos-connect";
-import { useEffect, useState } from "react";
-import { getExecutionStatus, getExecutionStatusError, getObjectFields } from "@mysten/sui.js";
-import { signTransactionCreateEscrow, signTransactionExchangeEscrow, suiProvider } from "services/sui";
+import { useState } from "react";
+import { getExecutionStatus, getExecutionStatusError } from "@mysten/sui.js";
+import { signTransactionCreateEscrow, signTransactionExchangeEscrow } from "services/sui";
 import {
   AlertErrorMessage,
   AlertSucceed,
-  HistoryP2PDialog,
   MyCollectionDialog,
   NoConnectWallet,
   RecipientCollectionDialog,
   SwapInformation,
 } from "components";
-import { IOffer, TradeObjectType } from "types";
-import { classNames, ESCROW_HUB_ID, formatSuiAddress } from "utils";
+import { TradeObjectType } from "types";
+import { classNames, formatSuiAddress } from "utils";
 import { XMarkIcon } from "@heroicons/react/24/outline";
+import Link from "next/link";
 
 const Swap = () => {
   const { wallet, status } = ethos.useWallet();
   const [waitSui, setWaitSui] = useState(false);
-  const [allOffers, setAllOffers] = useState<IOffer[]>([]);
 
   // creator
   const [creatorObjectIds, setCreatorObjectIds] = useState<TradeObjectType[]>([]);
@@ -32,38 +31,9 @@ const Swap = () => {
   // dialog wallets
   const [showReceivedNFT, setShowReceivedNFT] = useState(false);
   const [showCollection, setShowCollection] = useState(false);
-  const [showHistory, setShowHistory] = useState(false);
-
-  useEffect(() => {
-    async function fetchHistory() {
-      if (!wallet) return;
-      try {
-        const response = await suiProvider.getDynamicFields({
-          parentId: ESCROW_HUB_ID,
-        });
-        Promise.all(
-          response?.data?.map(async (df): Promise<IOffer> => {
-            const suiObject = await suiProvider.getObject({
-              id: df?.objectId!,
-              options: { showContent: true },
-            });
-
-            return getObjectFields(suiObject) as IOffer;
-          })
-        ).then((offers) => {
-          setAllOffers(offers);
-        });
-      } catch (e) {
-        console.error(e);
-      }
-    }
-
-    fetchHistory().then();
-  }, [wallet, waitSui]);
 
   async function createOffer() {
     if (!wallet || !recipientAddress) return;
-
     setWaitSui(true);
     try {
       const response = await wallet.signAndExecuteTransactionBlock({
@@ -101,9 +71,12 @@ const Swap = () => {
     try {
       const response = await wallet.signAndExecuteTransactionBlock({
         transactionBlock: signTransactionExchangeEscrow({
-          escrowId: "0x623347d3dce0028d0ba59c38d152089819b52a1b3bd96659c2c4fd74202a9552",
+          escrowId: "0x0cf0831bb6a1ed1690bdf2f2e224137575baf5c4a7b1f13661ec094bf3c8fff7",
           recipient_coin_amount: 0.2,
-          recipient_objects: ["0x45cab8a1e87c5581e825554dab06b14ed4bb1bfbf37e2ce3635c41c7dc4596e4"],
+          recipient_objects: [
+            "0x8cb0f6f396d1354396047c3d053dff65c8f3bbf78a2ef44b54f174b542f91353",
+            "0x390da08119de7f874b2478655e9d40ef5d0c77bde1da70eba3ed5c4ca70ecd76",
+          ],
         }),
         options: {
           showEffects: true,
@@ -135,12 +108,11 @@ const Swap = () => {
             Swap NFTs secure and without third-parties companies!
           </p>
         </div>
-        <button
-          className="w-40 font-semibold rounded-lg border-2 h-12 border-grayColor text-blackColor bg-white hover:bg-yellowColor hover:border-yellowColor hover:text-white"
-          onClick={() => setShowHistory(true)}
-        >
-          View History
-        </button>
+        <Link href={"./swap/history"}>
+          <button className="w-40 font-semibold rounded-lg border-2 h-12 border-grayColor text-blackColor bg-white hover:bg-yellowColor hover:border-yellowColor hover:text-white">
+            View History
+          </button>
+        </Link>
       </div>
     );
   };
@@ -208,7 +180,7 @@ const Swap = () => {
           Create Offer
         </button>
 
-        <button onClick={acceptOffer}>accept</button>
+        {/*<button onClick={acceptOffer}>accept</button>*/}
         <div className="flex gap-10 justify-center">
           <p className="text-sm underline">Verified Collection</p>
           <p className="text-sm text-right md:text-center">Fees Swap 0.4 sui</p>
@@ -232,9 +204,6 @@ const Swap = () => {
             walletAddressToSearch={recipientAddress}
             setWalletAddressToSearch={setRecipientAddress}
           />
-        )}
-        {showHistory && allOffers && (
-          <HistoryP2PDialog wallet={wallet} opened={showHistory} setOpened={setShowHistory} offers={allOffers} />
         )}
       </>
     </main>

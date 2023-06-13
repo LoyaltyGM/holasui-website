@@ -1,6 +1,7 @@
 import * as process from "process";
 
-export const SUI_RPC_URL = process.env.NEXT_PUBLIC_SUI_RPC_URL_SHINAMI as string;
+export const SUI_RPC_URL = process.env.NEXT_PUBLIC_SUI_RPC_URL as string;
+
 
 // ==== NFT TYPES ====
 
@@ -25,5 +26,6 @@ export const PRICE_STACKED: number = 0.5;
 export const PRICE_UNSTACKED: number = 1;
 
 // ==== ESCROW ====
-export const ESCROW_HUB_ID = process.env.NEXT_PUBLIC_ESCROW_HUB_ID as string;
+export const ESCROW_HUB_ID = process.env.NEXT_PUBLIC_ESCROW_HUB_ID_2 as string;
+
 export const PRICE_ESCROW: number = process.env.NEXT_PUBLIC_PRICE_ESCROW as unknown as number | 0;
