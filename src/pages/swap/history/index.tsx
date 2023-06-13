@@ -137,9 +137,9 @@ const Index = () => {
                         <p>🖼</p>️
                       </div>
                       {offer.recipient_items_ids.fields.contents.length === 0 ? (
-                        <p className={'font-semibold'}>{"-"}</p>
+                        <p className={'font-black'}>{"-"}</p>
                       ) : (
-                        <p className={'font-black'}>+{offer.recipient_items_ids.fields.contents.length}</p>
+                        <p className={'font-semibold'}>+{offer.recipient_items_ids.fields.contents.length}</p>
                       )}
                     </div>
                   </td>

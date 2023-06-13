@@ -1,5 +1,5 @@
 import { ethos, EthosConnectStatus } from "ethos-connect";
-import { useState } from "react";
+import {useEffect, useState} from "react";
 import { getExecutionStatus, getExecutionStatusError } from "@mysten/sui.js";
 import { signTransactionCreateEscrow, signTransactionExchangeEscrow } from "services/sui";
 import {
@@ -32,6 +32,9 @@ const Swap = () => {
   const [showReceivedNFT, setShowReceivedNFT] = useState(false);
   const [showCollection, setShowCollection] = useState(false);
 
+  useEffect(() => {
+
+  }, [])
   async function createOffer() {
     if (!wallet || !recipientAddress) return;
     setWaitSui(true);
@@ -57,6 +60,7 @@ const Swap = () => {
         if (error_status) AlertErrorMessage(error_status);
       } else {
         AlertSucceed("CreateOffer");
+
       }
     } catch (e) {
       console.error(e);
@@ -90,6 +94,11 @@ const Swap = () => {
         const error_status = getExecutionStatusError(response);
         if (error_status) AlertErrorMessage(error_status);
       } else {
+        setCreatorObjectIds([]);
+        setCreatorCoinAmount(null);
+        setRecipientAddress("");
+        setRecipientObjectIds([]);
+        setRecipientCoinAmount(null);
         AlertSucceed("CreateOffer");
       }
     } catch (e) {
