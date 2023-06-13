@@ -42,7 +42,7 @@ const Index = () => {
           })
         ).then((offers) => {
           const sent = offers.filter((offer) => offer.creator === wallet.address);
-          const received = offers.filter((offer) => offer.recipient !== wallet.address);
+          const received = offers.filter((offer) => offer.recipient === wallet.address);
 
           setSentOffers(sent);
           setReceivedOffers(received);
