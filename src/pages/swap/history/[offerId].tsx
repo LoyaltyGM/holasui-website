@@ -2,11 +2,13 @@ import type { GetServerSideProps, NextPage } from "next";
 import { useEffect, useState } from "react";
 import { ethos, EthosConnectStatus } from "ethos-connect";
 import { CopyTextButton, NoConnectWallet } from "components";
-import { classNames, formatSuiAddress } from "utils";
-import { IOffer } from "types";
+import { classNames, convertIPFSUrl, formatSuiAddress, formatSuiNumber } from "utils";
+import { IOffer, TradeObjectType } from "types";
 import { suiProvider } from "services/sui";
 import { getObjectFields } from "@mysten/sui.js";
 import { LinkIcon } from "@heroicons/react/24/outline";
+import Image from "next/image";
+import ImageSuiToken from "/public/img/SuiToken.png";
 
 interface IDetailOfferProps {
   offerId: string;
@@ -35,23 +37,120 @@ const DetailSwapOffer: NextPage<IDetailOfferProps> = ({ offerId }) => {
   const [offer, setOffer] = useState<IOffer>();
   const { status, wallet } = ethos.useWallet();
 
+  const [recipientObjects, setRecipientObjects] = useState<TradeObjectType[]>([]);
+  const [creatorObjects, setCreatorObjects] = useState<TradeObjectType[]>([]);
+
   useEffect(() => {
     async function fetchOffer() {
-      const offerObject = await suiProvider.getObject({
-        id: offerId,
-        options: { showContent: true },
-      });
+      const offerObject = getObjectFields(
+        await suiProvider.getObject({
+          id: offerId,
+          options: { showContent: true },
+        })
+      ) as IOffer;
 
-      setOffer(getObjectFields(offerObject) as IOffer);
+      setOffer(offerObject);
     }
 
     fetchOffer().then();
   }, []);
 
-  console.log(offer);
+  useEffect(() => {
+    async function fetchRecipientObjects() {
+      if (!offer) return;
+
+      const tradeObjects: TradeObjectType[] = [];
+
+      await Promise.all(
+        getObjectFields(offer.recipient_items_ids)?.contents?.map(async (objectId: string) => {
+          const object = getObjectFields(
+            await suiProvider.getObject({
+              id: objectId,
+              options: { showContent: true },
+            })
+          );
+
+          const tradeObject = {
+            id: objectId,
+            url: convertIPFSUrl(object?.url),
+          };
+
+          tradeObjects.push(tradeObject);
+        })
+      );
+
+      setRecipientObjects(tradeObjects);
+    }
+
+    async function fetchCreatorObjects() {
+      if (!offer) return;
+
+      const tradeObjects: TradeObjectType[] = [];
+      console.log( getObjectFields(offer.creator_items_ids)?.contents);
+      await Promise.all(
+        getObjectFields(offer.creator_items_ids)?.contents?.map(async (objectId: string) => {
+          const object = getObjectFields(
+            await suiProvider.getObject({
+              id: objectId,
+              options: { showContent: true },
+            })
+          );
+
+          console.log(object);
+          const tradeObject = {
+            id: objectId,
+            url: convertIPFSUrl(object?.url),
+          };
+
+          tradeObjects.push(tradeObject);
+        })
+      );
+
+      setCreatorObjects(tradeObjects);
+    }
+
+    fetchRecipientObjects().then();
+    fetchCreatorObjects().then();
+  }, [offer]);
+
+  const OfferInformation = ({
+    userObjectIds,
+    coinAmount,
+  }: {
+    coinAmount: number;
+    userObjectIds: TradeObjectType[];
+  }) => {
+    return (
+      <div className="md:w-full w-full px-3 md:mb-0 mb-2 ">
+        <div className="h-[45vh] md:h-[30vh] mb-2 flex flex-col cursor-pointer justify-between w-full py-2 px-2 font-normal border-2 rounded-lg bg-white border-lightGrayColor text-purpleColor">
+          <div className={"grid md:grid-cols-4 grid-cols-3 overflow-auto gap-1 h-[27vh] md:gap-4 md:mt-4 md:h-[20vh]"}>
+            {coinAmount > 0 && (
+              <div className="text-2xl text-center gap-2 w-24 h-24 border bg-white flex items-center justify-center rounded-md">
+                <Image src={ImageSuiToken} alt="token" className="h-[25px] w-[26px]" aria-hidden="true" />
+                <p>{`${coinAmount}`}</p>
+              </div>
+            )}
+            {userObjectIds?.map((object) => {
+              return (
+                <div
+                  key={object.id}
+                  className={classNames(
+                    "border bg-white w-24 h-24 flex flex-col content-center justify-center items-center p-2 rounded-md  cursor-pointer"
+                  )}
+                >
+                  <Image src={object.url} alt="collection_img" width={90} height={90} className="mt-1" />
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   return status === EthosConnectStatus.NoConnection ? (
     <NoConnectWallet title={"P2P Swap!"} />
-  ) : (
+  ) : offer ? (
     <main
       className={classNames(
         "flex flex-col gap-10 min-h-[100vh] md:min-h-[65vh] pl-2 pr-2 md:pl-16 py-6 md:mt-14 mt-18 md:pr-10 z-10 rounded-lg mt-8 "
@@ -63,22 +162,40 @@ const DetailSwapOffer: NextPage<IDetailOfferProps> = ({ offerId }) => {
           <LinkIcon className={"h-6"} />
         </a>
         from
-        <CopyTextButton showText={formatSuiAddress(offer?.creator || "")} copyText={offer?.creator || ""} />
+        <CopyTextButton showText={formatSuiAddress(offer.creator)} copyText={offer?.creator} />
         to
-        <CopyTextButton showText={formatSuiAddress(offer?.recipient || "")} copyText={offer?.recipient || ""} />
+        <CopyTextButton showText={formatSuiAddress(offer.recipient)} copyText={offer.recipient} />
       </div>
 
       <div className={"flex gap-4 text-xl"}>
         <p className={"font-semibold"}>Status: </p>
-        {offer?.status == 0 ? (
+        {offer.status == 0 ? (
           <p className={"text-red-500"}>Canceled</p>
-        ) : offer?.status == 1 ? (
+        ) : offer.status == 1 ? (
           <p className={"text-green-500"}>Active</p>
         ) : (
-          offer?.status == 2 && <p className={"text-blue-500"}>Exchanged</p>
+          offer.status == 2 && <p className={"text-blue-500"}>Exchanged</p>
         )}
       </div>
+
+      <div className="flex gap-10 justify-items-center justify-evenly items-center rounded-2xl md:h-[50vh] h-full">
+        <div className="w-full bg-white rounded-xl border-purpleColor border-2 items-center gap-1 justify-between mb-4 py-2">
+          <p className={"px-3 mb-4 mt-2 text-blackColor font-medium"}>{formatSuiAddress(offer.creator)} items</p>
+          <OfferInformation userObjectIds={creatorObjects} coinAmount={formatSuiNumber(offer.creator_coin_amount)} />
+        </div>
+        <div className="w-full bg-white rounded-xl border-redColor border-2 items-center gap-1 justify-between mb-4 py-2">
+          <p className={"px-3 mb-4 mt-2 text-blackColor font-medium"}>{formatSuiAddress(offer.recipient)} items</p>
+          <OfferInformation
+            userObjectIds={recipientObjects}
+            coinAmount={formatSuiNumber(offer.recipient_coin_amount)}
+          />
+        </div>
+      </div>
     </main>
+  ) : (
+    <div className={"flex flex-col items-center justify-center mt-40"}>
+      <p className={"text-2xl font-semibold mb-4"}>Offer not found</p>
+    </div>
   );
 };
 
