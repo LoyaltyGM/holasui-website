@@ -31,6 +31,7 @@ export interface ISwapRecipientCollectionDialog extends ISwapCollectionDialog {
 
 export interface IOffer {
   id: string;
+  // 0: cancelled, 1: active, 2: exchanged
   status: number;
   escrowed_items: any;
   escrowed_coin: any;
