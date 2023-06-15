@@ -63,7 +63,7 @@ const DetailSwapOffer: NextPage<IDetailOfferProps> = ({ offerId }) => {
       const tradeObjects: TradeObjectType[] = [];
 
       await Promise.all(
-        getObjectFields(offer.recipient_items_ids)?.contents?.map(async (objectId: string) => {
+        offer.recipient_items_ids?.map(async (objectId: string) => {
           const object = getObjectFields(
             await suiProvider.getObject({
               id: objectId,
@@ -88,7 +88,7 @@ const DetailSwapOffer: NextPage<IDetailOfferProps> = ({ offerId }) => {
 
       const tradeObjects: TradeObjectType[] = [];
       await Promise.all(
-        getObjectFields(offer.creator_items_ids)?.contents?.map(async (objectId: string) => {
+        offer.creator_items_ids?.map(async (objectId: string) => {
           const object = getObjectFields(
             await suiProvider.getObject({
               id: objectId,
