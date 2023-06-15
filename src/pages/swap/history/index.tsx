@@ -1,9 +1,9 @@
 import { ethos, EthosConnectStatus } from "ethos-connect";
-import { NoConnectWallet } from "../../../components";
-import { classNames, ESCROW_HUB_ID, formatSuiAddress, formatSuiNumber } from "../../../utils";
+import { NoConnectWallet } from "components";
+import { classNames, ESCROW_HUB_ID, formatSuiAddress, formatSuiNumber } from "utils";
 import { useEffect, useState } from "react";
-import {IOffer, TabType} from "../../../types";
-import { suiProvider } from "../../../services/sui";
+import { IOffer, TabType } from "types";
+import { suiProvider } from "services/sui";
 import { getObjectFields } from "@mysten/sui.js";
 import { useRouter } from "next/router";
 import { ArrowLeftIcon } from "@heroicons/react/24/outline";
@@ -59,19 +59,19 @@ const Index = () => {
     return (
       <div className={"flex gap-4 mb-5"}>
         <button
-          onClick={() => setActiveTab("sent")}
+          onClick={() => setActiveTab("received")}
           className={classNames(
             "px-4 w-64 font-medium py-2 rounded-full",
-            activeTab === "sent" ? "text-white bg-purpleColor" : "bg-white text-grayColor"
+            activeTab === "received" ? "text-white bg-purpleColor" : "bg-white text-grayColor"
           )}
         >
           Awaiting offers
         </button>
         <button
-          onClick={() => setActiveTab("received")}
+          onClick={() => setActiveTab("sent")}
           className={classNames(
             "px-4 w-64 font-medium py-2 rounded-full",
-            activeTab === "received" ? "text-white bg-redColor" : "bg-white text-grayColor"
+            activeTab === "sent" ? "text-white bg-redColor" : "bg-white text-grayColor"
           )}
         >
           Sent offers
@@ -122,24 +122,24 @@ const Index = () => {
           <tbody className={"text-black rounded-2xl mt-4"}>
             {sentOffers
               .map((offer, index) => (
-                <tr
-                  key={offer.id}
-                  className={"bg-white border-lightGrayColor rounded-full border "}
-                >
+                <tr key={offer.id} className={"bg-white border-lightGrayColor rounded-full border "}>
                   <td className={"px-3 py-5 text-sm text-gray-500"}>{index + 1}</td>
                   <td className={"whitespace-nowrap px-3 py-5 text-sm text-gray-500"}>
                     {formatSuiAddress(offer.recipient, 4, 4)}
                   </td>
                   <td className={"whitespace-nowrap px-3 py-5 text-sm text-gray-500"}>
-                    <div className={'flex gap-1 content-center items-center'}>
+                    <div className={"flex gap-1 content-center items-center"}>
                       <div
-                      className={'h-8 w-8 flex content-center justify-center items-center rounded-lg border border-lightGrayColor p-2'}>
+                        className={
+                          "h-8 w-8 flex content-center justify-center items-center rounded-lg border border-lightGrayColor p-2"
+                        }
+                      >
                         <p>🖼</p>️
                       </div>
-                      {offer.recipient_items_ids.fields.contents.length === 0 ? (
-                        <p className={'font-black'}>{"-"}</p>
+                      {offer.recipient_items_ids.length === 0 ? (
+                        <p className={"font-black"}>{"-"}</p>
                       ) : (
-                        <p className={'font-semibold'}>+{offer.recipient_items_ids.fields.contents.length}</p>
+                        <p className={"font-semibold"}>+{offer.recipient_items_ids.length}</p>
                       )}
                     </div>
                   </td>
@@ -154,9 +154,16 @@ const Index = () => {
                     </div>
                   </td>
                   <td className="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
-                    <span className={classNames("inline-flex items-center rounded-md px-2 py-1 text-xs font-medium",
-                        offer.status === 0 ? "text-grayColor" : offer.status === 1 ? "text-yellowColor" : "text-green-700"
-                    )}>
+                    <span
+                      className={classNames(
+                        "inline-flex items-center rounded-md px-2 py-1 text-xs font-medium",
+                        offer.status === 0
+                          ? "text-grayColor"
+                          : offer.status === 1
+                          ? "text-yellowColor"
+                          : "text-green-700"
+                      )}
+                    >
                       {offer.status === 0 ? "Inactive" : offer.status === 1 ? "Active" : "Completed"}
                     </span>
                   </td>
@@ -178,8 +185,8 @@ const Index = () => {
         </table>
       )}
       {activeTab === "received" && receivedOffers && (
-          <table className={"text-grayColor border-separate border-spacing-y-2"}>
-            <thead>
+        <table className={"text-grayColor border-separate border-spacing-y-2"}>
+          <thead>
             <tr className={"text-grayColor font-light ml-2"}>
               <th scope="col" className="py-3.5 text-left text-sm font-semibold">
                 <div className={"ml-2"}>N</div>
@@ -200,64 +207,71 @@ const Index = () => {
                 <span className="sr-only">Link</span>
               </th>
             </tr>
-            </thead>
-            <tbody className={"text-black rounded-2xl mt-4"}>
+          </thead>
+          <tbody className={"text-black rounded-2xl mt-4"}>
             {receivedOffers
-                .map((offer, index) => (
-                    <tr
-                        key={offer.id}
-                        className={"bg-white border-amber-950 rounded-full border"}
+              .map((offer, index) => (
+                <tr key={offer.id} className={"bg-white border-amber-950 rounded-full border"}>
+                  <td className={"px-3 py-5 text-sm text-gray-500"}>{index + 1}</td>
+                  <td className={"whitespace-nowrap px-3 py-5 text-sm text-gray-500"}>
+                    {formatSuiAddress(offer.recipient, 4, 4)}
+                  </td>
+                  <td className={"whitespace-nowrap px-3 py-5 text-sm text-gray-500"}>
+                    <div className={"flex gap-1 content-center items-center"}>
+                      <div
+                        className={
+                          "h-8 w-8 flex content-center justify-center items-center rounded-lg border border-lightGrayColor p-2"
+                        }
+                      >
+                        <p>🖼</p>️
+                      </div>
+                      {offer.recipient_items_ids.length === 0 ? (
+                        <p className={"font-black"}>{"-"}</p>
+                      ) : (
+                        <p className={"font-semibold"}>+{offer.recipient_items_ids.length}</p>
+                      )}
+                    </div>
+                  </td>
+                  <td className={"whitespace-nowrap px-3 py-5 text-sm text-gray-500"}>
+                    <div className={"flex gap-1"}>
+                      <Image src={ImageSuiToken} alt={"sui token"} className={"h-5 w-5"} />
+                      {offer.recipient_coin_amount === 0 ? (
+                        <p>{"-"}</p>
+                      ) : (
+                        <p>{formatSuiNumber(offer.recipient_coin_amount)}</p>
+                      )}
+                    </div>
+                  </td>
+                  <td className="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
+                    <span
+                      className={classNames(
+                        "inline-flex items-center rounded-md px-2 py-1 text-xs font-medium",
+                        offer.status === 0
+                          ? "text-grayColor"
+                          : offer.status === 1
+                          ? "text-yellowColor"
+                          : "text-green-700"
+                      )}
                     >
-                      <td className={"px-3 py-5 text-sm text-gray-500"}>{index + 1}</td>
-                      <td className={"whitespace-nowrap px-3 py-5 text-sm text-gray-500"}>
-                        {formatSuiAddress(offer.recipient, 4, 4)}
-                      </td>
-                      <td className={"whitespace-nowrap px-3 py-5 text-sm text-gray-500"}>
-                        <div className={'flex gap-1 content-center items-center'}>
-                          <div
-                              className={'h-8 w-8 flex content-center justify-center items-center rounded-lg border border-lightGrayColor p-2'}>
-                            <p>🖼</p>️
-                          </div>
-                          {offer.recipient_items_ids.fields.contents.length === 0 ? (
-                              <p className={'font-black'}>{"-"}</p>
-                          ) : (
-                              <p className={'font-semibold'}>+{offer.recipient_items_ids.fields.contents.length}</p>
-                          )}
-                        </div>
-                      </td>
-                      <td className={"whitespace-nowrap px-3 py-5 text-sm text-gray-500"}>
-                        <div className={"flex gap-1"}>
-                          <Image src={ImageSuiToken} alt={"sui token"} className={"h-5 w-5"} />
-                          {offer.recipient_coin_amount === 0 ? (
-                              <p>{"-"}</p>
-                          ) : (
-                              <p>{formatSuiNumber(offer.recipient_coin_amount)}</p>
-                          )}
-                        </div>
-                      </td>
-                      <td className="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
-                    <span className={classNames("inline-flex items-center rounded-md px-2 py-1 text-xs font-medium",
-                        offer.status === 0 ? "text-grayColor" : offer.status === 1 ? "text-yellowColor" : "text-green-700"
-                    )}>
                       {offer.status === 0 ? "Inactive" : offer.status === 1 ? "Active" : "Completed"}
                     </span>
-                      </td>
-                      <td className={"whitespace-nowrap px-2 py-5 text-sm text-redColor"}>
-                        <Link href={generateLink(offer)}>
-                          <div
-                              className={
-                                "border-redColor hover:bg-redColor hover:text-white border rounded-lg content-center flex items-center justify-center py-2"
-                              }
-                          >
-                            Learn more
-                          </div>
-                        </Link>
-                      </td>
-                    </tr>
-                ))
-                .reverse()}
-            </tbody>
-          </table>
+                  </td>
+                  <td className={"whitespace-nowrap px-2 py-5 text-sm text-redColor"}>
+                    <Link href={generateLink(offer)}>
+                      <div
+                        className={
+                          "border-redColor hover:bg-redColor hover:text-white border rounded-lg content-center flex items-center justify-center py-2"
+                        }
+                      >
+                        Learn more
+                      </div>
+                    </Link>
+                  </td>
+                </tr>
+              ))
+              .reverse()}
+          </tbody>
+        </table>
       )}
     </main>
   );
