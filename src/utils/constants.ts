@@ -23,8 +23,8 @@ export const PRICE_UNSTACKED: number = 1;
 
 // ==== ESCROW ====
 
-export const PACKAGE_ID_ESCROW = "0x501e55aa45734a87b11fdfcca02febd136fc063c71db4bc3f15a4f69f1365e7b";
+export const PACKAGE_ID_ESCROW = "0xb35fb8b537d26b11b17e18b691420c60244ee749095f0c840217bc17b01927bb";
 
-export const ESCROW_HUB_ID = "0xf82210562189d40a63d226b5ca472b7622334cbf820183071c37ecb9af75aca3";
+export const ESCROW_HUB_ID = "0x8ed94e02df55d019acd611ab233dc01631648df55116d24279008eeea85db691";
 
 export const PRICE_ESCROW: number = 0.4;
