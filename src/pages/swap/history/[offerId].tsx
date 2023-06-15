@@ -190,6 +190,7 @@ const DetailSwapOffer: NextPage<IDetailOfferProps> = ({ offerId }) => {
             {userObjectIds?.map((object) => {
               return (
                 <div
+                  onClick={() => window.open(`https://suiexplorer.com/object/${object.id}`, "_blank")}
                   key={object.id}
                   className={classNames(
                     "border bg-white w-24 h-24 flex flex-col content-center justify-center items-center p-2 rounded-md  cursor-pointer"
