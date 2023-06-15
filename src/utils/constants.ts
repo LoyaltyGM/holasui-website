@@ -13,7 +13,6 @@ export const FRENS_TYPE = "0x99b53de45f9b488de6b684bf2a4ee2151e434d6a94e13588a91
 
 export const PACKAGE_ID_V0 = "0x3412f5d7819fddb9d504a422177e3cc62c029f08002a0d51c0f7cfd93cfdfbcc";
 export const PACKAGE_ID_V1 = "0xeebdb577b6e4505caaf2b1235a0243e3314082a634218f2192d4aaba89bcb180";
-export const PACKAGE_ID_TEST_ESCROW = "0xae8617a5387dfecdc4f2b6125960d089cdea32b4e5dadc6be213640b2a272ff0";
 export const STAKING_HUB_ID = "0xc359293e60947b8ce6d7e3fe93bc475f7811b90e650e362650bc51f40db55954";
 export const STAKING_TICKET_TYPE = `${PACKAGE_ID_V0}::staking::StakingTicket`;
 // FRENS POOL
@@ -23,6 +22,9 @@ export const PRICE_STACKED: number = 0.5;
 export const PRICE_UNSTACKED: number = 1;
 
 // ==== ESCROW ====
-export const ESCROW_HUB_ID = "0x5dc540ab456b5ba8f5f13ce1770abe0dd6803c869d7bf867e46298be32cfdc3d";
+
+export const PACKAGE_ID_ESCROW = "0x501e55aa45734a87b11fdfcca02febd136fc063c71db4bc3f15a4f69f1365e7b";
+
+export const ESCROW_HUB_ID = "0xf82210562189d40a63d226b5ca472b7622334cbf820183071c37ecb9af75aca3";
 
 export const PRICE_ESCROW: number = 0.4;
