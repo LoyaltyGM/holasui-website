@@ -120,7 +120,7 @@ const DetailSwapOffer: NextPage<IDetailOfferProps> = ({ offerId }) => {
         transactionBlock: signTransactionExchangeEscrow({
           escrowId: offerId,
           recipient_coin_amount: formatSuiNumber(offer?.recipient_coin_amount),
-          recipient_objects: getObjectFields(offer.creator_items_ids)?.contents,
+          recipient_objects: offer.recipient_items_ids,
         }),
         options: {
           showEffects: true,
@@ -251,7 +251,7 @@ const DetailSwapOffer: NextPage<IDetailOfferProps> = ({ offerId }) => {
 
       {offer.status == 1 && wallet?.address == offer.recipient && (
         <button
-          onClick={() => acceptOffer()}
+          onClick={acceptOffer}
           disabled={waitSui}
           className="w-[200px] py-3 bg-[#5AAC67] text-white font-medium mb-4 rounded-md disabled:opacity-40 disabled:cursor-not-allowed"
         >
