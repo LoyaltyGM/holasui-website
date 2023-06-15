@@ -1,5 +1,5 @@
 import { TransactionBlock } from "@mysten/sui.js";
-import { ESCROW_HUB_ID, FRENS_TYPE, PACKAGE_ID_TEST_ESCROW, PRICE_ESCROW } from "utils";
+import { ESCROW_HUB_ID, FRENS_TYPE, PACKAGE_ID_ESCROW, PRICE_ESCROW } from "utils";
 
 export const signTransactionCreateEscrow = ({
   creator_objects,
@@ -21,7 +21,7 @@ export const signTransactionCreateEscrow = ({
   const [coin] = tx.splitCoins(tx.gas, [tx.pure(creator_coin_amount * 1e9, "u64")]);
 
   tx.moveCall({
-    target: `${PACKAGE_ID_TEST_ESCROW}::escrow::create`,
+    target: `${PACKAGE_ID_ESCROW}::escrow::create`,
     arguments: [
       tx.pure(ESCROW_HUB_ID),
       tx.makeMoveVec({
@@ -43,7 +43,7 @@ export const signTransactionCancelEscrow = (offerId: string) => {
   const tx = new TransactionBlock();
 
   tx.moveCall({
-    target: `${PACKAGE_ID_TEST_ESCROW}::escrow::cancel_creator_offer`,
+    target: `${PACKAGE_ID_ESCROW}::escrow::cancel_creator_offer`,
     arguments: [tx.object(offerId)],
     typeArguments: [FRENS_TYPE],
   });
@@ -66,7 +66,7 @@ export const signTransactionExchangeEscrow = ({
   const [feeCoin] = tx.splitCoins(tx.gas, [tx.pure(PRICE_ESCROW * 1e9, "u64")]);
 
   tx.moveCall({
-    target: `${PACKAGE_ID_TEST_ESCROW}::escrow::exchange`,
+    target: `${PACKAGE_ID_ESCROW}::escrow::exchange`,
     arguments: [
       tx.object(ESCROW_HUB_ID),
       feeCoin,
