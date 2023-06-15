@@ -43,8 +43,8 @@ export const signTransactionCancelEscrow = (offerId: string) => {
   const tx = new TransactionBlock();
 
   tx.moveCall({
-    target: `${PACKAGE_ID_ESCROW}::escrow::cancel_creator_offer`,
-    arguments: [tx.object(offerId)],
+    target: `${PACKAGE_ID_ESCROW}::escrow::cancel`,
+    arguments: [tx.pure(ESCROW_HUB_ID), tx.object(offerId)],
     typeArguments: [FRENS_TYPE],
   });
 
