@@ -6,9 +6,10 @@ import { classNames, convertIPFSUrl, formatSuiAddress, formatSuiNumber } from "u
 import { IOffer, TradeObjectType } from "types";
 import { signTransactionCancelEscrow, signTransactionExchangeEscrow, suiProvider } from "services/sui";
 import { getExecutionStatus, getExecutionStatusError, getObjectFields } from "@mysten/sui.js";
-import { LinkIcon } from "@heroicons/react/24/outline";
+import {ArrowLeftIcon, LinkIcon} from "@heroicons/react/24/outline";
 import Image from "next/image";
 import ImageSuiToken from "/public/img/SuiToken.png";
+import {useRouter} from "next/router";
 
 interface IDetailOfferProps {
   offerId: string;
@@ -40,6 +41,8 @@ const DetailSwapOffer: NextPage<IDetailOfferProps> = ({ offerId }) => {
 
   const [recipientObjects, setRecipientObjects] = useState<TradeObjectType[]>([]);
   const [creatorObjects, setCreatorObjects] = useState<TradeObjectType[]>([]);
+
+  const router = useRouter();
 
   useEffect(() => {
     async function fetchOffer() {
@@ -214,29 +217,37 @@ const DetailSwapOffer: NextPage<IDetailOfferProps> = ({ offerId }) => {
         "flex flex-col gap-10 min-h-[100vh] md:min-h-[65vh] pl-2 pr-2 md:pl-16 py-6 md:mt-14 mt-18 md:pr-10 z-10 rounded-lg mt-8 "
       )}
     >
-      <div className={"flex gap-4 mt-10 text-blackColor font-extrabold text-3xl"}>
-        <a href={`https://suiexplorer.com/object/${offerId}`} target="_blank" className={"flex items-center"}>
-          Offer
-          <LinkIcon className={"h-6"} />
-        </a>
-        from
-        <CopyTextButton showText={formatSuiAddress(offer.creator)} copyText={offer?.creator} />
-        to
-        <CopyTextButton showText={formatSuiAddress(offer.recipient)} copyText={offer.recipient} />
+      <button className={"flex gap-2 text-blackColor content-items items-center mt-10 md:mt-5"} onClick={() => router.back()}>
+        <ArrowLeftIcon className={"stroke-[2px] h-5 w-5"} />
+        <p className={"text-sm font-medium"}>Back</p>
+      </button>
+      <div className={'md:flex justify-between'}>
+        <div className={"gap-4 text-blackColor font-extrabold text-3xl"}>
+          <a href={`https://suiexplorer.com/object/${offerId}`} target="_blank" className={"flex gap-1 items-center"}>
+            Offer
+            <LinkIcon className={"h-6"} />
+          </a>
+          <div className={"flex gap-1 text-xl font-bold text-grayColor"}>
+            <p>from</p>
+            <CopyTextButton showText={formatSuiAddress(offer.creator)} copyText={offer?.creator} />
+            <p>to</p>
+            <CopyTextButton showText={formatSuiAddress(offer.recipient)} copyText={offer.recipient} />
+          </div>
+        </div>
+
+        <div className={"flex gap-2 text-xl mt-10"}>
+          <p className={"text-blackColor"}>Status: </p>
+          {offer.status == 0 ? (
+            <p className={"font-semibold text-redColor"}>Canceled</p>
+          ) : offer.status == 1 ? (
+            <p className={"font-semibold text-yellowColor"}>Active</p>
+          ) : (
+            offer.status == 2 && <p className={"font-semibold text-green-700"}>Exchanged</p>
+          )}
+        </div>
       </div>
 
-      <div className={"flex gap-4 text-xl"}>
-        <p className={"font-semibold"}>Status: </p>
-        {offer.status == 0 ? (
-          <p className={"text-red-500"}>Canceled</p>
-        ) : offer.status == 1 ? (
-          <p className={"text-green-500"}>Active</p>
-        ) : (
-          offer.status == 2 && <p className={"text-blue-500"}>Exchanged</p>
-        )}
-      </div>
-
-      <div className="flex gap-10 justify-items-center justify-evenly items-center rounded-2xl md:h-[50vh] h-full">
+      <div className="md:flex gap-10 justify-items-center justify-evenly items-center rounded-2xl md:h-[50vh] h-full">
         <div className="w-full bg-white rounded-xl border-purpleColor border-2 items-center gap-1 justify-between mb-4 py-2">
           <p className={"px-3 mb-4 mt-2 text-blackColor font-medium"}>{formatSuiAddress(offer.creator)} items</p>
           <OfferInformation userObjectIds={creatorObjects} coinAmount={formatSuiNumber(offer.creator_coin_amount)} />

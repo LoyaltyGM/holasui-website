@@ -37,7 +37,6 @@ const Index = () => {
               id: df?.objectId!,
               options: { showContent: true },
             });
-
             return getObjectFields(suiObject) as IOffer;
           })
         ).then((offers) => {
@@ -87,7 +86,10 @@ const Index = () => {
         "flex min-h-[100vh] md:min-h-[65vh] flex-col pl-2 pr-2 md:pl-16 py-6 md:mt-14 mt-18 md:pr-10 z-10 rounded-lg mt-8 "
       )}
     >
-      <button className={"flex gap-2 text-blackColor content-items items-center mt-5"} onClick={() => router.back()}>
+      <button
+        className={"flex gap-2 text-blackColor content-items items-center mt-10 md:mt-5"}
+        onClick={() => router.back()}
+      >
         <ArrowLeftIcon className={"stroke-[2px] h-5 w-5"} />
         <p className={"text-sm font-medium"}>Back</p>
       </button>
@@ -123,15 +125,15 @@ const Index = () => {
             {sentOffers
               .map((offer, index) => (
                 <tr key={offer.id} className={"bg-white border-lightGrayColor rounded-full border "}>
-                  <td className={"px-3 py-5 text-sm text-gray-500"}>{index + 1}</td>
-                  <td className={"whitespace-nowrap px-3 py-5 text-sm text-gray-500"}>
+                  <td className={"px-3 py-5 text-xs md:text-sm text-gray-500"}>{index + 1}</td>
+                  <td className={"whitespace-nowrap px-3 py-5 text-xs md:text-sm text-gray-500"}>
                     {formatSuiAddress(offer.recipient, 4, 4)}
                   </td>
-                  <td className={"whitespace-nowrap px-3 py-5 text-sm text-gray-500"}>
+                  <td className={"whitespace-nowrap px-3 py-5 text-xs md:text-sm text-gray-500"}>
                     <div className={"flex gap-1 content-center items-center"}>
                       <div
                         className={
-                          "h-8 w-8 flex content-center justify-center items-center rounded-lg border border-lightGrayColor p-2"
+                          "h-8 w-8  flex content-center justify-center items-center rounded-lg border border-lightGrayColor p-2"
                         }
                       >
                         <p>🖼</p>️
@@ -143,7 +145,7 @@ const Index = () => {
                       )}
                     </div>
                   </td>
-                  <td className={"whitespace-nowrap px-3 py-5 text-sm text-gray-500"}>
+                  <td className={"whitespace-nowrap px-3 py-5 text-xs md:text-sm text-gray-500"}>
                     <div className={"flex gap-1"}>
                       <Image src={ImageSuiToken} alt={"sui token"} className={"h-5 w-5"} />
                       {offer.recipient_coin_amount === 0 ? (
@@ -153,7 +155,7 @@ const Index = () => {
                       )}
                     </div>
                   </td>
-                  <td className="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
+                  <td className="whitespace-nowrap px-3 py-5 text-xs md:text-sm text-gray-500">
                     <span
                       className={classNames(
                         "inline-flex items-center rounded-md px-2 py-1 text-xs font-medium",
@@ -167,7 +169,7 @@ const Index = () => {
                       {offer.status === 0 ? "Inactive" : offer.status === 1 ? "Active" : "Completed"}
                     </span>
                   </td>
-                  <td className={"whitespace-nowrap px-2 py-5 text-sm text-purpleColor"}>
+                  <td className={"whitespace-nowrap px-2 py-5 text-xs md:text-sm text-purpleColor"}>
                     <Link href={generateLink(offer)}>
                       <div
                         className={
@@ -191,16 +193,16 @@ const Index = () => {
               <th scope="col" className="py-3.5 text-left text-sm font-semibold">
                 <div className={"ml-2"}>N</div>
               </th>
-              <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold">
+              <th scope="col" className="flex px-3 py-3.5 text-left text-sm font-semibold">
                 Wallet
               </th>
-              <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold">
+              <th scope="col" className="md:flex-col px-3 py-3.5 text-left text-sm font-semibold">
                 Offered NFTs
               </th>
-              <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold">
+              <th scope="col" className="md:flex-col px-3 py-3.5 text-left text-sm font-semibold">
                 Offered SUI
               </th>
-              <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold">
+              <th scope="col" className="flex-col px-3 py-3.5 text-left text-sm font-semibold">
                 Status
               </th>
               <th scope="col" className="relative py-3.5 pl-3 pr-4 sm:pr-0">
@@ -212,11 +214,11 @@ const Index = () => {
             {receivedOffers
               .map((offer, index) => (
                 <tr key={offer.id} className={"bg-white border-amber-950 rounded-full border"}>
-                  <td className={"px-3 py-5 text-sm text-gray-500"}>{index + 1}</td>
-                  <td className={"whitespace-nowrap px-3 py-5 text-sm text-gray-500"}>
+                  <td className={"px-3 py-5 text-xs md:text-sm text-gray-500"}>{index + 1}</td>
+                  <td className={"whitespace-nowrap px-3 py-5 text-xs md:text-sm text-gray-500"}>
                     {formatSuiAddress(offer.recipient, 4, 4)}
                   </td>
-                  <td className={"whitespace-nowrap px-3 py-5 text-sm text-gray-500"}>
+                  <td className={"px-3 py-5 text-sm text-gray-500"}>
                     <div className={"flex gap-1 content-center items-center"}>
                       <div
                         className={
@@ -232,7 +234,7 @@ const Index = () => {
                       )}
                     </div>
                   </td>
-                  <td className={"whitespace-nowrap px-3 py-5 text-sm text-gray-500"}>
+                  <td className={"px-3 py-5 text-sm text-gray-500"}>
                     <div className={"flex gap-1"}>
                       <Image src={ImageSuiToken} alt={"sui token"} className={"h-5 w-5"} />
                       {offer.recipient_coin_amount === 0 ? (
@@ -242,21 +244,21 @@ const Index = () => {
                       )}
                     </div>
                   </td>
-                  <td className="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
+                  <td className="whitespace-nowrap px-2 md:px-3 py-5 text-xs md:text-sm text-gray-500">
                     <span
                       className={classNames(
-                        "inline-flex items-center rounded-md px-2 py-1 text-xs font-medium",
+                        "inline-flex items-center rounded-md px-2 py-1 text-xs md:text-sm font-medium",
                         offer.status === 0
-                          ? "text-grayColor"
+                          ? "text-redColor"
                           : offer.status === 1
                           ? "text-yellowColor"
                           : "text-green-700"
                       )}
                     >
-                      {offer.status === 0 ? "Inactive" : offer.status === 1 ? "Active" : "Completed"}
+                      {offer.status === 0 ? "Canceled" : offer.status === 1 ? "Active" : "Exchanged"}
                     </span>
                   </td>
-                  <td className={"whitespace-nowrap px-2 py-5 text-sm text-redColor"}>
+                  <td className={"whitespace-nowrap px-2 py-5 text-xs md:text-sm text-redColor"}>
                     <Link href={generateLink(offer)}>
                       <div
                         className={

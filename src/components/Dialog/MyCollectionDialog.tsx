@@ -73,7 +73,7 @@ export const MyCollectionDialog = ({
                   font_montserrat.className
                 )}
               >
-                <p className="text-xs mt-3 font-light">Selected ({batchIdTrade.length})</p>
+                <p className="hidden md:flex text-xs mt-3 font-light">Selected ({batchIdTrade.length})</p>
                 <p className="mt-1 md:text-xl text-lg">Choose from your collection</p>
 
                 <button onClick={() => setOpened(false)}>

@@ -103,7 +103,7 @@ export const RecipientCollectionDialog = ({
                   font_montserrat.className
                 )}
               >
-                <p className="md:text-xs text-xs mt-1 font-light">Selected ({batchIdTrade.length})</p>
+                <p className="md:text-xs hidden md:flex mt-1 font-light">Selected ({batchIdTrade.length})</p>
                 <p className="mt-1 md:text-xl text-sm">Select NFTs you want</p>
 
                 <button onClick={() => setOpened(false)}>
