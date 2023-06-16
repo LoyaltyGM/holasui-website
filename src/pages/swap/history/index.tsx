@@ -58,6 +58,15 @@ const Index = () => {
     return (
       <div className={"flex gap-4 mb-5"}>
         <button
+            onClick={() => setActiveTab("sent")}
+            className={classNames(
+                "px-4 w-64 font-medium py-2 rounded-full",
+                activeTab === "sent" ? "text-white bg-redColor" : "bg-white text-grayColor"
+            )}
+        >
+          Sent offers
+        </button>
+        <button
           onClick={() => setActiveTab("received")}
           className={classNames(
             "px-4 w-64 font-medium py-2 rounded-full",
@@ -65,15 +74,6 @@ const Index = () => {
           )}
         >
           Awaiting offers
-        </button>
-        <button
-          onClick={() => setActiveTab("sent")}
-          className={classNames(
-            "px-4 w-64 font-medium py-2 rounded-full",
-            activeTab === "sent" ? "text-white bg-redColor" : "bg-white text-grayColor"
-          )}
-        >
-          Sent offers
         </button>
       </div>
     );
@@ -107,10 +107,10 @@ const Index = () => {
               <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold">
                 Wallet
               </th>
-              <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold">
+              <th scope="col" className="hidden md:table-cell px-3 py-3.5 text-left text-sm font-semibold">
                 Wanted NFTs
               </th>
-              <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold">
+              <th scope="col" className="hidden md:table-cell px-3 py-3.5 text-left text-sm font-semibold">
                 Wanted SUI
               </th>
               <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold">
@@ -129,7 +129,7 @@ const Index = () => {
                   <td className={"whitespace-nowrap px-3 py-5 text-xs md:text-sm text-gray-500"}>
                     {formatSuiAddress(offer.recipient, 4, 4)}
                   </td>
-                  <td className={"whitespace-nowrap px-3 py-5 text-xs md:text-sm text-gray-500"}>
+                  <td className={"hidden md:table-cell whitespace-nowrap px-3 py-5 text-xs md:text-sm text-gray-500"}>
                     <div className={"flex gap-1 content-center items-center"}>
                       <div
                         className={
@@ -145,7 +145,7 @@ const Index = () => {
                       )}
                     </div>
                   </td>
-                  <td className={"whitespace-nowrap px-3 py-5 text-xs md:text-sm text-gray-500"}>
+                  <td className={"hidden md:table-cell whitespace-nowrap px-3 py-5 text-xs md:text-sm text-gray-500"}>
                     <div className={"flex gap-1"}>
                       <Image src={ImageSuiToken} alt={"sui token"} className={"h-5 w-5"} />
                       {offer.recipient_coin_amount === 0 ? (
@@ -196,10 +196,10 @@ const Index = () => {
               <th scope="col" className="flex px-3 py-3.5 text-left text-sm font-semibold">
                 Wallet
               </th>
-              <th scope="col" className="md:flex-col px-3 py-3.5 text-left text-sm font-semibold">
+              <th scope="col" className="hidden md:table-cell px-3 py-3.5 text-left text-sm font-semibold">
                 Offered NFTs
               </th>
-              <th scope="col" className="md:flex-col px-3 py-3.5 text-left text-sm font-semibold">
+              <th scope="col" className="hidden md:table-cell px-3 py-3.5 text-left text-sm font-semibold">
                 Offered SUI
               </th>
               <th scope="col" className="flex-col px-3 py-3.5 text-left text-sm font-semibold">
@@ -218,7 +218,7 @@ const Index = () => {
                   <td className={"whitespace-nowrap px-3 py-5 text-xs md:text-sm text-gray-500"}>
                     {formatSuiAddress(offer.recipient, 4, 4)}
                   </td>
-                  <td className={"px-3 py-5 text-sm text-gray-500"}>
+                  <td className={"px-3 py-5 hidden md:table-cell text-sm text-gray-500"}>
                     <div className={"flex gap-1 content-center items-center"}>
                       <div
                         className={
@@ -234,7 +234,7 @@ const Index = () => {
                       )}
                     </div>
                   </td>
-                  <td className={"px-3 py-5 text-sm text-gray-500"}>
+                  <td className={"px-3 py-5 hidden md:table-cell text-sm text-gray-500"}>
                     <div className={"flex gap-1"}>
                       <Image src={ImageSuiToken} alt={"sui token"} className={"h-5 w-5"} />
                       {offer.recipient_coin_amount === 0 ? (
