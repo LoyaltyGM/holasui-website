@@ -34,6 +34,20 @@ const DAO = () => {
       twitterUrl: "https://twitter.com/hola_sui",
       imageUrl: "https://pbs.twimg.com/profile_images/1643318976037142528/pIak4NCj_400x400.jpg",
       daoAddress: "0x52C5317c848ba20C75000F455F153e6F10665221",
+    },{
+      title: "DAO Card Three",
+      description: "Description Description Description Description Description Description Description Description Description\n" +
+          "Description Description Description Description Description{\" \"}",
+      twitterUrl: "https://twitter.com/suinsdapp",
+      imageUrl: "https://pbs.twimg.com/profile_images/1643318976037142528/pIak4NCj_400x400.jpg",
+      daoAddress: "0xA72dE5b3F6388d2A10D6114a9B6389BDA6278E0C",
+    },
+    {
+      title: "DAO Card Four",
+      description: "This is the fourth DAO Card for your application.",
+      twitterUrl: "https://twitter.com/hola_sui",
+      imageUrl: "https://pbs.twimg.com/profile_images/1643318976037142528/pIak4NCj_400x400.jpg",
+      daoAddress: "0x52C5317c848ba20C75000F455F153e6F10665221",
     },
   ];
 
@@ -46,10 +60,10 @@ const DAO = () => {
       )}
     >
       <div className={"flex justify-between content-center items-center mt-16"}>
-        <h1 className={"text-blackColor text-4xl font-semibold"}>Hola, DAOs</h1>
-        <button className={"bg-redColor rounded-2xl text-white font-bold py-4 px-6"}>Create DAO</button>
+        <h1 className={"text-blackColor text-2xl md:text-4xl font-semibold"}>Hola, DAOs</h1>
+        <button className={"bg-redColor rounded-2xl text-white font-bold py-2 px-3 md:py-4 md:px-6"}>Create DAO</button>
       </div>
-      <div className={"grid grid-cols-2 gap-5 mt-10"}>
+      <div className={"grid grid-cols-1 md:grid-cols-2 gap-5 mt-10"}>
         {daoCards.map((daoInfo) => {
           return (
             <DaoCard
