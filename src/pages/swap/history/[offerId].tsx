@@ -49,7 +49,7 @@ const DetailSwapOffer: NextPage<IDetailOfferProps> = ({ offerId }) => {
       const offerObject = getObjectFields(
         await suiProvider.getObject({
           id: offerId,
-          options: { showContent: true },
+          options: { showContent: true, showDisplay: true },
         })
       ) as IOffer;
 
@@ -67,16 +67,14 @@ const DetailSwapOffer: NextPage<IDetailOfferProps> = ({ offerId }) => {
 
       await Promise.all(
         offer.recipient_items_ids?.map(async (objectId: string) => {
-          const object = getObjectFields(
-            await suiProvider.getObject({
+          const object = await suiProvider.getObject({
               id: objectId,
-              options: { showContent: true },
-            })
-          );
+              options: { showContent: true, showType: true, showDisplay: true},
+            });
 
           const tradeObject = {
             id: objectId,
-            url: convertIPFSUrl(object?.url),
+            url: convertIPFSUrl(((object?.data?.display?.data as any).image_url)),
           };
 
           tradeObjects.push(tradeObject);
@@ -92,16 +90,14 @@ const DetailSwapOffer: NextPage<IDetailOfferProps> = ({ offerId }) => {
       const tradeObjects: TradeObjectType[] = [];
       await Promise.all(
         offer.creator_items_ids?.map(async (objectId: string) => {
-          const object = getObjectFields(
-            await suiProvider.getObject({
-              id: objectId,
-              options: { showContent: true },
-            })
-          );
+          const object = await suiProvider.getObject({
+            id: objectId,
+            options: { showContent: true, showType: true, showDisplay: true},
+          });
 
           const tradeObject = {
             id: objectId,
-            url: convertIPFSUrl(object?.url),
+            url: convertIPFSUrl(((object?.data?.display?.data as any).image_url)),
           };
 
           tradeObjects.push(tradeObject);
@@ -247,12 +243,12 @@ const DetailSwapOffer: NextPage<IDetailOfferProps> = ({ offerId }) => {
         </div>
       </div>
 
-      <div className="md:flex gap-10 justify-items-center justify-evenly items-center rounded-2xl md:h-[50vh] h-full">
-        <div className="w-full bg-white rounded-xl border-purpleColor border-2 items-center gap-1 justify-between mb-4 py-2">
+      <div className="md:flex gap-10 justify-items-center justify-evenly items-center rounded-2xl md:h-[42vh] h-full">
+        <div className="w-full bg-white rounded-xl border-purpleColor border-2 items-center gap-1 justify-between py-2">
           <p className={"px-3 mb-4 mt-2 text-blackColor font-medium"}>{formatSuiAddress(offer.creator)} items</p>
           <OfferInformation userObjectIds={creatorObjects} coinAmount={formatSuiNumber(offer.creator_coin_amount)} />
         </div>
-        <div className="w-full bg-white rounded-xl border-redColor border-2 items-center gap-1 justify-between mb-4 py-2">
+        <div className="w-full bg-white rounded-xl border-redColor border-2 items-center gap-1 justify-between py-2">
           <p className={"px-3 mb-4 mt-2 text-blackColor font-medium"}>{formatSuiAddress(offer.recipient)} items</p>
           <OfferInformation
             userObjectIds={recipientObjects}
@@ -265,7 +261,7 @@ const DetailSwapOffer: NextPage<IDetailOfferProps> = ({ offerId }) => {
         <button
           onClick={acceptOffer}
           disabled={waitSui}
-          className="w-[200px] py-3 bg-[#5AAC67] text-white font-medium mb-4 rounded-md disabled:opacity-40 disabled:cursor-not-allowed"
+          className="w-[200px] py-3 bg-white border border-greenColor text-greenColor hover:bg-greenColor hover:text-white font-medium mb-4 rounded-md disabled:opacity-40 disabled:cursor-not-allowed"
         >
           Accept
         </button>
@@ -275,9 +271,9 @@ const DetailSwapOffer: NextPage<IDetailOfferProps> = ({ offerId }) => {
         <button
           onClick={() => cancelOffer()}
           disabled={waitSui}
-          className="w-[200px] py-3 bg-[#5AAC67] text-white font-medium mb-4 rounded-md disabled:opacity-40 disabled:cursor-not-allowed"
+          className="w-[200px] py-3 bg-white text-redColor border border-redColor hover:bg-redColor hover:text-white font-medium rounded-md disabled:opacity-40 disabled:cursor-not-allowed"
         >
-          Cancel
+          Cancel Offer
         </button>
       )}
     </main>

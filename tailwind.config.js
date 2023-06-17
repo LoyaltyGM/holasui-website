@@ -24,6 +24,7 @@ module.exports = {
         grayColor: "#595959",
         lightGrayColor: "#AAAAAA",
         redColor: "#E15A8C",
+        greenColor: "#5AAC67",
         yellowColor: "#FEB958",
         yellowColorHover: "#e5a44a",
         purpleColor: "#5A5A95",

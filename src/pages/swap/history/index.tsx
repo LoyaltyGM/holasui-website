@@ -166,7 +166,7 @@ const Index = () => {
                           : "text-green-700"
                       )}
                     >
-                      {offer.status === 0 ? "Inactive" : offer.status === 1 ? "Active" : "Completed"}
+                      {offer.status === 0 ? "Canceled" : offer.status === 1 ? "Active" : "Exchanged"}
                     </span>
                   </td>
                   <td className={"whitespace-nowrap px-2 py-5 text-xs md:text-sm text-purpleColor"}>

@@ -24,6 +24,14 @@ export interface ISwapCollectionDialog {
   setBatchIdTrade: Dispatch<SetStateAction<TradeObjectType[]>>;
 }
 
+export interface IYourOfferLinkDialog {
+  recipientAddress: string;
+  transactionHash: string;
+  opened: boolean;
+  setOpened: Dispatch<SetStateAction<boolean>>;
+
+}
+
 export interface ISwapRecipientCollectionDialog extends ISwapCollectionDialog {
   walletAddressToSearch: string | undefined;
   setWalletAddressToSearch: Dispatch<SetStateAction<string | undefined>>;
