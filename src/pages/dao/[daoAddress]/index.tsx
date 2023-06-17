@@ -2,7 +2,8 @@ import { GetServerSideProps, NextPage } from "next";
 import { ethos, EthosConnectStatus } from "ethos-connect";
 import { NoConnectWallet } from "components";
 import { classNames } from "utils";
-import { ArrowLeftIcon } from "@heroicons/react/24/outline";
+import { useRef, useState } from "react";
+import { ArrowLeftIcon, ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/solid";
 import Image from "next/image";
 import ExternalWebsiteIcon from "/public/img/ExternalLinkIcon.svg";
 import SuiToken from "/public/img/SuiToken.png";
@@ -48,24 +49,38 @@ const DetailDaoAddress: NextPage<IDaoAddressProps> = ({ daoAddress }) => {
     return (
       <div className={"mt-10"}>
         <div className={"flex justify-between w-full"}>
-          <div className={"flex gap-3 justify-center content-center items-center"}>
-            <h1 className={"text-blackColor font-semibold text-4xl"}>Capy DAO</h1>
-            <Image src={ExternalWebsiteIcon} alt={"external website icon"} className={"w-5 h-5 cursor-pointer"} />
-          </div>
-          <div className={"flex flex-col justify-center"}>
-            <button className={"bg-redColor text-white px-5 py-3 rounded-lg"}>
-              <p className={"font-medium"}>Create SubDAO</p>
-            </button>
-            <div
-              className={
-                "w-full flex text-[#595959] cursor-pointer justify-center mt-2 px-2 text-xs underline underline-offset-2"
-              }
-            >
-              What is Sub DAO?
+          <div className={"flex w-full justify-between"}>
+            <div className={"flex gap-4"}>
+              <Image
+                src={"https://pbs.twimg.com/profile_images/1666614102737797122/6E0poPYm_400x400.jpg"}
+                alt={"logo-dao"}
+                height={150}
+                width={150}
+                className={"rounded-full w-30 h-30"}
+              />
+              <div>
+                <div className={"flex gap-3 justify-start content-center items-center"}>
+                  <h1 className={"text-blackColor font-semibold text-4xl"}>Capy DAO</h1>
+                  <Image src={ExternalWebsiteIcon} alt={"external website icon"} className={"w-5 h-5 cursor-pointer"} />
+                </div>
+                <InfoDaoDescription />
+              </div>
+            </div>
+
+            <div className={"flex flex-col justify-center"}>
+              <button className={"bg-redColor text-white px-5 py-3 rounded-lg min-w-[170px]"}>
+                <p className={"font-medium"}>Create SubDAO</p>
+              </button>
+              <div
+                className={
+                  "w-full flex text-[#595959] cursor-pointer justify-center mt-2 px-2 text-xs underline underline-offset-2"
+                }
+              >
+                What is Sub DAO?
+              </div>
             </div>
           </div>
         </div>
-        <InfoDaoDescription />
       </div>
     );
   };
@@ -105,58 +120,126 @@ const DetailDaoAddress: NextPage<IDaoAddressProps> = ({ daoAddress }) => {
     );
   };
 
-  const SubDAO = () => {
+  const CardScroll = () => {
+    const [isLeftVisible, setIsLeftVisible] = useState(false);
+    const [isRightVisible, setIsRightVisible] = useState(true);
+    const scrollContainer = useRef<any>(null);
+
+    const checkScroll = () => {
+      console.log("\nscroll width", scrollContainer.current.scrollWidth);
+      console.log("scroll left", scrollContainer.current.scrollLeft);
+      console.log("client width", scrollContainer.current.clientWidth);
+      setIsLeftVisible(scrollContainer.current.scrollLeft > 0);
+      setIsRightVisible(
+        scrollContainer.current.scrollWidth >
+          scrollContainer.current.clientWidth + scrollContainer.current.scrollLeft + 1
+      );
+    };
+
+    const scroll = (scrollOffset: number) => {
+      scrollContainer.current.scrollLeft += scrollOffset;
+      checkScroll();
+    };
+
     const Title = () => {
       return <p className={"font-bold text-2xl"}>Sub CapyDAO</p>;
     };
 
-    const SubDAOList = () => {
-      return (
-        <div className={"mt-10 flex gap-10"}>
-          <div className={"flex bg-yellowColor border border-grayColor rounded-xl h-[170px] w-[256px]"}>
-            <p className={"px-5 py-4 text-white font-bold text-xl z-10"}>Ear4</p>
-            <Image
-              src={
-                "https://api-mainnet.suifrens.sui.io/suifrens/0x211a0715238cba5bd45b0910697b7c7b6058723dee4c35378b7336ccdf1304d1/svg"
-              }
-              alt={"capy"}
-              className={"h-full z-[9]"}
-              width={200}
-              height={250}
-            />
-          </div>
-          <div className={"flex bg-yellowColor border border-grayColor rounded-xl h-[170px] w-[256px]"}>
-            <p className={"px-5 py-4 text-white font-bold text-xl z-10"}>Ear4</p>
-            <Image
-              src={
-                "https://api-mainnet.suifrens.sui.io/suifrens/0x211a0715238cba5bd45b0910697b7c7b6058723dee4c35378b7336ccdf1304d1/svg"
-              }
-              alt={"capy"}
-              className={"h-full z-[9]"}
-              width={200}
-              height={250}
-            />
-          </div>
-          <div className={"flex bg-yellowColor border border-grayColor rounded-xl h-[170px] w-[256px]"}>
-            <p className={"px-5 py-4 text-white font-bold text-xl z-10"}>Ear4</p>
-            <Image
-              src={
-                "https://api-mainnet.suifrens.sui.io/suifrens/0x211a0715238cba5bd45b0910697b7c7b6058723dee4c35378b7336ccdf1304d1/svg"
-              }
-              alt={"capy"}
-              className={"h-full z-[9]"}
-              width={200}
-              height={250}
-            />
-          </div>
-        </div>
-      );
-    };
-
     return (
-      <div className={"mt-10"}>
+      <div className={"mt-14"}>
         <Title />
-        <SubDAOList />
+        <div className="flex gap-8 mt-10">
+          <button
+            className="z-20 cursor-pointer px-3 py-2 content-center"
+            disabled={!isLeftVisible}
+            onClick={() => scroll(-335)}
+          >
+            <div className={classNames("border p-2 rounded-xl stroke-[2px]",
+                isLeftVisible ? "border-blackColor text-blackColor" : "border-lightGrayColor text-lightGrayColor" )}>
+              <ChevronLeftIcon className={"h-5 w-5"} />
+            </div>
+          </button>
+          <div ref={scrollContainer} onScroll={checkScroll} className="flex gap-16 overflow-x-scroll hide-scroll-bar">
+            {/* Here you would map through your cards. I'm just using a static example */}
+            <div className="flex bg-yellowColor border border-grayColor rounded-xl h-[170px] min-w-[256px] max-w-[256px] mr-4">
+              <p className="px-5 py-4 text-white font-bold text-xl z-10">Ear4</p>
+              <Image
+                src="https://api-mainnet.suifrens.sui.io/suifrens/0x211a0715238cba5bd45b0910697b7c7b6058723dee4c35378b7336ccdf1304d1/svg"
+                alt="capy"
+                className="h-full z-[9]"
+                width={200}
+                height={250}
+              />
+            </div>
+            <div
+              className={"flex bg-redColor border border-grayColor rounded-xl h-[170px] min-w-[256px] max-w-[256px]"}
+            >
+              <p className={"px-5 py-4 text-white font-bold text-xl z-10"}>Ear4</p>
+              <Image
+                src={
+                  "https://api-mainnet.suifrens.sui.io/suifrens/0x211a0715238cba5bd45b0910697b7c7b6058723dee4c35378b7336ccdf1304d1/svg"
+                }
+                alt={"capy"}
+                className={"h-full z-[9]"}
+                width={200}
+                height={250}
+              />
+            </div>
+            <div
+              className={"flex bg-orange-300 border border-yellowColor rounded-xl h-[170px] min-w-[256px] max-w-[256px]"}
+            >
+              <p className={"px-5 py-4 text-white font-bold text-xl z-10"}>Ear4</p>
+              <Image
+                src={
+                  "https://api-mainnet.suifrens.sui.io/suifrens/0x211a0715238cba5bd45b0910697b7c7b6058723dee4c35378b7336ccdf1304d1/svg"
+                }
+                alt={"capy"}
+                className={"h-full z-[9]"}
+                width={200}
+                height={250}
+              />
+            </div>
+            <div
+              className={"flex bg-yellowColor border border-grayColor rounded-xl h-[170px] min-w-[256px] max-w-[256px]"}
+            >
+              <p className={"px-5 py-4 text-white font-bold text-xl z-10"}>Ear4</p>
+              <Image
+                src={
+                  "https://api-mainnet.suifrens.sui.io/suifrens/0x211a0715238cba5bd45b0910697b7c7b6058723dee4c35378b7336ccdf1304d1/svg"
+                }
+                alt={"capy"}
+                className={"h-full z-[9]"}
+                width={200}
+                height={250}
+              />
+            </div>
+            <div
+              className={"flex bg-redColor border border-yellowColor rounded-xl h-[170px] min-w-[256px] max-w-[256px]"}
+            >
+              <p className={"px-5 py-4 text-white font-bold text-xl z-10"}>Ear4</p>
+              <Image
+                src={
+                  "https://api-mainnet.suifrens.sui.io/suifrens/0x211a0715238cba5bd45b0910697b7c7b6058723dee4c35378b7336ccdf1304d1/svg"
+                }
+                alt={"capy"}
+                className={"h-full z-[9]"}
+                width={200}
+                height={250}
+              />
+            </div>
+            {/* Other cards */}
+          </div>
+          <button
+            className="z-20 cursor-pointer px-3 py-2"
+            disabled={!isRightVisible}
+            onClick={() => scroll(335)}
+          >
+            <div className={classNames("border p-2 rounded-xl stroke-[2px]",
+                isRightVisible ? "border-blackColor text-blackColor" : "border-lightGrayColor text-lightGrayColor" )}>
+              <ChevronRightIcon className={"h-5 w-5"} />
+            </div>
+          </button>
+        </div>
       </div>
     );
   };
@@ -188,8 +271,8 @@ const DetailDaoAddress: NextPage<IDaoAddressProps> = ({ daoAddress }) => {
 
   const Proposals = () => {
     return (
-      <div className={"mt-10 mb-10"}>
-        <div className={"flex justify-between content-center items-center"}>
+      <div className={"mt-14 mb-10"}>
+        <div className={"flex mt-10 justify-between content-center items-center"}>
           <p className={"font-bold text-2xl"}>Proposals</p>
           <button className={"bg-yellowColor text-white px-5 py-3 rounded-lg"}>
             <p className={"font-medium"}>Submit Proposal</p>
@@ -209,7 +292,10 @@ const DetailDaoAddress: NextPage<IDaoAddressProps> = ({ daoAddress }) => {
       <nav className="flex mt-10" aria-label="Breadcrumb">
         <ol className="inline-flex items-center space-x-1 md:space-x-3">
           <li className="inline-flex items-center">
-            <Link href="/dao" className="inline-flex items-center text-sm font-medium text-[#AAAAAA] hover:text-grayColor">
+            <Link
+              href="/dao"
+              className="inline-flex items-center text-sm font-medium text-[#AAAAAA] hover:text-grayColor"
+            >
               <svg
                 aria-hidden="true"
                 className="w-4 h-4 mr-2"
@@ -225,19 +311,14 @@ const DetailDaoAddress: NextPage<IDaoAddressProps> = ({ daoAddress }) => {
           <li aria-current="page">
             <div className="flex items-center">
               <svg
-                aria-hidden="true"
-                className="w-6 h-6 text-gray-400"
+                className="h-5 w-5 flex-shrink-0 text-gray-300"
                 fill="currentColor"
                 viewBox="0 0 20 20"
-                xmlns="http://www.w3.org/2000/svg"
+                aria-hidden="true"
               >
-                <path
-                  fill-rule="evenodd"
-                  d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                  clip-rule="evenodd"
-                ></path>
+                <path d="M5.555 17.776l8-16 .894.448-8 16-.894-.448z" />
               </svg>
-              <span className="ml-1 text-sm font-medium text-gray-500 md:ml-2 dark:text-gray-400">Capy DAO</span>
+              <span className="ml-1 text-sm font-medium text-gray-300 md:ml-2">Capy DAO</span>
             </div>
           </li>
         </ol>
@@ -256,7 +337,8 @@ const DetailDaoAddress: NextPage<IDaoAddressProps> = ({ daoAddress }) => {
       <BradcrumbsHeader />
       <InfoDao />
       <Treasury />
-      <SubDAO />
+      {/*<SubDAO />*/}
+      <CardScroll />
       <Proposals />
     </main>
   );
