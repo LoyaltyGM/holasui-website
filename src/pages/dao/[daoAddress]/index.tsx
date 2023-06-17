@@ -36,15 +36,6 @@ export const getServerSideProps: GetServerSideProps<IDaoAddressProps> = async ({
 const DetailDaoAddress: NextPage<IDaoAddressProps> = ({ daoAddress }) => {
   const { status, wallet } = ethos.useWallet();
 
-  const BackButton = () => {
-    return (
-      <div className={"flex gap-1 text-blackColor content-center items-center mt-10 cursor-pointer"}>
-        <ArrowLeftIcon className={"w-5 h-5"} />
-        <p className={"text-sm font-medium"}>Back</p>
-      </div>
-    );
-  };
-
   const InfoDao = () => {
     return (
       <div className={"mt-10"}>
@@ -89,9 +80,8 @@ const DetailDaoAddress: NextPage<IDaoAddressProps> = ({ daoAddress }) => {
     return (
       <div className={"w-3/4 max-h-[52px] text-clip overflow-hidden text-base mt-4 font-bold text-grayColor"}>
         <p>
-          {
-            "DAO description DAO description DAO description DAO description DAO description DAO description DAO description DAO description DAO description DAO description DAO description DAO description DAO description"
-          }
+          DAO description DAO description DAO description DAO description DAO description DAO description DAO
+          description DAO description DAO description DAO description DAO description DAO description DAO description
         </p>
       </div>
     );
@@ -154,8 +144,12 @@ const DetailDaoAddress: NextPage<IDaoAddressProps> = ({ daoAddress }) => {
             disabled={!isLeftVisible}
             onClick={() => scroll(-335)}
           >
-            <div className={classNames("border p-2 rounded-xl stroke-[2px]",
-                isLeftVisible ? "border-blackColor text-blackColor" : "border-lightGrayColor text-lightGrayColor" )}>
+            <div
+              className={classNames(
+                "border p-2 rounded-xl stroke-[2px]",
+                isLeftVisible ? "border-blackColor text-blackColor" : "border-lightGrayColor text-lightGrayColor"
+              )}
+            >
               <ChevronLeftIcon className={"h-5 w-5"} />
             </div>
           </button>
@@ -186,7 +180,9 @@ const DetailDaoAddress: NextPage<IDaoAddressProps> = ({ daoAddress }) => {
               />
             </div>
             <div
-              className={"flex bg-orange-300 border border-yellowColor rounded-xl h-[170px] min-w-[256px] max-w-[256px]"}
+              className={
+                "flex bg-orange-300 border border-yellowColor rounded-xl h-[170px] min-w-[256px] max-w-[256px]"
+              }
             >
               <p className={"px-5 py-4 text-white font-bold text-xl z-10"}>Ear4</p>
               <Image
@@ -229,13 +225,13 @@ const DetailDaoAddress: NextPage<IDaoAddressProps> = ({ daoAddress }) => {
             </div>
             {/* Other cards */}
           </div>
-          <button
-            className="z-20 cursor-pointer px-3 py-2"
-            disabled={!isRightVisible}
-            onClick={() => scroll(335)}
-          >
-            <div className={classNames("border p-2 rounded-xl stroke-[2px]",
-                isRightVisible ? "border-blackColor text-blackColor" : "border-lightGrayColor text-lightGrayColor" )}>
+          <button className="z-20 cursor-pointer px-3 py-2" disabled={!isRightVisible} onClick={() => scroll(335)}>
+            <div
+              className={classNames(
+                "border p-2 rounded-xl stroke-[2px]",
+                isRightVisible ? "border-blackColor text-blackColor" : "border-lightGrayColor text-lightGrayColor"
+              )}
+            >
               <ChevronRightIcon className={"h-5 w-5"} />
             </div>
           </button>
