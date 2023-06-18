@@ -34,10 +34,6 @@
     width: 100%; /* adjust the padding value as needed */
   }
 
-  .emoji {
-    font-size: 18px;
-  }
-
   .loader-container {
     @apply relative inline-flex items-center justify-center;
   }

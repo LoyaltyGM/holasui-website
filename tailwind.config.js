@@ -9,6 +9,9 @@ module.exports = {
   darkMode: false, // or 'media' or 'class'
   theme: {
     extend: {
+      fontFamily:{
+       sans: ['var(--montserrat-font)'],
+      },
       screens: {
         sm: "480px",
         md: "768px",
@@ -17,8 +20,11 @@ module.exports = {
       },
       colors: {
         bgMain: "#FEF7EC",
-        darkColor: "#171717",
+        blackColor: "#171717",
+        grayColor: "#595959",
+        lightGrayColor: "#AAAAAA",
         redColor: "#E15A8C",
+        greenColor: "#5AAC67",
         yellowColor: "#FEB958",
         yellowColorHover: "#e5a44a",
         purpleColor: "#5A5A95",

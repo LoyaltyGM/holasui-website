@@ -15,7 +15,17 @@ const nextConfig = {
   },
   images: {
     dangerouslyAllowSVG: true,
-    domains: ['ipfs.io', "pbs.twimg.com", "api-testnet.suifrens.sui.io", "api-mainnet.suifrens.sui.io"],
+    domains: ['ipfs.io', "pbs.twimg.com", "api-testnet.suifrens.sui.io", "api-mainnet.suifrens.sui.io", "*"],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "**",
+      },
+      {
+        protocol: "http",
+        hostname: "**",
+      }
+    ],
   },
   typescript: {
     ignoreBuildErrors: true,

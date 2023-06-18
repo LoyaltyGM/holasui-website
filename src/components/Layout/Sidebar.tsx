@@ -9,6 +9,7 @@ import { Montserrat } from "next/font/google";
 import HamburgerMenu from "./HamburgerMenu";
 
 const font_montserrat = Montserrat({ subsets: ["latin"] });
+
 export function Sidebar({ children }: ILayoutProps) {
   const Header = () => {
     return (
@@ -22,7 +23,7 @@ export function Sidebar({ children }: ILayoutProps) {
           </Link>
           <div
             className={classNames(
-              "md:flex hidden md:justify-evenly gap-10 text-darkColor mx-3 mt-1 font-semibold",
+              "md:flex hidden md:justify-evenly gap-10 text-blackColor mx-3 mt-1 font-semibold",
               font_montserrat.className
             )}
           >
@@ -32,17 +33,13 @@ export function Sidebar({ children }: ILayoutProps) {
             <Link href="/swap">
               <div className="block py-2 rounded-md my-3 hover:text-purpleColor">P2P Swap</div>
             </Link>
-
-            <Link href="/game">
-              <div className="block py-2 rounded-md my-3 hover:text-redColor">Game</div>
-            </Link>
           </div>
 
           <div className="hidden md:flex h-12 gap-8 mt-2 items-center">
             <div
               className={classNames(
                 "flex flex-col items-center justify-center",
-                "text-[#595959]",
+                "text-grayColor",
                 "group py-2 text-xs font-medium hover:text-[#8d6eec] rounded-2xl cursor-pointer",
                 font_montserrat.className
               )}
@@ -54,7 +51,7 @@ export function Sidebar({ children }: ILayoutProps) {
             <div
               className={classNames(
                 "flex flex-col items-center justify-center",
-                "text-[#595959]",
+                "text-grayColor",
                 "group py-2 text-xs font-medium group-hover:text-[#6ea0ec] hover:fill-[#6ea0ec] hover:text-[#6ea0ec] rounded-2xl cursor-pointer",
                 font_montserrat.className
               )}

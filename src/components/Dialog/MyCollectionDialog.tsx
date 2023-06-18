@@ -1,18 +1,13 @@
 import { Dialog, Transition } from "@headlessui/react";
-import { Dispatch, Fragment, SetStateAction, useEffect, useState } from "react";
-import { ICapy } from "types";
+import { Fragment, useEffect, useState } from "react";
+import { handleSetBatchIdForSwap, ICapy, ISwapCollectionDialog } from "types";
 import { Montserrat } from "next/font/google";
 import { XMarkIcon } from "@heroicons/react/24/solid";
 import { classNames } from "utils";
 import Image from "next/image";
-import { fetchSuifrens } from "services/sui";
+import { fetchNFTObjects } from "services/sui";
 
 const font_montserrat = Montserrat({ subsets: ["latin"] });
-
-type BatchIdTradeType = {
-  id: string;
-  url: string;
-};
 
 export const MyCollectionDialog = ({
   wallet,
@@ -20,53 +15,32 @@ export const MyCollectionDialog = ({
   setOpened,
   batchIdTrade,
   setBatchIdTrade,
-}: {
-  wallet: any;
-  opened: boolean;
-  setOpened: any;
-  batchIdTrade: BatchIdTradeType[];
-  setBatchIdTrade: any;
-}) => {
+  setTypeSwap,
+  typeSwap,
+}: ISwapCollectionDialog) => {
   if (!wallet) return <></>;
 
   const [frens, setFrens] = useState<ICapy[] | null>();
 
   const nfts = wallet?.contents?.nfts!;
-  const suifrens = fetchSuifrens(nfts);
+  const suifrens = fetchNFTObjects(nfts);
 
   useEffect(() => {
-    async function fetchWalletFrens() {
+    async function fetchWalletObjects() {
       if (!wallet?.address) {
         return;
       }
       try {
-        const nfts = wallet?.contents?.nfts!;
-        const suifrens = fetchSuifrens(nfts);
+        const nfts = wallet?.contents.objects;
+        const suifrens = fetchNFTObjects(nfts);
         if (suifrens) setFrens(suifrens);
-
-        console.log("suifrens", suifrens);
       } catch (e) {
         console.error(e);
       }
     }
-    fetchWalletFrens().then();
-  }, [wallet?.address, wallet?.contents?.nfts]);
 
-  const handleSetBatchIdStake = (
-    id: string,
-    url: string,
-    batchIdTrade: BatchIdTradeType[],
-    setBatchIdTrade: Dispatch<SetStateAction<BatchIdTradeType[]>>
-  ) => {
-    // Check if the id already exists in the array
-    if (!batchIdTrade.some((item) => item.id! === id)) {
-      // If it doesn't exist, add it to the array
-      setBatchIdTrade((prevBatchIdStake) => [...prevBatchIdStake, { id, url }]);
-    } else {
-      // If it exists, remove it from the array
-      setBatchIdTrade((prevBatchIdStake) => prevBatchIdStake.filter((item) => item.id !== id));
-    }
-  };
+    fetchWalletObjects().then();
+  }, [wallet?.address, wallet?.contents?.nfts]);
 
   return (
     <Transition.Root show={opened} as={Fragment}>
@@ -89,17 +63,17 @@ export const MyCollectionDialog = ({
           <div className="fixed inset-0 bg-[#5e5e5e] bg-opacity-75 transition-opacity" />
         </Transition.Child>
 
-        <div className="fixed inset-0 z-10 overflow-auto">
+        <div className={classNames("fixed inset-0 z-10 overflow-auto", font_montserrat.className)}>
           <div className="flex min-h-full items-center justify-center">
             <Dialog.Panel className="max-w-2xl md:h-[65vh] h-[70vh] w-full relative transform overflow-auto rounded-lg bg-bgMain px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:p-6">
               <Dialog.Title
                 as="h3"
                 className={classNames(
-                  "flex justify-between text-base leading-6 text-[#595959] text-center mb-2 font-bold",
+                  "flex justify-between text-base leading-6 text-grayColor text-center mb-2 font-bold",
                   font_montserrat.className
                 )}
               >
-                <p className="text-xs mt-3 font-light">Selected ({batchIdTrade.length})</p>
+                <p className="hidden md:flex text-xs mt-3 font-light">Selected ({batchIdTrade.length})</p>
                 <p className="mt-1 md:text-xl text-lg">Choose from your collection</p>
 
                 <button onClick={() => setOpened(false)}>
@@ -114,20 +88,23 @@ export const MyCollectionDialog = ({
                         {frens?.map((fren) => {
                           return (
                             <button
+                              key={fren.id}
                               onClick={() => {
-                                handleSetBatchIdStake(fren.id, fren.url, batchIdTrade, setBatchIdTrade);
+                                handleSetBatchIdForSwap(fren.id, fren.url, fren.type, setTypeSwap, batchIdTrade, setBatchIdTrade);
                               }}
                             >
                               <div
                                 className={classNames(
-                                  "border-2 flex bg-white flex-col content-center justify-center items-center p-2 rounded-md  cursor-pointer",
+                                  "border-2 border-grayColor flex bg-white max-h-[160px] min-h-[160px] flex-col content-center justify-center items-center p-2 rounded-md  cursor-pointer",
                                   batchIdTrade.some((item) => item.id === fren.id)
                                     ? "border-yellowColor"
-                                    : "border-darkColor"
+                                    : "border-blackColor"
                                 )}
                               >
                                 <Image src={fren.url} alt="collection_img" width={90} height={130} className="mt-1" />
-                                <p className="mt-1">{`${fren.description}`}</p>
+                                <p className="mt-1 text-xs min-h-[40px] max-h-[40px] text-clip">
+                                  {classNames(fren.description ? `${fren.description}` : "")}
+                                </p>
                               </div>
                             </button>
                           );

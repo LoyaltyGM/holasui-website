@@ -8,6 +8,9 @@ yarn.lock
 .env
 package_lock.json
 
+# webstorm
+/.idea/
+
 # testing
 /coverage
 

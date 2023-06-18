@@ -1,6 +1,7 @@
 import { Montserrat } from "next/font/google";
 import { classNames } from "utils";
 import Link from "next/link";
+
 const font_montserrat = Montserrat({ subsets: ["latin"] });
 
 export default function Page404() {

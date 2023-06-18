@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { ethos } from "ethos-connect";
-import { XMarkIcon, Bars3Icon } from "@heroicons/react/24/solid";
+import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/solid";
 import { Montserrat } from "next/font/google";
 import { classNames } from "utils";
 import Link from "next/link";
+
 const font_montserrat = Montserrat({ subsets: ["latin"] });
 
 const HamburgerMenu = () => {
@@ -37,12 +38,6 @@ const HamburgerMenu = () => {
             <Link href="/swap">
               <div className="block text-white bg-yellowColor py-3 rounded-md text-2xl my-3 transition-all duration-300 ease-in-out hover:text-gray-300">
                 P2P Swap
-              </div>
-            </Link>
-
-            <Link href="/game">
-              <div className="block text-white bg-purpleColor py-3 rounded-md text-2xl my-3 transition-all duration-300 ease-in-out hover:text-gray-300">
-                Capy Game
               </div>
             </Link>
 

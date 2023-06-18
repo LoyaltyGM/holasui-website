@@ -1,4 +1,5 @@
 import toast, { ToastBar, Toaster } from "react-hot-toast";
+import { AlertMessageType } from "../../types";
 
 /**
  * Beautiful notifications to your React app
@@ -21,7 +22,7 @@ export const CustomToast = () => {
   );
 };
 
-export function AlertSucceed(success_type: "Staking" | "Unstaking" | "Open" | "Claim" | "ClaimGamePass") {
+export function AlertSucceed(success_type: AlertMessageType) {
   let successTitle;
   switch (success_type) {
     case "Staking":
@@ -33,8 +34,14 @@ export function AlertSucceed(success_type: "Staking" | "Unstaking" | "Open" | "C
     case "Claim":
       successTitle = "You have successfully claimed your points!";
       break;
-    case "ClaimGamePass":
-      successTitle = "Now you can play the game!";
+    case "CreateOffer":
+      successTitle = "You have successfully created an offer!";
+      break;
+    case "CancelOffer":
+      successTitle = "You have successfully canceled an offer!";
+      break;
+    case "AcceptOffer":
+      successTitle = "You have exchanged items!";
       break;
     default:
       successTitle = "Something went wrong";
@@ -59,6 +66,9 @@ export function AlertErrorMessage(errorCode: string) {
       break;
     case "no_connection":
       errorMessage = "No connection to wallet";
+      break;
+    case "not_same_type":
+      errorMessage = "You can't exchange different types of items";
       break;
     default:
       errorMessage = "Something went wrong";

@@ -1,31 +1,27 @@
 import { Dialog, Transition } from "@headlessui/react";
-import { Dispatch, Fragment, SetStateAction, useEffect, useState } from "react";
-import { ICapy } from "types";
+import { Fragment, useEffect, useState } from "react";
+import { handleSetBatchIdForSwap, ICapy, ISwapRecipientCollectionDialog } from "types";
 import { Montserrat } from "next/font/google";
 import { XMarkIcon } from "@heroicons/react/24/solid";
-import { classNames, formatSuiAddress } from "utils";
+import { classNames, convertIPFSUrl, formatSuiAddress, CAPY_TYPE, SWAP_TYPES_LIST } from "utils";
 import Image from "next/image";
-import { fetchSuifrens, suiProvider } from "services/sui";
+import { fetchNFTObjects, suiProvider } from "services/sui";
 import { LabeledInput } from "components/Forms/Inputs";
-import { FRENS_TYPE, TYPE_WIZARD, TYPE_FUDDIES } from "utils";
 
 const font_montserrat = Montserrat({ subsets: ["latin"] });
-
-type BatchIdTradeType = {
-  id: string;
-  url: string;
-};
 
 function initializeSuifren(nftObject: any): ICapy {
   return {
     id: nftObject?.data?.objectId,
-    description: nftObject?.data?.display?.data?.description!,
-    url: nftObject?.data?.display?.data?.image_url!,
+    description: nftObject?.data?.display?.data?.name!,
+    url: convertIPFSUrl(nftObject?.data?.display?.data?.image_url!),
     link: "none",
+    type: nftObject?.data?.type!,
   };
 }
 
-export const RecieveNFTDialog = ({
+export const RecipientCollectionDialog = ({
+  creatorBatchIdTrade,
   wallet,
   opened,
   setOpened,
@@ -33,75 +29,42 @@ export const RecieveNFTDialog = ({
   setBatchIdTrade,
   walletAddressToSearch,
   setWalletAddressToSearch,
-}: {
-  wallet: any;
-  opened: boolean;
-  setOpened: any;
-  batchIdTrade: BatchIdTradeType[];
-  setBatchIdTrade: any;
-  walletAddressToSearch: string | undefined;
-  setWalletAddressToSearch: any;
-}) => {
+  setTypeSwap,
+  typeSwap,
+}: ISwapRecipientCollectionDialog) => {
   if (!wallet) return <></>;
-
+  console.log("creator", creatorBatchIdTrade)
   const [frens, setFrens] = useState<ICapy[] | null>();
-  const [tempSearchState, setTempSeachState] = useState<string>("");
+  const [tempSearchState, setTempSearchState] = useState<string>("");
 
   useEffect(() => {
     if (!walletAddressToSearch) return;
-    fetchMyPoints(walletAddressToSearch).then();
+    fetchRecipientWallet(walletAddressToSearch).then();
   }, [walletAddressToSearch]);
 
   const nfts = wallet?.contents?.nfts!;
-  const suifrens = fetchSuifrens(nfts);
+  const suifrens = fetchNFTObjects(nfts);
 
-  const handleSetBatchIdStake = (
-    id: string,
-    url: string,
-    batchIdTrade: BatchIdTradeType[],
-    setBatchIdTrade: Dispatch<SetStateAction<BatchIdTradeType[]>>
-  ) => {
-    console.log("Handle state", batchIdTrade);
-    // Check if the id already exists in the array
-    if (!batchIdTrade.some((item) => item.id! === id)) {
-      // If it doesn't exist, add it to the array
-      setBatchIdTrade((prevBatchIdStake) => [...prevBatchIdStake, { id, url }]);
-    } else {
-      // If it exists, remove it from the array
-      setBatchIdTrade((prevBatchIdStake) => prevBatchIdStake.filter((item) => item.id !== id));
-    }
-  };
-
-  async function fetchMyPoints(searchWalletAddress: string) {
+  async function fetchRecipientWallet(searchWalletAddress: string) {
     if (!searchWalletAddress) {
       return;
     }
-    console.log("TEMP SERARCH STATE", tempSearchState);
     // if we don't have anything in temp search state skip this condition
     if (tempSearchState) {
       setWalletAddressToSearch(tempSearchState);
-      console.log(searchWalletAddress);
     }
     try {
       const response = await suiProvider.getOwnedObjects({
         owner: searchWalletAddress,
         options: { showContent: true, showType: true, showDisplay: true },
       });
-      console.log("Response", response);
+
       const suifrens = response.data
-        .filter(
-          (object) => object?.data?.type === FRENS_TYPE //||
-          // object?.data?.type === TYPE_WIZARD ||
-          // object?.data?.type === TYPE_FUDDIES
-        )
+        .filter((object) => SWAP_TYPES_LIST.includes(object?.data?.type!))
         .map((suifrenNftObject) => {
-          // initializeSuifren(suifrenNftObject);
-          //   console.log(suifrenNftObject?.data?.display?.data?.image_url);
-          //   console.log(suifrenNftObject?.data?.objectId);
           return initializeSuifren(suifrenNftObject);
         });
 
-      console.log("SuiFrens", suifrens);
       setFrens(suifrens);
     } catch (e) {
       console.error(e);
@@ -135,12 +98,12 @@ export const RecieveNFTDialog = ({
               <Dialog.Title
                 as="h3"
                 className={classNames(
-                  "flex justify-between text-base leading-6 text-[#595959] text-center mb-2 font-bold",
+                  "flex justify-between items-center content-center text-base leading-6 text-grayColor text-center mb-2 font-bold",
                   font_montserrat.className
                 )}
               >
-                <p className="md:text-xs text-xs mt-1 font-light">Selected ({batchIdTrade.length})</p>
-                <p className="mt-1 md:text-xl text-sm">Choose from collection of your counterparty</p>
+                <p className="md:text-xs hidden md:flex mt-1 font-light">Selected ({batchIdTrade.length})</p>
+                <p className="mt-1 md:text-xl text-sm">Select NFTs you want</p>
 
                 <button onClick={() => setOpened(false)}>
                   <XMarkIcon className="flex h-7 w-7" />
@@ -148,54 +111,83 @@ export const RecieveNFTDialog = ({
               </Dialog.Title>
               <div className="flex  w-full flex-col items-center justify-center">
                 <div className={"mt-2 flex flex-col items-center gap-2 w-full"}>
-                  {walletAddressToSearch && (
-                    <p
-                      className={classNames("text-sm", font_montserrat.className)}
-                    >{`Wallet Collection: ${formatSuiAddress(walletAddressToSearch)}`}</p>
-                  )}
-                  <div className="flex flex-col">
+                  <div className={classNames("w-full mt-2 bg-white", font_montserrat.className)}>
+                    <LabeledInput>
+                      <div className="relative bg-white px-2 my-1">
+                        <input
+                          type={"text"}
+                          name="wallet_address"
+                          className={"input-field w-full text-sm mr-4"}
+                          placeholder="Sui Wallet"
+                          onChange={(e) => setTempSearchState(e.target.value)}
+                        />
+                      </div>
+                    </LabeledInput>
+                  </div>
+                  <div className={"py-2 w-full gap-1 flex content-center items-center"}>
+                    {walletAddressToSearch && (
+                      <>
+                        <p
+                          className={classNames("text-sm text-grayColor", font_montserrat.className)}
+                        >{`Wallet Collection: ${formatSuiAddress(walletAddressToSearch)}`}</p>
+                        <XMarkIcon
+                          className="w-5 h-5 text-grayColor cursor-pointer"
+                          onClick={() => {
+                            setWalletAddressToSearch("");
+                            setBatchIdTrade([]);
+                            setFrens([]);
+                          }}
+                        />
+                      </>
+                    )}
+                  </div>
+                  <div className="flex flex-col min-h-[32vh]">
                     {suifrens ? (
-                      <div className={"grid md:grid-cols-5 grid-cols-3 gap-2 md:gap-[1.25rem] md:mt-4"}>
+                      <div className={"grid md:grid-cols-5 grid-cols-3 gap-2 md:gap-[1.25rem] md:mt-4 overflow-auto"}>
                         {frens?.map((fren) => {
                           return (
                             <button
                               onClick={() => {
-                                handleSetBatchIdStake(fren.id, fren.url, batchIdTrade, setBatchIdTrade);
+                                handleSetBatchIdForSwap(
+                                  fren.id,
+                                  fren.url,
+                                  fren.type,
+                                  setTypeSwap,
+                                  batchIdTrade,
+                                  setBatchIdTrade,
+                                  creatorBatchIdTrade,
+                                  typeSwap
+                                );
                               }}
                               key={fren.id}
                             >
                               <div
                                 className={classNames(
-                                  "border-2 bg-white flex flex-col content-center justify-center items-center p-2 rounded-md cursor-pointer",
+                                  "border-2 bg-white flex flex-col content-center max-h-[160px] min-h-[160px] justify-center items-center p-2 rounded-md cursor-pointer",
                                   batchIdTrade.some((item) => item.id === fren.id)
                                     ? "border-yellowColor"
-                                    : "border-darkColor"
+                                    : "border-grayColor"
                                 )}
                               >
                                 <Image src={fren.url} alt="collection_img" width={90} height={130} className="mt-1" />
-                                <p className="mt-1">{`${fren.description}`}</p>
+                                <p
+                                  className={classNames(
+                                    "mt-1 text-xs min-h-[40px] max-h-[40px]",
+                                    font_montserrat.className
+                                  )}
+                                >
+                                  {classNames(fren.description ? `${fren.description}` : "")}
+                                </p>
                               </div>
                             </button>
                           );
                         })}
                       </div>
                     ) : (
-                      <p>Loading..</p>
+                      <p>Loading...</p>
                     )}
                   </div>
-                  <div className="w-full mt-8 bg-white">
-                    <LabeledInput label={""}>
-                      <div className="relative bg-white px-2 my-1">
-                        <input
-                          type={"text"}
-                          name="wallet_address"
-                          className={"input-field w-full "}
-                          placeholder="Sui Wallet"
-                          onChange={(e) => setTempSeachState(e.target.value)}
-                        />
-                      </div>
-                    </LabeledInput>
-                  </div>
+
                   <button
                     className={classNames(
                       "w-full block mx-auto mt-2 px-3 text-sm py-2 text-white font-black rounded-md  cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed",
@@ -205,7 +197,7 @@ export const RecieveNFTDialog = ({
                         : "bg-yellowColor hover:bg-[#e5a44a]"
                     )}
                     onClick={() => {
-                      batchIdTrade?.length === 0 ? fetchMyPoints(tempSearchState) : setOpened(false);
+                      batchIdTrade?.length === 0 ? fetchRecipientWallet(tempSearchState) : setOpened(false);
                     }}
                   >
                     {batchIdTrade?.length === 0 ? "Search" : "Confirm Items"}
