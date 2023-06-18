@@ -216,7 +216,7 @@ const Index = () => {
                 <tr key={offer.id} className={"bg-white border-amber-950 rounded-full border"}>
                   <td className={"px-3 py-5 text-xs md:text-sm text-gray-500"}>{index + 1}</td>
                   <td className={"whitespace-nowrap px-3 py-5 text-xs md:text-sm text-gray-500"}>
-                    {formatSuiAddress(offer.recipient, 4, 4)}
+                    {formatSuiAddress(offer.creator, 4, 4)}
                   </td>
                   <td className={"px-3 py-5 hidden md:table-cell text-sm text-gray-500"}>
                     <div className={"flex gap-1 content-center items-center"}>
