@@ -42,10 +42,10 @@ const Index = () => {
         ).then((offers) => {
           const sent = offers
             .filter((offer) => offer.creator === wallet.address)
-              .sort((a) => (a.status === 1 ? 1 : -1))
+            .sort((a) => (a.status === 1 ? 1 : -1));
           const received = offers
             .filter((offer) => offer.recipient === wallet.address)
-            .sort((a) => (a.status === 1 ? 1 : -1))
+            .sort((a) => (a.status === 1 ? 1 : -1));
 
           setSentOffers(sent);
           setReceivedOffers(received);
@@ -162,9 +162,9 @@ const Index = () => {
                   <td className="whitespace-nowrap px-3 py-5 text-xs md:text-sm text-gray-500">
                     <span
                       className={classNames(
-                        "inline-flex items-center rounded-md px-2 py-1 text-xs font-medium",
+                        "inline-flex items-center rounded-md px-2 py-1 text-xs md:text-sm font-medium",
                         offer.status === 0
-                          ? "text-grayColor"
+                          ? "text-redColor"
                           : offer.status === 1
                           ? "text-yellowColor"
                           : "text-green-700"
@@ -173,11 +173,11 @@ const Index = () => {
                       {offer.status === 0 ? "Canceled" : offer.status === 1 ? "Active" : "Exchanged"}
                     </span>
                   </td>
-                  <td className={"whitespace-nowrap px-2 py-5 text-xs md:text-sm text-purpleColor"}>
+                  <td className={"whitespace-nowrap px-2 py-5 text-xs md:text-sm text-redColor"}>
                     <Link href={generateLink(offer)}>
                       <div
                         className={
-                          "border-purpleColor hover:bg-purpleColor hover:text-white border rounded-lg content-center flex items-center justify-center py-2"
+                          "border-redColor hover:bg-redColor hover:text-white border rounded-lg content-center flex items-center justify-center py-2"
                         }
                       >
                         Learn more
@@ -262,11 +262,11 @@ const Index = () => {
                       {offer.status === 0 ? "Canceled" : offer.status === 1 ? "Active" : "Exchanged"}
                     </span>
                   </td>
-                  <td className={"whitespace-nowrap px-2 py-5 text-xs md:text-sm text-redColor"}>
+                  <td className={"whitespace-nowrap px-2 py-5 text-xs md:text-sm text-purpleColor"}>
                     <Link href={generateLink(offer)}>
                       <div
                         className={
-                          "border-redColor hover:bg-redColor hover:text-white border rounded-lg content-center flex items-center justify-center py-2"
+                          "border-purpleColor hover:bg-purpleColor hover:text-white border rounded-lg content-center flex items-center justify-center py-2"
                         }
                       >
                         Learn more
