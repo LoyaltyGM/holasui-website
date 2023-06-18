@@ -50,8 +50,8 @@ export const YourOfferLinkDialog = ({ recipientAddress, transactionHash, opened,
                   <p className={'font-bold'}>Link</p>
                   <div className={'mt-2'}>
                     <CopyTextButton
-                      showText={"https://holasui.app/swap/history/" + formatSuiAddress(transactionHash)}
-                      copyText={"https://holasui.app/swap/history/" + transactionHash}
+                      showText={"https://dashboard.holasui.app/swap/history/" + formatSuiAddress(transactionHash)}
+                      copyText={"https://dashboard.holasui.app/swap/history/" + transactionHash}
                     />
                   </div>
                 </div>
