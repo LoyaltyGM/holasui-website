@@ -75,6 +75,7 @@ const DetailSwapOffer: NextPage<IDetailOfferProps> = ({ offerId }) => {
           const tradeObject = {
             id: objectId,
             url: convertIPFSUrl(((object?.data?.display?.data as any).image_url)),
+            type: object?.data?.type!,
           };
 
           tradeObjects.push(tradeObject);
@@ -83,6 +84,9 @@ const DetailSwapOffer: NextPage<IDetailOfferProps> = ({ offerId }) => {
 
       setRecipientObjects(tradeObjects);
     }
+
+    console.log("Recipient Objects", recipientObjects)
+    console.log('Creator Objects', creatorObjects)
 
     async function fetchCreatorObjects() {
       if (!offer) return;
@@ -98,6 +102,7 @@ const DetailSwapOffer: NextPage<IDetailOfferProps> = ({ offerId }) => {
           const tradeObject = {
             id: objectId,
             url: convertIPFSUrl(((object?.data?.display?.data as any).image_url)),
+            type: object?.data?.type!,
           };
 
           tradeObjects.push(tradeObject);
@@ -120,6 +125,7 @@ const DetailSwapOffer: NextPage<IDetailOfferProps> = ({ offerId }) => {
           escrowId: offerId,
           recipient_coin_amount: formatSuiNumber(offer?.recipient_coin_amount),
           recipient_objects: offer.recipient_items_ids,
+          type_swap: creatorObjects.length > 0 ? creatorObjects[0].type : recipientObjects[0].type,
         }),
         options: {
           showEffects: true,
@@ -147,7 +153,7 @@ const DetailSwapOffer: NextPage<IDetailOfferProps> = ({ offerId }) => {
     setWaitSui(true);
     try {
       const response = await wallet.signAndExecuteTransactionBlock({
-        transactionBlock: signTransactionCancelEscrow(offerId),
+        transactionBlock: signTransactionCancelEscrow(offerId, creatorObjects.length > 0 ? creatorObjects[0].type : recipientObjects[0].type,),
         options: {
           showEffects: true,
         },

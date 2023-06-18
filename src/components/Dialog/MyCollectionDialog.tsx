@@ -5,7 +5,7 @@ import { Montserrat } from "next/font/google";
 import { XMarkIcon } from "@heroicons/react/24/solid";
 import { classNames } from "utils";
 import Image from "next/image";
-import { fetchSuifrens } from "services/sui";
+import { fetchNFTObjects } from "services/sui";
 
 const font_montserrat = Montserrat({ subsets: ["latin"] });
 
@@ -15,13 +15,15 @@ export const MyCollectionDialog = ({
   setOpened,
   batchIdTrade,
   setBatchIdTrade,
+  setTypeSwap,
+  typeSwap,
 }: ISwapCollectionDialog) => {
   if (!wallet) return <></>;
 
   const [frens, setFrens] = useState<ICapy[] | null>();
 
   const nfts = wallet?.contents?.nfts!;
-  const suifrens = fetchSuifrens(nfts);
+  const suifrens = fetchNFTObjects(nfts);
 
   useEffect(() => {
     async function fetchWalletObjects() {
@@ -29,11 +31,9 @@ export const MyCollectionDialog = ({
         return;
       }
       try {
-        const nfts = wallet?.contents?.nfts!;
-        const suifrens = fetchSuifrens(nfts);
+        const nfts = wallet?.contents.objects;
+        const suifrens = fetchNFTObjects(nfts);
         if (suifrens) setFrens(suifrens);
-
-        console.log("suifrens", suifrens);
       } catch (e) {
         console.error(e);
       }
@@ -90,19 +90,19 @@ export const MyCollectionDialog = ({
                             <button
                               key={fren.id}
                               onClick={() => {
-                                handleSetBatchIdForSwap(fren.id, fren.url, batchIdTrade, setBatchIdTrade);
+                                handleSetBatchIdForSwap(fren.id, fren.url, fren.type, setTypeSwap, batchIdTrade, setBatchIdTrade);
                               }}
                             >
                               <div
                                 className={classNames(
-                                  "border-2 border-grayColor flex bg-white flex-col content-center justify-center items-center p-2 rounded-md  cursor-pointer",
+                                  "border-2 border-grayColor flex bg-white max-h-[160px] min-h-[160px] flex-col content-center justify-center items-center p-2 rounded-md  cursor-pointer",
                                   batchIdTrade.some((item) => item.id === fren.id)
                                     ? "border-yellowColor"
                                     : "border-blackColor"
                                 )}
                               >
                                 <Image src={fren.url} alt="collection_img" width={90} height={130} className="mt-1" />
-                                <p className="mt-1 text-sm">
+                                <p className="mt-1 text-xs min-h-[40px] max-h-[40px] text-clip">
                                   {classNames(fren.description ? `${fren.description}` : "")}
                                 </p>
                               </div>

@@ -2,14 +2,14 @@ import {useEffect, useState} from "react";
 import {ICapy, IStakingTicket, handleSetBatchIdStake} from "types";
 import {
     fetchStakingTickets,
-    fetchSuifrens,
+    fetchNFTObjects,
     signTransactionClaimPoints,
     signTransactionEndStaking,
     signTransactionStartStaking,
     singTransactionsToBatchClaimPoints,
     singTransactionsToBatchStartStaking,
     singTransactionsToBatchUnstaking,
-    suiProvider,
+    suiProvider, fetchCapyStaking,
 } from "services/sui";
 import {ethos, EthosConnectStatus} from "ethos-connect";
 import Image from "next/image";
@@ -65,7 +65,7 @@ const Home = () => {
             }
             try {
                 const nfts = wallet?.contents?.nfts!;
-                const suifrens = fetchSuifrens(nfts);
+                const suifrens = fetchCapyStaking(nfts);
                 if (suifrens) setFrens(suifrens);
                 const stakingTickets = fetchStakingTickets(nfts);
                 setStakedFrens(stakingTickets);

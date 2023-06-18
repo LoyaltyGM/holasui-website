@@ -5,6 +5,7 @@ export interface ICapy {
     description: string;
     url: string;
     link: string;
+    type: string;
 }
 
 export interface IObjectDetailDialog {

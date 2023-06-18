@@ -1,18 +1,25 @@
-import { FRENS_TYPE, replaceTripleSlash, STAKING_TICKET_TYPE } from "utils";
+import {CAPY_TYPE, replaceTripleSlash, STAKING_TICKET_TYPE, SWAP_TYPES_LIST} from "utils";
 import { SuiNFT } from "ethos-connect";
 import { ICapy, IStakingTicket } from "types";
 
-export function fetchSuifrens(nftObjects: SuiNFT[]): ICapy[] | null {
+export function fetchCapyStaking(nftObjects: SuiNFT[]): ICapy[] | null {
   if (!nftObjects) return null;
   return nftObjects
-    .filter((object) => object.type === FRENS_TYPE) //|| object.type === TYPE_WIZARD || object.type === TYPE_FUDDIES)
+      .filter((object) => object.type === CAPY_TYPE)
+      .map((suifrenNftObject) => initializeSuifren(suifrenNftObject));
+}
+
+export function fetchNFTObjects(nftObjects: SuiNFT[]): ICapy[] | null {
+  if (!nftObjects) return null;
+  return nftObjects
+    .filter((object) => SWAP_TYPES_LIST.includes(object.type)) //|| object.type === TYPE_WIZARD || object.type === TYPE_FUDDIES)
     .map((suifrenNftObject) => initializeSuifren(suifrenNftObject));
 }
 
 export function fetchSuifren(nftObjects: SuiNFT[], id: string): ICapy | null {
   if (!nftObjects) return null;
 
-  const suifrenNftObject = nftObjects.find((object) => object.objectId === id && object.type === FRENS_TYPE);
+  const suifrenNftObject = nftObjects.find((object) => object.objectId === id && object.type === CAPY_TYPE);
 
   return initializeSuifren(suifrenNftObject!);
 }
@@ -36,9 +43,10 @@ export function fetchStakingTicket(objects: SuiNFT[], id: string): IStakingTicke
 function initializeSuifren(nftObject: SuiNFT): ICapy {
   return {
     id: nftObject?.objectId,
-    description: nftObject?.description!,
+    description: nftObject?.name!,
     url: nftObject?.imageUrl!,
     link: nftObject?.link!,
+    type: nftObject?.type!,
   };
 }
 

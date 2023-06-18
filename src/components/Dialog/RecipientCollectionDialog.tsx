@@ -3,9 +3,9 @@ import { Fragment, useEffect, useState } from "react";
 import { handleSetBatchIdForSwap, ICapy, ISwapRecipientCollectionDialog } from "types";
 import { Montserrat } from "next/font/google";
 import { XMarkIcon } from "@heroicons/react/24/solid";
-import { classNames, convertIPFSUrl, formatSuiAddress, FRENS_TYPE } from "utils";
+import { classNames, convertIPFSUrl, formatSuiAddress, CAPY_TYPE, SWAP_TYPES_LIST } from "utils";
 import Image from "next/image";
-import { fetchSuifrens, suiProvider } from "services/sui";
+import { fetchNFTObjects, suiProvider } from "services/sui";
 import { LabeledInput } from "components/Forms/Inputs";
 
 const font_montserrat = Montserrat({ subsets: ["latin"] });
@@ -16,10 +16,12 @@ function initializeSuifren(nftObject: any): ICapy {
     description: nftObject?.data?.display?.data?.name!,
     url: convertIPFSUrl(nftObject?.data?.display?.data?.image_url!),
     link: "none",
+    type: nftObject?.data?.type!,
   };
 }
 
 export const RecipientCollectionDialog = ({
+  creatorBatchIdTrade,
   wallet,
   opened,
   setOpened,
@@ -27,9 +29,11 @@ export const RecipientCollectionDialog = ({
   setBatchIdTrade,
   walletAddressToSearch,
   setWalletAddressToSearch,
+  setTypeSwap,
+  typeSwap,
 }: ISwapRecipientCollectionDialog) => {
   if (!wallet) return <></>;
-
+  console.log("creator", creatorBatchIdTrade)
   const [frens, setFrens] = useState<ICapy[] | null>();
   const [tempSearchState, setTempSearchState] = useState<string>("");
 
@@ -39,7 +43,7 @@ export const RecipientCollectionDialog = ({
   }, [walletAddressToSearch]);
 
   const nfts = wallet?.contents?.nfts!;
-  const suifrens = fetchSuifrens(nfts);
+  const suifrens = fetchNFTObjects(nfts);
 
   async function fetchRecipientWallet(searchWalletAddress: string) {
     if (!searchWalletAddress) {
@@ -55,13 +59,8 @@ export const RecipientCollectionDialog = ({
         options: { showContent: true, showType: true, showDisplay: true },
       });
 
-      console.log("RESPONSE", response.data);
       const suifrens = response.data
-        .filter(
-          (object) => object?.data?.type === FRENS_TYPE //||
-          //object?.data?.type === TYPE_WIZARD
-          // object?.data?.type === TYPE_FUDDIES
-        )
+        .filter((object) => SWAP_TYPES_LIST.includes(object?.data?.type!))
         .map((suifrenNftObject) => {
           return initializeSuifren(suifrenNftObject);
         });
@@ -149,20 +148,36 @@ export const RecipientCollectionDialog = ({
                           return (
                             <button
                               onClick={() => {
-                                handleSetBatchIdForSwap(fren.id, fren.url, batchIdTrade, setBatchIdTrade);
+                                handleSetBatchIdForSwap(
+                                  fren.id,
+                                  fren.url,
+                                  fren.type,
+                                  setTypeSwap,
+                                  batchIdTrade,
+                                  setBatchIdTrade,
+                                  creatorBatchIdTrade,
+                                  typeSwap
+                                );
                               }}
                               key={fren.id}
                             >
                               <div
                                 className={classNames(
-                                  "border-2 bg-white flex flex-col content-center justify-center items-center p-2 rounded-md cursor-pointer",
+                                  "border-2 bg-white flex flex-col content-center max-h-[160px] min-h-[160px] justify-center items-center p-2 rounded-md cursor-pointer",
                                   batchIdTrade.some((item) => item.id === fren.id)
                                     ? "border-yellowColor"
                                     : "border-grayColor"
                                 )}
                               >
                                 <Image src={fren.url} alt="collection_img" width={90} height={130} className="mt-1" />
-                                <p className="mt-1">{classNames(fren.description ? `${fren.description}` : "")}</p>
+                                <p
+                                  className={classNames(
+                                    "mt-1 text-xs min-h-[40px] max-h-[40px]",
+                                    font_montserrat.className
+                                  )}
+                                >
+                                  {classNames(fren.description ? `${fren.description}` : "")}
+                                </p>
                               </div>
                             </button>
                           );

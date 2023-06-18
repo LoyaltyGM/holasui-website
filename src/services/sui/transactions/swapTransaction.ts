@@ -1,5 +1,5 @@
 import { TransactionBlock } from "@mysten/sui.js";
-import { ESCROW_HUB_ID, FRENS_TYPE, PACKAGE_ID_ESCROW, PRICE_ESCROW } from "utils";
+import { ESCROW_HUB_ID, CAPY_TYPE, PACKAGE_ID_ESCROW, PRICE_ESCROW } from "utils";
 
 export const signTransactionCreateEscrow = ({
   creator_objects,
@@ -7,16 +7,16 @@ export const signTransactionCreateEscrow = ({
   recipient,
   recipient_object_ids,
   recipient_coin_amount,
+  type_swap,
 }: {
   creator_objects: string[];
   creator_coin_amount: number;
   recipient: string;
   recipient_object_ids: string[];
   recipient_coin_amount: number;
+  type_swap: string;
 }) => {
   const tx = new TransactionBlock();
-
-  console.log("escrow::create");
 
   const [coin] = tx.splitCoins(tx.gas, [tx.pure(creator_coin_amount * 1e9, "u64")]);
 
@@ -25,7 +25,7 @@ export const signTransactionCreateEscrow = ({
     arguments: [
       tx.pure(ESCROW_HUB_ID),
       tx.makeMoveVec({
-        type: FRENS_TYPE,
+        type: type_swap,
         objects: creator_objects.map((creator_object_id) => tx.pure(creator_object_id)),
       }),
       coin,
@@ -33,19 +33,19 @@ export const signTransactionCreateEscrow = ({
       tx.pure(recipient_object_ids),
       tx.pure(recipient_coin_amount * 1e9),
     ],
-    typeArguments: [FRENS_TYPE],
+    typeArguments: [type_swap],
   });
 
   return tx;
 };
 
-export const signTransactionCancelEscrow = (offerId: string) => {
+export const signTransactionCancelEscrow = (offerId: string, type_swap: string) => {
   const tx = new TransactionBlock();
 
   tx.moveCall({
     target: `${PACKAGE_ID_ESCROW}::escrow::cancel`,
     arguments: [tx.pure(ESCROW_HUB_ID), tx.object(offerId)],
-    typeArguments: [FRENS_TYPE],
+    typeArguments: [type_swap],
   });
 
   return tx;
@@ -55,10 +55,12 @@ export const signTransactionExchangeEscrow = ({
   escrowId,
   recipient_objects,
   recipient_coin_amount,
+  type_swap,
 }: {
   escrowId: string;
   recipient_objects: string[];
   recipient_coin_amount: number;
+  type_swap: string;
 }) => {
   const tx = new TransactionBlock();
 
@@ -72,12 +74,12 @@ export const signTransactionExchangeEscrow = ({
       feeCoin,
       tx.pure(escrowId),
       tx.makeMoveVec({
-        type: FRENS_TYPE,
+        type: type_swap,
         objects: recipient_objects.map((recipient_object_id) => tx.pure(recipient_object_id)),
       }),
       coin,
     ],
-    typeArguments: [FRENS_TYPE],
+    typeArguments: [type_swap],
   });
 
   return tx;
