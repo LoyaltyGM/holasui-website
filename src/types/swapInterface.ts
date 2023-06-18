@@ -34,6 +34,12 @@ export interface IYourOfferLinkDialog {
   setOpened: Dispatch<SetStateAction<boolean>>;
 }
 
+export interface ISwapActionDialog {
+  title: "Accept" | "Reject";
+  opened: boolean;
+  setOpened: Dispatch<SetStateAction<boolean>>;
+}
+
 export interface ISwapRecipientCollectionDialog extends ISwapCollectionDialog {
   creatorBatchIdTrade: TradeObjectType[];
   walletAddressToSearch: string | undefined;

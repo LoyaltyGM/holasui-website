@@ -40,8 +40,12 @@ const Index = () => {
             return getObjectFields(suiObject) as IOffer;
           })
         ).then((offers) => {
-          const sent = offers.filter((offer) => offer.creator === wallet.address);
-          const received = offers.filter((offer) => offer.recipient === wallet.address);
+          const sent = offers
+            .filter((offer) => offer.creator === wallet.address)
+              .sort((a) => (a.status === 1 ? 1 : -1))
+          const received = offers
+            .filter((offer) => offer.recipient === wallet.address)
+            .sort((a) => (a.status === 1 ? 1 : -1))
 
           setSentOffers(sent);
           setReceivedOffers(received);
@@ -58,11 +62,11 @@ const Index = () => {
     return (
       <div className={"flex gap-4 mb-5"}>
         <button
-            onClick={() => setActiveTab("sent")}
-            className={classNames(
-                "px-4 w-64 font-medium py-2 rounded-full",
-                activeTab === "sent" ? "text-white bg-redColor" : "bg-white text-grayColor"
-            )}
+          onClick={() => setActiveTab("sent")}
+          className={classNames(
+            "px-4 w-64 font-medium py-2 rounded-full",
+            activeTab === "sent" ? "text-white bg-redColor" : "bg-white text-grayColor"
+          )}
         >
           Sent offers
         </button>
