@@ -67,6 +67,9 @@ export function AlertErrorMessage(errorCode: string) {
     case "no_connection":
       errorMessage = "No connection to wallet";
       break;
+    case "not_same_type":
+      errorMessage = "You can't exchange different types of items";
+      break;
     default:
       errorMessage = "Something went wrong";
       break;

@@ -6,10 +6,11 @@ import { classNames, convertIPFSUrl, formatSuiAddress, formatSuiNumber } from "u
 import { IOffer, TradeObjectType } from "types";
 import { signTransactionCancelEscrow, signTransactionExchangeEscrow, suiProvider } from "services/sui";
 import { getExecutionStatus, getExecutionStatusError, getObjectFields } from "@mysten/sui.js";
-import {ArrowLeftIcon, LinkIcon} from "@heroicons/react/24/outline";
+import { ArrowLeftIcon, LinkIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
 import ImageSuiToken from "/public/img/SuiToken.png";
-import {useRouter} from "next/router";
+import { useRouter } from "next/router";
+import { SwapActionDialog } from "../../../components/Dialog/SwapActionDialog";
 
 interface IDetailOfferProps {
   offerId: string;
@@ -41,7 +42,7 @@ const DetailSwapOffer: NextPage<IDetailOfferProps> = ({ offerId }) => {
 
   const [recipientObjects, setRecipientObjects] = useState<TradeObjectType[]>([]);
   const [creatorObjects, setCreatorObjects] = useState<TradeObjectType[]>([]);
-
+  const [showActionDialog, setShowActionDialog] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -49,7 +50,7 @@ const DetailSwapOffer: NextPage<IDetailOfferProps> = ({ offerId }) => {
       const offerObject = getObjectFields(
         await suiProvider.getObject({
           id: offerId,
-          options: { showContent: true },
+          options: { showContent: true, showDisplay: true },
         })
       ) as IOffer;
 
@@ -67,16 +68,15 @@ const DetailSwapOffer: NextPage<IDetailOfferProps> = ({ offerId }) => {
 
       await Promise.all(
         offer.recipient_items_ids?.map(async (objectId: string) => {
-          const object = getObjectFields(
-            await suiProvider.getObject({
-              id: objectId,
-              options: { showContent: true },
-            })
-          );
+          const object = await suiProvider.getObject({
+            id: objectId,
+            options: { showContent: true, showType: true, showDisplay: true },
+          });
 
           const tradeObject = {
             id: objectId,
-            url: convertIPFSUrl(object?.url),
+            url: convertIPFSUrl((object?.data?.display?.data as any).image_url),
+            type: object?.data?.type!,
           };
 
           tradeObjects.push(tradeObject);
@@ -92,16 +92,15 @@ const DetailSwapOffer: NextPage<IDetailOfferProps> = ({ offerId }) => {
       const tradeObjects: TradeObjectType[] = [];
       await Promise.all(
         offer.creator_items_ids?.map(async (objectId: string) => {
-          const object = getObjectFields(
-            await suiProvider.getObject({
-              id: objectId,
-              options: { showContent: true },
-            })
-          );
+          const object = await suiProvider.getObject({
+            id: objectId,
+            options: { showContent: true, showType: true, showDisplay: true },
+          });
 
           const tradeObject = {
             id: objectId,
-            url: convertIPFSUrl(object?.url),
+            url: convertIPFSUrl((object?.data?.display?.data as any).image_url),
+            type: object?.data?.type!,
           };
 
           tradeObjects.push(tradeObject);
@@ -124,6 +123,7 @@ const DetailSwapOffer: NextPage<IDetailOfferProps> = ({ offerId }) => {
           escrowId: offerId,
           recipient_coin_amount: formatSuiNumber(offer?.recipient_coin_amount),
           recipient_objects: offer.recipient_items_ids,
+          type_swap: creatorObjects.length > 0 ? creatorObjects[0].type : recipientObjects[0].type,
         }),
         options: {
           showEffects: true,
@@ -131,13 +131,13 @@ const DetailSwapOffer: NextPage<IDetailOfferProps> = ({ offerId }) => {
       });
 
       const status = getExecutionStatus(response);
-      console.log(status);
       if (status?.status === "failure") {
         console.log(status.error);
         const error_status = getExecutionStatusError(response);
         if (error_status) AlertErrorMessage(error_status);
       } else {
         AlertSucceed("AcceptOffer");
+        setShowActionDialog(true);
       }
     } catch (e) {
       console.error(e);
@@ -151,7 +151,10 @@ const DetailSwapOffer: NextPage<IDetailOfferProps> = ({ offerId }) => {
     setWaitSui(true);
     try {
       const response = await wallet.signAndExecuteTransactionBlock({
-        transactionBlock: signTransactionCancelEscrow(offerId),
+        transactionBlock: signTransactionCancelEscrow(
+          offerId,
+          creatorObjects.length > 0 ? creatorObjects[0].type : recipientObjects[0].type
+        ),
         options: {
           showEffects: true,
         },
@@ -165,6 +168,7 @@ const DetailSwapOffer: NextPage<IDetailOfferProps> = ({ offerId }) => {
         if (error_status) AlertErrorMessage(error_status);
       } else {
         AlertSucceed("CancelOffer");
+        setShowActionDialog(true);
       }
     } catch (e) {
       console.error(e);
@@ -217,11 +221,14 @@ const DetailSwapOffer: NextPage<IDetailOfferProps> = ({ offerId }) => {
         "flex flex-col gap-10 min-h-[100vh] md:min-h-[65vh] pl-2 pr-2 md:pl-16 py-6 md:mt-14 mt-18 md:pr-10 z-10 rounded-lg mt-8 "
       )}
     >
-      <button className={"flex gap-2 text-blackColor content-items items-center mt-10 md:mt-5"} onClick={() => router.back()}>
+      <button
+        className={"flex gap-2 text-blackColor content-items items-center mt-10 md:mt-5"}
+        onClick={() => router.back()}
+      >
         <ArrowLeftIcon className={"stroke-[2px] h-5 w-5"} />
         <p className={"text-sm font-medium"}>Back</p>
       </button>
-      <div className={'md:flex justify-between'}>
+      <div className={"md:flex justify-between"}>
         <div className={"gap-4 text-blackColor font-extrabold text-3xl"}>
           <a href={`https://suiexplorer.com/object/${offerId}`} target="_blank" className={"flex gap-1 items-center"}>
             Offer
@@ -247,12 +254,12 @@ const DetailSwapOffer: NextPage<IDetailOfferProps> = ({ offerId }) => {
         </div>
       </div>
 
-      <div className="md:flex gap-10 justify-items-center justify-evenly items-center rounded-2xl md:h-[50vh] h-full">
-        <div className="w-full bg-white rounded-xl border-purpleColor border-2 items-center gap-1 justify-between mb-4 py-2">
+      <div className="md:flex gap-10 justify-items-center justify-evenly items-center rounded-2xl md:h-[42vh] h-full">
+        <div className="w-full bg-white rounded-xl border-purpleColor border-2 items-center gap-1 justify-between py-2">
           <p className={"px-3 mb-4 mt-2 text-blackColor font-medium"}>{formatSuiAddress(offer.creator)} items</p>
           <OfferInformation userObjectIds={creatorObjects} coinAmount={formatSuiNumber(offer.creator_coin_amount)} />
         </div>
-        <div className="w-full bg-white rounded-xl border-redColor border-2 items-center gap-1 justify-between mb-4 py-2">
+        <div className="w-full bg-white rounded-xl border-redColor border-2 items-center gap-1 justify-between py-2">
           <p className={"px-3 mb-4 mt-2 text-blackColor font-medium"}>{formatSuiAddress(offer.recipient)} items</p>
           <OfferInformation
             userObjectIds={recipientObjects}
@@ -265,7 +272,7 @@ const DetailSwapOffer: NextPage<IDetailOfferProps> = ({ offerId }) => {
         <button
           onClick={acceptOffer}
           disabled={waitSui}
-          className="w-[200px] py-3 bg-[#5AAC67] text-white font-medium mb-4 rounded-md disabled:opacity-40 disabled:cursor-not-allowed"
+          className="w-[200px] py-3 bg-white border border-greenColor text-greenColor hover:bg-greenColor hover:text-white font-medium mb-4 rounded-md disabled:opacity-40 disabled:cursor-not-allowed"
         >
           Accept
         </button>
@@ -275,10 +282,17 @@ const DetailSwapOffer: NextPage<IDetailOfferProps> = ({ offerId }) => {
         <button
           onClick={() => cancelOffer()}
           disabled={waitSui}
-          className="w-[200px] py-3 bg-[#5AAC67] text-white font-medium mb-4 rounded-md disabled:opacity-40 disabled:cursor-not-allowed"
+          className="w-[200px] py-3 bg-white text-redColor border border-redColor hover:bg-redColor hover:text-white font-medium rounded-md disabled:opacity-40 disabled:cursor-not-allowed"
         >
-          Cancel
+          Cancel Offer
         </button>
+      )}
+      {showActionDialog && (
+        <SwapActionDialog
+          opened={showActionDialog}
+          setOpened={setShowActionDialog}
+          title={wallet?.address === offer.creator ? "Reject" : "Accept"}
+        />
       )}
     </main>
   ) : (

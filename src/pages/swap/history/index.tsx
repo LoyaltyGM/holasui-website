@@ -40,8 +40,12 @@ const Index = () => {
             return getObjectFields(suiObject) as IOffer;
           })
         ).then((offers) => {
-          const sent = offers.filter((offer) => offer.creator === wallet.address);
-          const received = offers.filter((offer) => offer.recipient === wallet.address);
+          const sent = offers
+            .filter((offer) => offer.creator === wallet.address)
+            .sort((a) => (a.status === 1 ? 1 : -1));
+          const received = offers
+            .filter((offer) => offer.recipient === wallet.address)
+            .sort((a) => (a.status === 1 ? 1 : -1));
 
           setSentOffers(sent);
           setReceivedOffers(received);
@@ -58,11 +62,11 @@ const Index = () => {
     return (
       <div className={"flex gap-4 mb-5"}>
         <button
-            onClick={() => setActiveTab("sent")}
-            className={classNames(
-                "px-4 w-64 font-medium py-2 rounded-full",
-                activeTab === "sent" ? "text-white bg-redColor" : "bg-white text-grayColor"
-            )}
+          onClick={() => setActiveTab("sent")}
+          className={classNames(
+            "px-4 w-64 font-medium py-2 rounded-full",
+            activeTab === "sent" ? "text-white bg-redColor" : "bg-white text-grayColor"
+          )}
         >
           Sent offers
         </button>
@@ -158,22 +162,22 @@ const Index = () => {
                   <td className="whitespace-nowrap px-3 py-5 text-xs md:text-sm text-gray-500">
                     <span
                       className={classNames(
-                        "inline-flex items-center rounded-md px-2 py-1 text-xs font-medium",
+                        "inline-flex items-center rounded-md px-2 py-1 text-xs md:text-sm font-medium",
                         offer.status === 0
-                          ? "text-grayColor"
+                          ? "text-redColor"
                           : offer.status === 1
                           ? "text-yellowColor"
                           : "text-green-700"
                       )}
                     >
-                      {offer.status === 0 ? "Inactive" : offer.status === 1 ? "Active" : "Completed"}
+                      {offer.status === 0 ? "Canceled" : offer.status === 1 ? "Active" : "Exchanged"}
                     </span>
                   </td>
-                  <td className={"whitespace-nowrap px-2 py-5 text-xs md:text-sm text-purpleColor"}>
+                  <td className={"whitespace-nowrap px-2 py-5 text-xs md:text-sm text-redColor"}>
                     <Link href={generateLink(offer)}>
                       <div
                         className={
-                          "border-purpleColor hover:bg-purpleColor hover:text-white border rounded-lg content-center flex items-center justify-center py-2"
+                          "border-redColor hover:bg-redColor hover:text-white border rounded-lg content-center flex items-center justify-center py-2"
                         }
                       >
                         Learn more
@@ -216,7 +220,7 @@ const Index = () => {
                 <tr key={offer.id} className={"bg-white border-amber-950 rounded-full border"}>
                   <td className={"px-3 py-5 text-xs md:text-sm text-gray-500"}>{index + 1}</td>
                   <td className={"whitespace-nowrap px-3 py-5 text-xs md:text-sm text-gray-500"}>
-                    {formatSuiAddress(offer.recipient, 4, 4)}
+                    {formatSuiAddress(offer.creator, 4, 4)}
                   </td>
                   <td className={"px-3 py-5 hidden md:table-cell text-sm text-gray-500"}>
                     <div className={"flex gap-1 content-center items-center"}>
@@ -258,11 +262,11 @@ const Index = () => {
                       {offer.status === 0 ? "Canceled" : offer.status === 1 ? "Active" : "Exchanged"}
                     </span>
                   </td>
-                  <td className={"whitespace-nowrap px-2 py-5 text-xs md:text-sm text-redColor"}>
+                  <td className={"whitespace-nowrap px-2 py-5 text-xs md:text-sm text-purpleColor"}>
                     <Link href={generateLink(offer)}>
                       <div
                         className={
-                          "border-redColor hover:bg-redColor hover:text-white border rounded-lg content-center flex items-center justify-center py-2"
+                          "border-purpleColor hover:bg-purpleColor hover:text-white border rounded-lg content-center flex items-center justify-center py-2"
                         }
                       >
                         Learn more

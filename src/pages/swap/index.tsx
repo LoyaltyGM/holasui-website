@@ -14,10 +14,18 @@ import { TradeObjectType } from "types";
 import { classNames, formatSuiAddress } from "utils";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
+import Image from "next/image";
+import ImageSuiToken from "/public/img/SuiToken.png";
+import { YourOfferLinkDialog } from "../../components/Dialog/YourOfferLinkDialog";
 
 const Swap = () => {
   const { wallet, status } = ethos.useWallet();
   const [waitSui, setWaitSui] = useState(false);
+
+  const [swapType, setSwapType] = useState("");
+  // offer dialog
+  const [offerCreated, setOfferCreated] = useState(false);
+  const [offerTransactionHash, setOfferTransactionHash] = useState<string>();
 
   // creator
   const [creatorObjectIds, setCreatorObjectIds] = useState<TradeObjectType[]>([]);
@@ -36,6 +44,7 @@ const Swap = () => {
 
   async function createOffer() {
     if (!wallet || !recipientAddress) return;
+    console.log(swapType)
     setWaitSui(true);
     try {
       const response = await wallet.signAndExecuteTransactionBlock({
@@ -45,9 +54,11 @@ const Swap = () => {
           recipient: recipientAddress,
           recipient_coin_amount: recipientCoinAmount || 0,
           recipient_object_ids: recipientObjectIds.map((obj) => obj.id),
+          type_swap: swapType,
         }),
         options: {
           showEffects: true,
+          showEvents: true,
         },
       });
 
@@ -59,6 +70,8 @@ const Swap = () => {
         if (error_status) AlertErrorMessage(error_status);
       } else {
         AlertSucceed("CreateOffer");
+        setOfferCreated(true);
+        setOfferTransactionHash(response?.events![0].parsedJson?.id);
       }
     } catch (e) {
       console.error(e);
@@ -148,10 +161,14 @@ const Swap = () => {
           Create Offer
         </button>
 
-        {/*<button onClick={acceptOffer}>accept</button>*/}
         <div className="flex gap-10 justify-center">
-          <p className="text-sm underline">Verified Collection</p>
-          <p className="text-sm text-right md:text-center">Fees Swap 0.4 sui</p>
+          <a className="text-sm underline" href={"https://twitter.com/Hola_sui"} target={"_blank"}>
+            How it works?
+          </a>
+          <div className="flex content-center items-center gap-1 text-sm text-right md:text-center">
+            <p>Fee Swap 0.1</p>
+            <Image src={ImageSuiToken} alt={"sui token"} className={"h-4 w-4"} />
+          </div>
         </div>
         {showCollection && (
           <MyCollectionDialog
@@ -160,19 +177,33 @@ const Swap = () => {
             setOpened={setShowCollection}
             batchIdTrade={creatorObjectIds}
             setBatchIdTrade={setCreatorObjectIds}
+            setTypeSwap={setSwapType}
+            typeSwap={swapType}
           />
         )}
         {showReceivedNFT && (
-          <RecipientCollectionDialog
-            wallet={wallet}
-            opened={showReceivedNFT}
-            setOpened={setShowReceivedNFT}
-            batchIdTrade={recipientObjectIds}
-            setBatchIdTrade={setRecipientObjectIds}
-            walletAddressToSearch={recipientAddress}
-            setWalletAddressToSearch={setRecipientAddress}
+            <RecipientCollectionDialog
+                creatorBatchIdTrade={creatorObjectIds}
+                wallet={wallet}
+                opened={showReceivedNFT}
+                setOpened={setShowReceivedNFT}
+                batchIdTrade={recipientObjectIds}
+                setBatchIdTrade={setRecipientObjectIds}
+                walletAddressToSearch={recipientAddress}
+                setWalletAddressToSearch={setRecipientAddress}
+                setTypeSwap={setSwapType}
+                typeSwap={swapType}
+            />
+        )}
+        {offerCreated && offerTransactionHash && (
+          <YourOfferLinkDialog
+            transactionHash={offerTransactionHash}
+            recipientAddress={recipientAddress!}
+            opened={offerCreated}
+            setOpened={setOfferCreated}
           />
         )}
+
       </>
     </main>
   );

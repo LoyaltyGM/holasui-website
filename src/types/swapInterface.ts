@@ -3,6 +3,7 @@ import { Dispatch, SetStateAction } from "react";
 export type TradeObjectType = {
   id: string;
   url: string;
+  type: string;
 };
 
 export type TabType = "sent" | "received";
@@ -22,9 +23,25 @@ export interface ISwapCollectionDialog {
   setOpened: Dispatch<SetStateAction<boolean>>;
   batchIdTrade: TradeObjectType[];
   setBatchIdTrade: Dispatch<SetStateAction<TradeObjectType[]>>;
+  setTypeSwap: Dispatch<SetStateAction<string>>;
+  typeSwap: string;
+}
+
+export interface IYourOfferLinkDialog {
+  recipientAddress: string;
+  transactionHash: string;
+  opened: boolean;
+  setOpened: Dispatch<SetStateAction<boolean>>;
+}
+
+export interface ISwapActionDialog {
+  title: "Accept" | "Reject";
+  opened: boolean;
+  setOpened: Dispatch<SetStateAction<boolean>>;
 }
 
 export interface ISwapRecipientCollectionDialog extends ISwapCollectionDialog {
+  creatorBatchIdTrade: TradeObjectType[];
   walletAddressToSearch: string | undefined;
   setWalletAddressToSearch: Dispatch<SetStateAction<string | undefined>>;
 }

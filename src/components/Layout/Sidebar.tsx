@@ -56,7 +56,7 @@ export function Sidebar({ children }: ILayoutProps) {
                 font_montserrat.className
               )}
             >
-              <a href="https://twitter.com/Loyalty_GM" target="_black">
+              <a href="https://twitter.com/Hola_Sui" target="_black">
                 Twitter
               </a>
             </div>
