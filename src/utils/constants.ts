@@ -1,6 +1,6 @@
 import * as process from "process";
 
-export const SUI_RPC_URL = process.env.NEXT_PUBLIC_SUI_RPC_URL_SHINAMI as string;
+export const SUI_RPC_URL = process.env.NEXT_PUBLIC_SUI_RPC_BLOCKVISION as string;
 
 
 // ==== STAKING ====

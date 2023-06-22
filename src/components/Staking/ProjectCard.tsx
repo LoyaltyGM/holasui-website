@@ -12,17 +12,17 @@ export const ProjectCard = ({totalStaked, setOpenRules, stakedList, totalHolaPoi
             <div className="w-full md:ml-4 py-2">
                 <div className="flex justify-between">
                     <div>
-                        <p className={classNames("text-3xl font-extrabold text-grayColor")}>
+                        <p className={classNames("text-3xl font-extrabold text-black2Color")}>
                             SuiFrens
                         </p>
-                        <p className={classNames("text-grayColor font-light")}>
+                        <p className={classNames("text-black2Color font-light")}>
                             Each staked frens will earn 1 point per minute
                         </p>
                     </div>
                     <button
                         onClick={() => setOpenRules(true)}
                         className={classNames(
-                            "text-md font-light text-grayColor hover:underline mr-2",
+                            "text-md font-light text-black2Color hover:underline mr-2",
                         )}
                     >
                         FAQs
@@ -38,7 +38,7 @@ export const ProjectCard = ({totalStaked, setOpenRules, stakedList, totalHolaPoi
                             {totalStaked ? totalStaked : 0}
                         </p>
                     </div>
-                    <div className="bg-redColor text-white py-4 mt-2 w-full md:mt-0 md:w-1/4 text rounded-xl flex md:flex-col md:justify-center justify-between content-center text-start px-3">
+                    <div className="bg-pinkColor text-white py-4 mt-2 w-full md:mt-0 md:w-1/4 text rounded-xl flex md:flex-col md:justify-center justify-between content-center text-start px-3">
                         <p className={classNames("font-extrabold md:text-sm md:leading-4")}>
                             You <br className="hidden md:flex" />
                             Staked

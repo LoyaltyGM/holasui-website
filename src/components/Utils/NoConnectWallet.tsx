@@ -9,7 +9,7 @@ const font_montserrat = Montserrat({subsets: ["latin"]});
 
 export const NoConnectWallet = ({title} :{title: string}) => {
     return (
-        <main className="flex min-h-[85vh] flex-col items-center justify-around md:mt-20 z-10 rounded-lg bg-bgMain">
+        <main className="flex min-h-[85vh] flex-col items-center justify-around md:mt-20 z-10 rounded-lg bg-basicColor">
             <div className="w-full max-w-5xl items-center justify-between font-mono text-sm">
                 <div
                     className={classNames(

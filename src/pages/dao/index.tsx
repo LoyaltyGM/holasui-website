@@ -2,6 +2,7 @@ import { ethos, EthosConnectStatus } from "ethos-connect";
 import { NoConnectWallet } from "../../components";
 import { classNames } from "../../utils";
 import { DaoCard } from "../../components/Dao";
+import Link from "next/link";
 
 const DAO = () => {
   const { status, wallet } = ethos.useWallet();
@@ -52,7 +53,7 @@ const DAO = () => {
   ];
 
   return status === EthosConnectStatus.NoConnection ? (
-    <NoConnectWallet title={"P2P Swap!"} />
+    <NoConnectWallet title={"DAO!"} />
   ) : (
     <main
       className={classNames(
@@ -61,7 +62,7 @@ const DAO = () => {
     >
       <div className={"flex justify-between content-center items-center mt-16"}>
         <h1 className={"text-blackColor text-2xl md:text-4xl font-semibold"}>Hola, DAOs</h1>
-        <button className={"bg-redColor rounded-2xl text-white font-bold py-2 px-3 md:py-4 md:px-6"}>Create DAO</button>
+        <Link href={'dao/create'} className={"pinkColor-primary-state rounded-2xl font-bold py-2 px-3 md:py-4 md:px-6"}>Create DAO</Link>
       </div>
       <div className={"grid grid-cols-1 md:grid-cols-2 gap-5 mt-10 mb-20"}>
         {daoCards.map((daoInfo) => {

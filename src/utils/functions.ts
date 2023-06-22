@@ -44,6 +44,6 @@ export function formatSuiAddress(address: string, startLength = 2, endLength = 3
   return `${start}...${end}`;
 }
 
-export function formatSuiNumber(num: number): number {
+export function formatSuiNumber(num: any): number {
   return num / 1000000000;
 }

@@ -94,11 +94,11 @@ export const RecipientCollectionDialog = ({
 
         <div className="fixed inset-0 z-10 overflow-auto">
           <div className="flex min-h-full items-center justify-center">
-            <Dialog.Panel className="max-w-2xl  md:h-[65vh] h-[70vh] w-full relative transform overflow-auto rounded-lg bg-bgMain px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:p-6">
+            <Dialog.Panel className="max-w-2xl  md:h-[65vh] h-[70vh] w-full relative transform overflow-auto rounded-lg bg-basicColor px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:p-6">
               <Dialog.Title
                 as="h3"
                 className={classNames(
-                  "flex justify-between items-center content-center text-base leading-6 text-grayColor text-center mb-2 font-bold",
+                  "flex justify-between items-center content-center text-base leading-6 text-black2Color text-center mb-2 font-bold",
                   font_montserrat.className
                 )}
               >
@@ -128,10 +128,10 @@ export const RecipientCollectionDialog = ({
                     {walletAddressToSearch && (
                       <>
                         <p
-                          className={classNames("text-sm text-grayColor", font_montserrat.className)}
+                          className={classNames("text-sm text-black2Color", font_montserrat.className)}
                         >{`Wallet Collection: ${formatSuiAddress(walletAddressToSearch)}`}</p>
                         <XMarkIcon
-                          className="w-5 h-5 text-grayColor cursor-pointer"
+                          className="w-5 h-5 text-black2Color cursor-pointer"
                           onClick={() => {
                             setWalletAddressToSearch("");
                             setBatchIdTrade([]);
@@ -166,7 +166,7 @@ export const RecipientCollectionDialog = ({
                                   "border-2 bg-white flex flex-col content-center max-h-[160px] min-h-[160px] justify-center items-center p-2 rounded-md cursor-pointer",
                                   batchIdTrade.some((item) => item.id === fren.id)
                                     ? "border-yellowColor"
-                                    : "border-grayColor"
+                                    : "border-black2Color"
                                 )}
                               >
                                 <Image src={fren.url} alt="collection_img" width={90} height={130} className="mt-1" />
@@ -193,7 +193,7 @@ export const RecipientCollectionDialog = ({
                       "w-full block mx-auto mt-2 px-3 text-sm py-2 text-white font-black rounded-md  cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed",
                       font_montserrat.className,
                       batchIdTrade?.length === 0
-                        ? "bg-redColor hover:bg-redColor/95"
+                        ? "bg-pinkColor hover:bg-pinkColor/95"
                         : "bg-yellowColor hover:bg-[#e5a44a]"
                     )}
                     onClick={() => {

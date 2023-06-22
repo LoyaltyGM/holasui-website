@@ -16,7 +16,7 @@ export const DaoCard = (props: IDaoCard) => {
       <Image
         src={props.imageUrl}
         alt={"DAO Image"}
-        className={"min-w-[160px] bg-white object-cover border border-grayColor rounded-[11px]"}
+        className={"min-w-[160px] bg-white object-cover border border-black2Color rounded-[11px]"}
         width={160}
         height={340}
       ></Image>
@@ -32,12 +32,12 @@ export const DaoCard = (props: IDaoCard) => {
             <Image src={TwitterIcon} alt={"Twitter Icon"} className={"w-5 h-5 cursor-pointer"} />
           </a>
         </div>
-        <p className={"text-grayColor w-full text-xs md:text-base mt-3 text-ellipsis overflow-hidden min-h-[110px] max-h-[110px] md:min-h-[117px] md:max-h-[117px]"}>
+        <p className={"text-black2Color w-full text-xs md:text-base mt-3 text-ellipsis overflow-hidden min-h-[110px] max-h-[110px] md:min-h-[117px] md:max-h-[117px]"}>
           {props.description}
         </p>
         <div className={"mb-3"}>
           <Link href={`/dao/${props.daoAddress}`}>
-            <button className={"text-redColor underline underline-offset-2 pr-4 py-3"}>Learn more</button>
+            <button className={"text-pinkColor underline underline-offset-2 pr-4 py-3"}>Learn more</button>
           </Link>
         </div>
       </div>
@@ -45,7 +45,7 @@ export const DaoCard = (props: IDaoCard) => {
   };
 
   return (
-    <div className={"flex bg-white w-full h-[240px] border-grayColor border rounded-xl"}>
+    <div className={"flex bg-white w-full h-[240px] border-black2Color border rounded-xl"}>
       <ImageDao />
       <InfoDao />
     </div>

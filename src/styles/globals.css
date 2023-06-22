@@ -3,54 +3,61 @@
 @tailwind utilities;
 
 @layer base {
-  :root {
-    --foreground-rgb: 254, 247, 236;
-  }
+    :root {
+        --foreground-rgb: 254, 247, 236;
+    }
 
-  body {
-    /*color: rgb(var(--foreground-rgb));*/
-    background: rgb(var(--foreground-rgb));
-  }
-}
-
-@keyframes gradient {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
+    body {
+        /*color: rgb(var(--foreground-rgb));*/
+        background: rgb(var(--foreground-rgb));
+    }
 }
 
 @layer components {
-  .fixed-header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 10;
-    width: 100%; /* adjust the padding value as needed */
-  }
+    .fixed-header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 10;
+    }
 
-  .loader-container {
-    @apply relative inline-flex items-center justify-center;
-  }
+    .pinkColor-primary-state {
+        @apply bg-pinkColor text-white hover:bg-[#B63364] active:bg-[#D6447A] disabled:bg-gray2Color disabled:cursor-not-allowed disabled:text-[#AAAAAA];
+    }
 
-  .loader-circle {
-    @apply border-l-transparent border-b-transparent;
-  }
+    .pinkColor-second-state {
+        @apply bg-white text-blackColor border-pinkColor border-2 cursor-pointer hover:border-blackColor hover:text-blackColor active:border-[#D6447A] active:text-[#D6447A] disabled:border-gray2Color disabled:cursor-not-allowed disabled:text-gray2Color;
+    }
+
+    .loader-container {
+        @apply relative inline-flex items-center justify-center;
+    }
+
+    .loader-circle {
+        @apply border-l-transparent border-b-transparent;
+    }
 }
 
 @layer utilities {
 }
 
+@keyframes gradient {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
 .hide-scroll-bar::-webkit-scrollbar {
-  display: none;
+    display: none;
 }
 
 .hide-scroll-bar {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
 }

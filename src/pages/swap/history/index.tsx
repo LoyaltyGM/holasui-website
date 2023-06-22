@@ -65,7 +65,7 @@ const Index = () => {
           onClick={() => setActiveTab("sent")}
           className={classNames(
             "px-4 w-64 font-medium py-2 rounded-full",
-            activeTab === "sent" ? "text-white bg-redColor" : "bg-white text-grayColor"
+            activeTab === "sent" ? "text-white bg-pinkColor" : "bg-white text-black2Color"
           )}
         >
           Sent offers
@@ -74,7 +74,7 @@ const Index = () => {
           onClick={() => setActiveTab("received")}
           className={classNames(
             "px-4 w-64 font-medium py-2 rounded-full",
-            activeTab === "received" ? "text-white bg-purpleColor" : "bg-white text-grayColor"
+            activeTab === "received" ? "text-white bg-purpleColor" : "bg-white text-black2Color"
           )}
         >
           Awaiting offers
@@ -102,9 +102,9 @@ const Index = () => {
       </div>
       <SwitchTab />
       {activeTab === "sent" && sentOffers && (
-        <table className={"text-grayColor border-separate border-spacing-y-2"}>
+        <table className={"text-black2Color border-separate border-spacing-y-2"}>
           <thead>
-            <tr className={"text-grayColor font-light ml-2"}>
+            <tr className={"text-black2Color font-light ml-2"}>
               <th scope="col" className="py-3.5 text-left text-sm font-semibold">
                 <div className={"ml-2"}>N</div>
               </th>
@@ -128,7 +128,7 @@ const Index = () => {
           <tbody className={"text-black rounded-2xl mt-4"}>
             {sentOffers
               .map((offer, index) => (
-                <tr key={offer.id} className={"bg-white border-lightGrayColor rounded-full border "}>
+                <tr key={offer.id} className={"bg-white border-grayColor rounded-full border "}>
                   <td className={"px-3 py-5 text-xs md:text-sm text-gray-500"}>{index + 1}</td>
                   <td className={"whitespace-nowrap px-3 py-5 text-xs md:text-sm text-gray-500"}>
                     {formatSuiAddress(offer.recipient, 4, 4)}
@@ -137,7 +137,7 @@ const Index = () => {
                     <div className={"flex gap-1 content-center items-center"}>
                       <div
                         className={
-                          "h-8 w-8  flex content-center justify-center items-center rounded-lg border border-lightGrayColor p-2"
+                          "h-8 w-8  flex content-center justify-center items-center rounded-lg border border-grayColor p-2"
                         }
                       >
                         <p>🖼</p>️
@@ -164,7 +164,7 @@ const Index = () => {
                       className={classNames(
                         "inline-flex items-center rounded-md px-2 py-1 text-xs md:text-sm font-medium",
                         offer.status === 0
-                          ? "text-redColor"
+                          ? "text-pinkColor"
                           : offer.status === 1
                           ? "text-yellowColor"
                           : "text-green-700"
@@ -173,11 +173,11 @@ const Index = () => {
                       {offer.status === 0 ? "Canceled" : offer.status === 1 ? "Active" : "Exchanged"}
                     </span>
                   </td>
-                  <td className={"whitespace-nowrap px-2 py-5 text-xs md:text-sm text-redColor"}>
+                  <td className={"whitespace-nowrap px-2 py-5 text-xs md:text-sm text-pinkColor"}>
                     <Link href={generateLink(offer)}>
                       <div
                         className={
-                          "border-redColor hover:bg-redColor hover:text-white border rounded-lg content-center flex items-center justify-center py-2"
+                          "border-pinkColor hover:bg-pinkColor hover:text-white border rounded-lg content-center flex items-center justify-center py-2"
                         }
                       >
                         Learn more
@@ -191,9 +191,9 @@ const Index = () => {
         </table>
       )}
       {activeTab === "received" && receivedOffers && (
-        <table className={"text-grayColor border-separate border-spacing-y-2"}>
+        <table className={"text-black2Color border-separate border-spacing-y-2"}>
           <thead>
-            <tr className={"text-grayColor font-light ml-2"}>
+            <tr className={"text-black2Color font-light ml-2"}>
               <th scope="col" className="py-3.5 text-left text-sm font-semibold">
                 <div className={"ml-2"}>N</div>
               </th>
@@ -226,7 +226,7 @@ const Index = () => {
                     <div className={"flex gap-1 content-center items-center"}>
                       <div
                         className={
-                          "h-8 w-8 flex content-center justify-center items-center rounded-lg border border-lightGrayColor p-2"
+                          "h-8 w-8 flex content-center justify-center items-center rounded-lg border border-grayColor p-2"
                         }
                       >
                         <p>🖼</p>️
@@ -253,7 +253,7 @@ const Index = () => {
                       className={classNames(
                         "inline-flex items-center rounded-md px-2 py-1 text-xs md:text-sm font-medium",
                         offer.status === 0
-                          ? "text-redColor"
+                          ? "text-pinkColor"
                           : offer.status === 1
                           ? "text-yellowColor"
                           : "text-green-700"

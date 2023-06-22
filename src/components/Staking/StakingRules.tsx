@@ -30,11 +30,11 @@ export const RulesDialog = ({openRules, setOpenRules}: { openRules: boolean, set
                 <div className="fixed inset-0 z-10 overflow-auto">
                     <div className="flex min-h-full items-center justify-center">
                         <Dialog.Panel
-                            className="relative transform overflow-hidden rounded-lg bg-bgMain px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-sm sm:p-6">
+                            className="relative transform overflow-hidden rounded-lg bg-basicColor px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-sm sm:p-6">
                             <Dialog.Title
                                 as="h3"
                                 className={
-                                    classNames("text-base leading-6 text-grayColor text-center mb-2 font-bold", font_montserrat.className)
+                                    classNames("text-base leading-6 text-black2Color text-center mb-2 font-bold", font_montserrat.className)
                                 }
                             >
                                 FAQs
@@ -43,14 +43,14 @@ export const RulesDialog = ({openRules, setOpenRules}: { openRules: boolean, set
                                 <div className={classNames("mt-2 flex flex-col items-start gap-2", font_montserrat.className)}>
                                     <p
                                         className={
-                                            "text-left text-grayColor mt-3 flex flex-col font-medium items-center content-center"
+                                            "text-left text-black2Color mt-3 flex flex-col font-medium items-center content-center"
                                         }
                                     >
                                         What are Hola Points?
                                     </p>
                                     <p
                                         className={classNames(
-                                            "font-normal text-left text-grayColor text-sm flex flex-col -mt-2 items-center content-center",
+                                            "font-normal text-left text-black2Color text-sm flex flex-col -mt-2 items-center content-center",
                                         )}
                                     >
                                         Hola Points are not tokens, it's points. It's a reward system for Hola users.
@@ -60,14 +60,14 @@ export const RulesDialog = ({openRules, setOpenRules}: { openRules: boolean, set
 
                                     <p
                                         className={classNames(
-                                            "text-left text-grayColor mt-3 flex flex-col font-medium items-center content-center",
+                                            "text-left text-black2Color mt-3 flex flex-col font-medium items-center content-center",
                                         )}
                                     >
                                         How can I spend my points?
                                     </p>
                                     <p
                                         className={classNames(
-                                            "font-normal text-left text-grayColor text-sm flex flex-col -mt-2 items-center content-center",
+                                            "font-normal text-left text-black2Color text-sm flex flex-col -mt-2 items-center content-center",
                                         )}
                                     >
                                         TBA.
@@ -75,14 +75,14 @@ export const RulesDialog = ({openRules, setOpenRules}: { openRules: boolean, set
 
                                     <p
                                         className={classNames(
-                                            "text-left text-grayColor flex flex-col mt-4 font-medium items-center content-center",
+                                            "text-left text-black2Color flex flex-col mt-4 font-medium items-center content-center",
                                         )}
                                     >
                                         Why do you need fees?
                                     </p>
                                     <p
                                         className={classNames(
-                                            "font-normal text-left text-grayColor text-sm flex flex-col -mt-2 items-center content-center",
+                                            "font-normal text-left text-black2Color text-sm flex flex-col -mt-2 items-center content-center",
                                         )}
                                     >
                                         We need fees to continue developing this project, as they help cover costs for
@@ -92,14 +92,14 @@ export const RulesDialog = ({openRules, setOpenRules}: { openRules: boolean, set
 
                                     <p
                                         className={classNames(
-                                            "text-left text-grayColor flex flex-col mt-4 font-medium items-center content-center",
+                                            "text-left text-black2Color flex flex-col mt-4 font-medium items-center content-center",
                                         )}
                                     >
                                         Who developed this project?
                                     </p>
                                     <p
                                         className={classNames(
-                                            "font-normal text-left text-grayColor text-sm flex flex-col -mt-2 items-center content-center",
+                                            "font-normal text-left text-black2Color text-sm flex flex-col -mt-2 items-center content-center",
                                         )}
                                     >
                                         The project was developed by the LoyaltyGM team.
@@ -107,14 +107,14 @@ export const RulesDialog = ({openRules, setOpenRules}: { openRules: boolean, set
 
                                     <p
                                         className={classNames(
-                                            "text-left text-grayColor flex flex-col mt-4 font-medium items-center content-center",
+                                            "text-left text-black2Color flex flex-col mt-4 font-medium items-center content-center",
                                         )}
                                     >
                                         If I have an NFT project, can I use the Hola Protocol?
                                     </p>
                                     <p
                                         className={classNames(
-                                            "font-normal text-left text-grayColor text-sm -mt-2 items-start content-center",
+                                            "font-normal text-left text-black2Color text-sm -mt-2 items-start content-center",
                                         )}
                                     >
                                         <p>
@@ -128,7 +128,7 @@ export const RulesDialog = ({openRules, setOpenRules}: { openRules: boolean, set
 
                                     <button
                                         className={classNames(
-                                            "w-full block mx-auto mb-1 mt-2 px-3 text-sm py-2 bg-redColor text-white font-black rounded-md hover:bg-[#c8517c] cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed",
+                                            "w-full block mx-auto mb-1 mt-2 px-3 text-sm py-2 bg-pinkColor text-white font-black rounded-md hover:bg-[#c8517c] cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed",
                                         )}
                                         onClick={() => {
                                             setOpenRules(false);
@@ -148,7 +148,7 @@ export const RulesDialog = ({openRules, setOpenRules}: { openRules: boolean, set
 
 export const StakingRules = () => {
     return (
-        <div className={classNames("gap-2 flex text-grayColor items-top", font_montserrat.className)}>
+        <div className={classNames("gap-2 flex text-black2Color items-top", font_montserrat.className)}>
             <div className="text-xs px-2 py-1 font-medium">Fees for each:</div>
             <span
                 className="inline-flex items-center gap-x-1.5 rounded-full px-2 py-1 text-xs font-medium ring-gray-200">

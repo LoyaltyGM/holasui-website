@@ -65,11 +65,11 @@ export const MyCollectionDialog = ({
 
         <div className={classNames("fixed inset-0 z-10 overflow-auto", font_montserrat.className)}>
           <div className="flex min-h-full items-center justify-center">
-            <Dialog.Panel className="max-w-2xl md:h-[65vh] h-[70vh] w-full relative transform overflow-auto rounded-lg bg-bgMain px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:p-6">
+            <Dialog.Panel className="max-w-2xl md:h-[65vh] h-[70vh] w-full relative transform overflow-auto rounded-lg bg-basicColor px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:p-6">
               <Dialog.Title
                 as="h3"
                 className={classNames(
-                  "flex justify-between text-base leading-6 text-grayColor text-center mb-2 font-bold",
+                  "flex justify-between text-base leading-6 text-black2Color text-center mb-2 font-bold",
                   font_montserrat.className
                 )}
               >
@@ -95,7 +95,7 @@ export const MyCollectionDialog = ({
                             >
                               <div
                                 className={classNames(
-                                  "border-2 border-grayColor flex bg-white max-h-[160px] min-h-[160px] flex-col content-center justify-center items-center p-2 rounded-md  cursor-pointer",
+                                  "border-2 border-black2Color flex bg-white max-h-[160px] min-h-[160px] flex-col content-center justify-center items-center p-2 rounded-md  cursor-pointer",
                                   batchIdTrade.some((item) => item.id === fren.id)
                                     ? "border-yellowColor"
                                     : "border-blackColor"

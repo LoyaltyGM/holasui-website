@@ -31,7 +31,7 @@ const HamburgerMenu = () => {
           />
           <div className="pt-24 w-full text-center">
             <Link href="/">
-              <div className="block text-white bg-redColor py-3 rounded-md text-2xl my-3 transition-all duration-300 ease-in-out hover:text-gray-300">
+              <div className="block text-white bg-pinkColor py-3 rounded-md text-2xl my-3 transition-all duration-300 ease-in-out hover:text-gray-300">
                 Staking
               </div>
             </Link>

@@ -10,7 +10,7 @@ import { ArrowLeftIcon, LinkIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
 import ImageSuiToken from "/public/img/SuiToken.png";
 import { useRouter } from "next/router";
-import { SwapActionDialog } from "../../../components/Dialog/SwapActionDialog";
+import { SwapActionDialog } from "components/Dialog/SwapActionDialog";
 
 interface IDetailOfferProps {
   offerId: string;
@@ -186,7 +186,7 @@ const DetailSwapOffer: NextPage<IDetailOfferProps> = ({ offerId }) => {
   }) => {
     return (
       <div className="md:w-full w-full px-3 md:mb-0 mb-2 ">
-        <div className="h-[45vh] md:h-[30vh] mb-2 flex flex-col cursor-pointer justify-between w-full py-2 px-2 font-normal border-2 rounded-lg bg-white border-lightGrayColor text-purpleColor">
+        <div className="h-[45vh] md:h-[30vh] mb-2 flex flex-col cursor-pointer justify-between w-full py-2 px-2 font-normal border-2 rounded-lg bg-white border-grayColor text-purpleColor">
           <div className={"grid md:grid-cols-4 grid-cols-3 overflow-auto gap-1 h-[27vh] md:gap-4 md:mt-4 md:h-[20vh]"}>
             {coinAmount > 0 && (
               <div className="text-2xl text-center gap-2 w-24 h-24 border bg-white flex items-center justify-center rounded-md">
@@ -234,7 +234,7 @@ const DetailSwapOffer: NextPage<IDetailOfferProps> = ({ offerId }) => {
             Offer
             <LinkIcon className={"h-6"} />
           </a>
-          <div className={"flex gap-1 text-xl font-bold text-grayColor"}>
+          <div className={"flex gap-1 text-xl font-bold text-black2Color"}>
             <p>from</p>
             <CopyTextButton showText={formatSuiAddress(offer.creator)} copyText={offer?.creator} />
             <p>to</p>
@@ -245,7 +245,7 @@ const DetailSwapOffer: NextPage<IDetailOfferProps> = ({ offerId }) => {
         <div className={"flex gap-2 text-xl mt-10"}>
           <p className={"text-blackColor"}>Status: </p>
           {offer.status == 0 ? (
-            <p className={"font-semibold text-redColor"}>Canceled</p>
+            <p className={"font-semibold text-pinkColor"}>Canceled</p>
           ) : offer.status == 1 ? (
             <p className={"font-semibold text-yellowColor"}>Active</p>
           ) : (
@@ -259,7 +259,7 @@ const DetailSwapOffer: NextPage<IDetailOfferProps> = ({ offerId }) => {
           <p className={"px-3 mb-4 mt-2 text-blackColor font-medium"}>{formatSuiAddress(offer.creator)} items</p>
           <OfferInformation userObjectIds={creatorObjects} coinAmount={formatSuiNumber(offer.creator_coin_amount)} />
         </div>
-        <div className="w-full bg-white rounded-xl border-redColor border-2 items-center gap-1 justify-between py-2">
+        <div className="w-full bg-white rounded-xl border-pinkColor border-2 items-center gap-1 justify-between py-2">
           <p className={"px-3 mb-4 mt-2 text-blackColor font-medium"}>{formatSuiAddress(offer.recipient)} items</p>
           <OfferInformation
             userObjectIds={recipientObjects}
@@ -282,7 +282,7 @@ const DetailSwapOffer: NextPage<IDetailOfferProps> = ({ offerId }) => {
         <button
           onClick={() => cancelOffer()}
           disabled={waitSui}
-          className="w-[200px] py-3 bg-white text-redColor border border-redColor hover:bg-redColor hover:text-white font-medium rounded-md disabled:opacity-40 disabled:cursor-not-allowed"
+          className="w-[200px] py-3 bg-white text-pinkColor border border-redColor hover:bg-redColor hover:text-white font-medium rounded-md disabled:opacity-40 disabled:cursor-not-allowed"
         >
           Cancel Offer
         </button>

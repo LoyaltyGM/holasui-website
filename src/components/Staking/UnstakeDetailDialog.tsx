@@ -45,10 +45,10 @@ export const UnstakeDetailDialog = ({selectedStaked, openDialog, setOpenDialog, 
                 <div className="fixed inset-0 z-10 overflow-auto">
                     <div className="flex min-h-full items-center justify-center">
                         <Dialog.Panel
-                            className="relative transform overflow-hidden rounded-lg bg-bgMain px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-sm sm:p-6">
+                            className="relative transform overflow-hidden rounded-lg bg-basicColor px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-sm sm:p-6">
                             <Dialog.Title
                                 className={classNames(
-                                    "flex justify-between text-base  leading-6 text-grayColor text-center mb-2 font-bold",
+                                    "flex justify-between text-base  leading-6 text-black2Color text-center mb-2 font-bold",
                                     font_montserrat.className
                                 )}
                             >
@@ -73,7 +73,7 @@ export const UnstakeDetailDialog = ({selectedStaked, openDialog, setOpenDialog, 
                                     </div>
                                     <div
                                         className={classNames(
-                                            "font-bold text-center text-grayColor flex flex-col items-center content-center",
+                                            "font-bold text-center text-black2Color flex flex-col items-center content-center",
                                         )}
                                     >
                                         Your current hola points
@@ -100,7 +100,7 @@ export const UnstakeDetailDialog = ({selectedStaked, openDialog, setOpenDialog, 
                                     </button>
                                     <button
                                         className={classNames(
-                                            "w-full block mx-auto mb-1 mt-2 md:px-3 px-2 text-sm py-2 bg-redColor text-white font-black rounded-md hover:bg-[#c8517c] cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed",
+                                            "w-full block mx-auto mb-1 mt-2 md:px-3 px-2 text-sm py-2 bg-pinkColor text-white font-black rounded-md hover:bg-[#c8517c] cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed",
                                             font_montserrat.className
                                         )}
                                         onClick={() => {

@@ -16,7 +16,7 @@ export const LabeledInput = ({
     children: ReactNode;
     className?: string;
 }) => (
-    <div className={classNames("flex flex-col border-2 border-lightGrayColor py-2 rounded-md pt-1", className)}>
+    <div className={classNames("flex flex-col border-2 border-grayColor py-2 rounded-md pt-1", className)}>
         {label && <Label label={label}/>}
         <div className="mt-1">{children}</div>
     </div>

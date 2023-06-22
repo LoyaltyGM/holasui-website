@@ -32,21 +32,21 @@ export const YourOfferLinkDialog = ({ recipientAddress, transactionHash, opened,
 
         <div className={classNames("fixed inset-0 z-10 overflow-auto", font_montserrat.className)}>
           <div className="flex min-h-full  items-center justify-center">
-            <Dialog.Panel className="max-w-lg md:h-[35vh] h-[35vh] w-full relative transform overflow-auto rounded-lg bg-bgMain px-8 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:p-6">
+            <Dialog.Panel className="max-w-lg md:h-[35vh] h-[35vh] w-full relative transform overflow-auto rounded-lg bg-basicColor px-8 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:p-6">
               <Dialog.Title
                 as="h3"
                 className={classNames(
-                  "flex justify-between text-base leading-6 px-5 text-grayColor text-center mb-2 font-bold",
+                  "flex justify-between text-base leading-6 px-5 text-black2Color text-center mb-2 font-bold",
                   font_montserrat.className
                 )}
               >
                 <p className="mt-1 md:text-2xl text-blackColor text-lg font-bold">{`Your offer to ${recipientAddress && formatSuiAddress(recipientAddress) || 'underfiend'}`}</p>
               </Dialog.Title>
               <div className="flex flex-col px-5 items-center justify-center">
-                <div className={'mt-5 text-grayColor leading-5 font-medium'}>
+                <div className={'mt-5 text-black2Color leading-5 font-medium'}>
                   Copy link and send it to your friend. He will be able to accept your offer by clicking on the link.
                 </div>
-                <div className={'w-full mt-4 text-grayColor'}>
+                <div className={'w-full mt-4 text-black2Color'}>
                   <p className={'font-bold'}>Link</p>
                   <div className={'mt-2'}>
                     <CopyTextButton

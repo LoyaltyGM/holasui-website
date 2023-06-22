@@ -3,7 +3,7 @@ import { ethos, EthosConnectStatus } from "ethos-connect";
 import { NoConnectWallet } from "components";
 import { classNames } from "utils";
 import { useRef, useState } from "react";
-import { ArrowLeftIcon, ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/solid";
+import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/solid";
 import Image from "next/image";
 import ExternalWebsiteIcon from "/public/img/ExternalLinkIcon.svg";
 import SuiToken from "/public/img/SuiToken.png";
@@ -59,12 +59,12 @@ const DetailDaoAddress: NextPage<IDaoAddressProps> = ({ daoAddress }) => {
             </div>
 
             <div className={"flex flex-col justify-center"}>
-              <button className={"bg-redColor text-white px-5 py-3 rounded-lg min-w-[170px]"}>
+              <button className={"bg-pinkColor text-white px-5 py-3 rounded-lg min-w-[170px]"}>
                 <p className={"font-medium"}>Create SubDAO</p>
               </button>
               <div
                 className={
-                  "w-full flex text-[#595959] cursor-pointer justify-center mt-2 px-2 text-xs underline underline-offset-2"
+                  "w-full flex text-black2Color cursor-pointer justify-center mt-2 px-2 text-xs underline underline-offset-2"
                 }
               >
                 What is Sub DAO?
@@ -78,7 +78,7 @@ const DetailDaoAddress: NextPage<IDaoAddressProps> = ({ daoAddress }) => {
 
   const InfoDaoDescription = () => {
     return (
-      <div className={"w-3/4 max-h-[52px] text-clip overflow-hidden text-base mt-4 font-bold text-grayColor"}>
+      <div className={"w-3/4 max-h-[52px] text-clip overflow-hidden text-base mt-4 font-bold text-black2Color"}>
         <p>
           DAO description DAO description DAO description DAO description DAO description DAO description DAO
           description DAO description DAO description DAO description DAO description DAO description DAO description
@@ -91,18 +91,18 @@ const DetailDaoAddress: NextPage<IDaoAddressProps> = ({ daoAddress }) => {
     return (
       <div
         className={
-          "px-4 flex justify-between bg-white content-center items-center py-2 border-2 w-full mt-6 min-h-[125px] border-lightGrayColor rounded-xl"
+          "px-4 flex justify-between bg-white content-center items-center py-2 border-2 w-full mt-6 min-h-[125px] border-grayColor rounded-xl"
         }
       >
         <div className={""}>
-          <p className={"font-bold text-lg text-lightGrayColor"}>Treasury</p>
+          <p className={"font-bold text-lg text-grayColor"}>Treasury</p>
           <div className={"flex mt-4 gap-2 font-bold content-center text-blackColor items-center text-3xl"}>
             <Image src={SuiToken} alt={"sui token logo"} className={"h-9 w-9"} />
             <p className={"text-blackColor"}>1111</p>
             <p>SUI</p>
           </div>
         </div>
-        <p className={"max-w-[280px] text-grayColor text-sm"}>
+        <p className={"max-w-[280px] text-black2Color text-sm"}>
           This treasury exists for Capy DAO participants to allocate resources for the long-term growth and prosperity
           of the Capy’s project.
         </p>
@@ -147,7 +147,7 @@ const DetailDaoAddress: NextPage<IDaoAddressProps> = ({ daoAddress }) => {
             <div
               className={classNames(
                 "border p-2 rounded-xl stroke-[2px]",
-                isLeftVisible ? "border-blackColor text-blackColor" : "border-lightGrayColor text-lightGrayColor"
+                isLeftVisible ? "border-blackColor text-blackColor" : "border-grayColor text-grayColor"
               )}
             >
               <ChevronLeftIcon className={"h-5 w-5"} />
@@ -155,7 +155,7 @@ const DetailDaoAddress: NextPage<IDaoAddressProps> = ({ daoAddress }) => {
           </button>
           <div ref={scrollContainer} onScroll={checkScroll} className="flex gap-16 overflow-x-scroll hide-scroll-bar">
             {/* Here you would map through your cards. I'm just using a static example */}
-            <div className="flex bg-yellowColor border border-grayColor rounded-xl h-[170px] min-w-[256px] max-w-[256px] mr-4">
+            <div className="flex bg-yellowColor border border-black2Color rounded-xl h-[170px] min-w-[256px] max-w-[256px] mr-4">
               <p className="px-5 py-4 text-white font-bold text-xl z-10">Ear4</p>
               <Image
                 src="https://api-mainnet.suifrens.sui.io/suifrens/0x211a0715238cba5bd45b0910697b7c7b6058723dee4c35378b7336ccdf1304d1/svg"
@@ -166,7 +166,7 @@ const DetailDaoAddress: NextPage<IDaoAddressProps> = ({ daoAddress }) => {
               />
             </div>
             <div
-              className={"flex bg-redColor border border-grayColor rounded-xl h-[170px] min-w-[256px] max-w-[256px]"}
+              className={"flex bg-pinkColor border border-black2Color rounded-xl h-[170px] min-w-[256px] max-w-[256px]"}
             >
               <p className={"px-5 py-4 text-white font-bold text-xl z-10"}>Ear4</p>
               <Image
@@ -196,7 +196,7 @@ const DetailDaoAddress: NextPage<IDaoAddressProps> = ({ daoAddress }) => {
               />
             </div>
             <div
-              className={"flex bg-yellowColor border border-grayColor rounded-xl h-[170px] min-w-[256px] max-w-[256px]"}
+              className={"flex bg-yellowColor border border-black2Color rounded-xl h-[170px] min-w-[256px] max-w-[256px]"}
             >
               <p className={"px-5 py-4 text-white font-bold text-xl z-10"}>Ear4</p>
               <Image
@@ -210,7 +210,7 @@ const DetailDaoAddress: NextPage<IDaoAddressProps> = ({ daoAddress }) => {
               />
             </div>
             <div
-              className={"flex bg-redColor border border-yellowColor rounded-xl h-[170px] min-w-[256px] max-w-[256px]"}
+              className={"flex bg-pinkColor border border-yellowColor rounded-xl h-[170px] min-w-[256px] max-w-[256px]"}
             >
               <p className={"px-5 py-4 text-white font-bold text-xl z-10"}>Ear4</p>
               <Image
@@ -229,7 +229,7 @@ const DetailDaoAddress: NextPage<IDaoAddressProps> = ({ daoAddress }) => {
             <div
               className={classNames(
                 "border p-2 rounded-xl stroke-[2px]",
-                isRightVisible ? "border-blackColor text-blackColor" : "border-lightGrayColor text-lightGrayColor"
+                isRightVisible ? "border-blackColor text-blackColor" : "border-grayColor text-grayColor"
               )}
             >
               <ChevronRightIcon className={"h-5 w-5"} />
@@ -254,11 +254,11 @@ const DetailDaoAddress: NextPage<IDaoAddressProps> = ({ daoAddress }) => {
         }
       >
         <div className={"flex gap-10 content-center items-center"}>
-          <p className={"text-[#595959] text-xl font-bold"}>1</p>
+          <p className={"text-black2Color text-xl font-bold"}>1</p>
           <p className={"min-w-[300px] w-1/2 text-xl font-medium"}>Proposal Name</p>
         </div>
         <div className={"flex gap-10 content-center items-center"}>
-          <div className={"text-grayColor"}>Starts in 2 days</div>
+          <div className={"text-black2Color"}>Starts in 2 days</div>
           <div className={"border-yellowColor text-yellowColor rounded-xl border px-4 py-2"}>Pending</div>
         </div>
       </div>
@@ -290,7 +290,7 @@ const DetailDaoAddress: NextPage<IDaoAddressProps> = ({ daoAddress }) => {
           <li className="inline-flex items-center">
             <Link
               href="/dao"
-              className="inline-flex items-center text-sm font-medium text-[#AAAAAA] hover:text-grayColor"
+              className="inline-flex items-center text-sm font-medium text-grayColor hover:text-black2Color"
             >
               <svg
                 aria-hidden="true"

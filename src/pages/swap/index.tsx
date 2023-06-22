@@ -85,12 +85,12 @@ const Swap = () => {
       <div className="md:mt-20 mt-4 md:mb-0 mb-4 md:flex justify-between">
         <div>
           <h1 className={classNames("md:text-4xl text-2xl font-bold text-blackColor")}>Welcome to Hola P2P Swap</h1>
-          <p className={classNames("md:text-lg text-sm font-medium mt-1 text-grayColor")}>
+          <p className={classNames("md:text-lg text-sm font-medium mt-1 text-black2Color")}>
             Swap NFTs secure and without third-parties companies!
           </p>
         </div>
         <Link href={"./swap/history"}>
-          <button className="w-full mt-4 md:mt-0 md:w-40 font-semibold rounded-lg border-2 h-12 border-grayColor text-blackColor bg-white hover:bg-yellowColor hover:border-yellowColor hover:text-white">
+          <button className="w-full mt-4 md:mt-0 md:w-40 font-semibold rounded-lg border-2 h-12 border-black2Color text-blackColor bg-white hover:bg-yellowColor hover:border-yellowColor hover:text-white">
             View History
           </button>
         </Link>
@@ -103,7 +103,7 @@ const Swap = () => {
   ) : (
     <main
       className={classNames(
-        "flex min-h-[100vh] md:min-h-[65vh] flex-col pl-2 pr-2 md:pl-16 py-6 md:mt-14 mt-18 md:pr-10 z-10 rounded-lg mt-8 "
+        "flex min-h-[100vh] md:min-h-[65vh] flex-col pl-2 pr-2 md:pl-16 py-6 md:mt-14 mt-18 md:pr-10 z-10 rounded-lg mt-14 "
       )}
     >
       <>
@@ -119,16 +119,16 @@ const Swap = () => {
               coinAmount={creatorCoinAmount}
             />
           </div>
-          <div className="w-full bg-white rounded-xl border-redColor border-2 items-center gap-1 justify-between mb-4 py-2">
+          <div className="w-full bg-white rounded-xl border-pinkColor border-2 items-center gap-1 justify-between mb-4 py-2">
             <div className={"flex justify-between content-center items-center"}>
               <p className={"px-3 mb-4 mt-2 text-blackColor font-medium"}>You want to get</p>
               <div className={"px-3 flex content-center items-center gap-1"}>
                 {recipientAddress && (
-                  <p className="text-sm text-grayColor">{`${formatSuiAddress(recipientAddress)}`}</p>
+                  <p className="text-sm text-black2Color">{`${formatSuiAddress(recipientAddress)}`}</p>
                 )}
                 {recipientAddress && (
                   <XMarkIcon
-                    className={"w-5 h-5 text-grayColor cursor-pointer"}
+                    className={"w-5 h-5 text-black2Color cursor-pointer"}
                     onClick={() => {
                       setRecipientAddress("");
                       setRecipientObjectIds([]);
@@ -156,7 +156,7 @@ const Swap = () => {
             (!creatorObjectIds.length && !creatorCoinAmount) ||
             (!recipientObjectIds.length && !recipientCoinAmount)
           }
-          className="w-full md:w-[200px] py-3 bg-[#5AAC67] text-white font-medium mb-4 rounded-md disabled:opacity-40 disabled:cursor-not-allowed"
+          className="w-full md:w-[200px] py-3 bg-greenColor text-white font-medium mb-4 rounded-md disabled:opacity-40 disabled:cursor-not-allowed"
         >
           Create Offer
         </button>

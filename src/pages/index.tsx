@@ -340,7 +340,7 @@ const Home = () => {
             batchMode
               ? batchIdStake.includes(capy.id)
                 ? "border-yellowColor"
-                : "border-grayColor"
+                : "border-black2Color"
               : "border-[#FFFFFF]"
           )}
         >
@@ -365,7 +365,7 @@ const Home = () => {
         <div
           className={classNames(
             "flex flex-col items-center gap-2 bg-white rounded-xl py-8 border-2",
-            batchMode ? (batchIdUnstake.includes(staking.id) ? "border-redColor" : "border-grayColor") : "border-white"
+            batchMode ? (batchIdUnstake.includes(staking.id) ? "border-pinkColor" : "border-black2Color") : "border-white"
           )}
         >
           <div className="relative">
@@ -381,7 +381,7 @@ const Home = () => {
   return status === EthosConnectStatus.NoConnection ? (
     <NoConnectWallet title={"Staking!"} />
   ) : (
-    <main className="flex min-h-[85vh] flex-col pl-2 pr-2 md:pl-16 py-6 mt-20 md:pr-10 z-10 rounded-lg bg-bgMain">
+    <main className="flex min-h-[85vh] flex-col pl-2 pr-2 md:pl-16 py-6 mt-20 md:pr-10 z-10 rounded-lg bg-basicColor">
       {stakedFrens ? (
         <ProjectCard
           availablePointsToClaim={availablePointsToClaim}
@@ -399,7 +399,7 @@ const Home = () => {
         <>
           <div className="flex justify-between">
             <h1
-              className={classNames("mt-8 md:text-4xl text-xl font-semibold text-grayColor", font_montserrat.className)}
+              className={classNames("mt-8 md:text-4xl text-xl font-semibold text-black2Color", font_montserrat.className)}
             >
               My Staked Frens
             </h1>
@@ -417,7 +417,7 @@ const Home = () => {
               </p>
               <button
                 className={classNames(
-                  "md:mt-8 text-sm min-w-[220px] md:text-lg border-2 px-3 py-4 md:py-2 md:px-8 w-full rounded-xl bg-white border-redColor text-redColor hover:bg-[#cc5480] hover:text-gray-50 hover:border-transparent"
+                  "md:mt-8 text-sm min-w-[220px] md:text-lg border-2 px-3 py-4 md:py-2 md:px-8 w-full rounded-xl bg-white border-pinkColor text-pinkColor hover:bg-[#cc5480] hover:text-gray-50 hover:border-transparent"
                 )}
                 onClick={() => {
                   batchUnstakeMode
@@ -440,7 +440,7 @@ const Home = () => {
       )}
 
       <div className="flex justify-between">
-        <h1 className={classNames("mt-8 md:text-4xl text-xl font-semibold text-grayColor", font_montserrat.className)}>
+        <h1 className={classNames("mt-8 md:text-4xl text-xl font-semibold text-black2Color", font_montserrat.className)}>
           My Frens
         </h1>
         {frens?.length !== 0 ? (
@@ -488,7 +488,7 @@ const Home = () => {
           {stakedFrens?.length !== 0 ? (
             <div className="mt-8 text-center">
               <div
-                className={classNames(font_montserrat.className, "md:text-4xl text-2xl font-semibold text-grayColor")}
+                className={classNames(font_montserrat.className, "md:text-4xl text-2xl font-semibold text-black2Color")}
               >
                 All your capies are staked
               </div>
@@ -496,7 +496,7 @@ const Home = () => {
             </div>
           ) : (
             <div className={classNames("mt-8 text-center", font_montserrat.className)}>
-              <div className={classNames("text-4xl font-semibold text-grayColor")}>You don't have capy :(</div>
+              <div className={classNames("text-4xl font-semibold text-black2Color")}>You don't have capy :(</div>
               <BlueMoveButton text={"Get one Capy on"} />
             </div>
           )}
