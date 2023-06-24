@@ -22,7 +22,7 @@ const CustomWalletMenu = () => {
       )}
       {openWallet && (
         <button
-          className={"absolute w-[100vw] z-10 h-[100vh] left-0 top-0"}
+          className={"absolute w-[100vw] z-10 h-[100vh] bg-black/20 left-0 top-0"}
           onClick={() => setOpenWallet(false)}
         >
           <div className={"absolute z-20 right-0 top-[60px] cursor-default"}>
