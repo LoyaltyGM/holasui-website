@@ -6,7 +6,7 @@ const font_montserrat = Montserrat({ subsets: ["latin"] });
 
 export default function Page404() {
   return (
-    <main className="flex min-h-[85vh] flex-col pl-16 py-6 mt-40 pr-10 z-10 rounded-lg bg-basicColor">
+    <main className="z-10 mt-40 flex min-h-[85vh] flex-col rounded-lg bg-basicColor py-6 pl-16 pr-10">
       <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm">
         <p className={classNames(font_montserrat.className, "text-4xl font-bold")}>404</p>
         <p className={classNames(font_montserrat.className, "text-2xl")}>
@@ -15,7 +15,7 @@ export default function Page404() {
         <Link href="/">
           <button
             className={classNames(
-              "w-full block mx-auto my-4 px-3 text-sm py-2 bg-yellowColor text-white font-black rounded-md hover:bg-[#e5a44a] cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed",
+              "mx-auto my-4 block w-full cursor-pointer rounded-md bg-yellowColor px-3 py-2 text-sm font-black text-white hover:bg-[#e5a44a] disabled:cursor-not-allowed disabled:opacity-50",
               font_montserrat.className,
             )}
           >

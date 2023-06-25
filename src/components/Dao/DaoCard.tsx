@@ -16,7 +16,7 @@ export const DaoCard = (props: IDaoCard) => {
       <Image
         src={props.imageUrl}
         alt={"DAO Image"}
-        className={"min-w-[160px] bg-white object-cover border border-black2Color rounded-[11px]"}
+        className={"min-w-[160px] rounded-[11px] border border-black2Color bg-white object-cover"}
         width={160}
         height={340}
       ></Image>
@@ -25,27 +25,27 @@ export const DaoCard = (props: IDaoCard) => {
 
   const InfoDao = () => {
     return (
-      <div className={"justify-between md:min-w-[340px] px-5 pt-5"}>
+      <div className={"justify-between px-5 pt-5 md:min-w-[340px]"}>
         <div
           className={
-            "flex content-center justify-between items-center min-h-[40px] max-h-[40px] md:max-h-[40px] md:min-h-[40px] "
+            "flex max-h-[40px] min-h-[40px] content-center items-center justify-between md:max-h-[40px] md:min-h-[40px] "
           }
         >
-          <h1 className={"text-blackColor text-xl font-semibold"}>{props.title}</h1>
+          <h1 className={"text-xl font-semibold text-blackColor"}>{props.title}</h1>
           <a href={props.twitterUrl} target={"_blank"} className={"hidden md:flex"}>
-            <Image src={TwitterIcon} alt={"Twitter Icon"} className={"w-5 h-5 cursor-pointer"} />
+            <Image src={TwitterIcon} alt={"Twitter Icon"} className={"h-5 w-5 cursor-pointer"} />
           </a>
         </div>
         <p
           className={
-            "text-black2Color w-full text-xs md:text-base mt-3 text-ellipsis overflow-hidden min-h-[110px] max-h-[110px] md:min-h-[117px] md:max-h-[117px]"
+            "mt-3 max-h-[110px] min-h-[110px] w-full overflow-hidden text-ellipsis text-xs text-black2Color md:max-h-[117px] md:min-h-[117px] md:text-base"
           }
         >
           {props.description}
         </p>
         <div className={"mb-3"}>
           <Link href={`/dao/${props.daoAddress}`}>
-            <button className={"text-pinkColor underline underline-offset-2 pr-4 py-3"}>
+            <button className={"py-3 pr-4 text-pinkColor underline underline-offset-2"}>
               Learn more
             </button>
           </Link>
@@ -55,7 +55,7 @@ export const DaoCard = (props: IDaoCard) => {
   };
 
   return (
-    <div className={"flex bg-white w-full h-[240px] border-black2Color border rounded-xl"}>
+    <div className={"flex h-[240px] w-full rounded-xl border border-black2Color bg-white"}>
       <ImageDao />
       <InfoDao />
     </div>

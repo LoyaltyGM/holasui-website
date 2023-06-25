@@ -6,6 +6,7 @@ import Link from "next/link";
 
 const DAO = () => {
   const { status, wallet } = ethos.useWallet();
+
   const daoCards = [
     {
       title: "DAO Card One",
@@ -60,19 +61,19 @@ const DAO = () => {
   ) : (
     <main
       className={classNames(
-        "flex min-h-[100vh] md:min-h-[65vh] flex-col pl-2 pr-2 md:pl-16 py-6 md:mt-14 mt-18 md:pr-10 z-10 rounded-lg mt-8 ",
+        "mt-18 z-10 mt-8 flex min-h-[100vh] flex-col rounded-lg py-6 pl-2 pr-2 md:mt-14 md:min-h-[65vh] md:pl-16 md:pr-10 ",
       )}
     >
-      <div className={"flex justify-between content-center items-center mt-16"}>
-        <h1 className={"text-blackColor text-2xl md:text-4xl font-semibold"}>Hola, DAOs</h1>
+      <div className={"mt-16 flex content-center items-center justify-between"}>
+        <h1 className={"text-2xl font-semibold text-blackColor md:text-4xl"}>Hola, DAOs</h1>
         <Link
           href={"dao/create"}
-          className={"pinkColor-primary-state rounded-2xl font-bold py-2 px-3 md:py-4 md:px-6"}
+          className={"pinkColor-primary-state rounded-2xl px-3 py-2 font-bold md:px-6 md:py-4"}
         >
           Create DAO
         </Link>
       </div>
-      <div className={"grid grid-cols-1 md:grid-cols-2 gap-5 mt-10 mb-20"}>
+      <div className={"mb-20 mt-10 grid grid-cols-1 gap-5 md:grid-cols-2"}>
         {daoCards.map((daoInfo) => {
           return (
             <DaoCard

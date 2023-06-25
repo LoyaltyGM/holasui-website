@@ -17,24 +17,24 @@ export function Sidebar({ children }: ILayoutProps) {
 
   const Header = () => {
     return (
-      <div className={"w-full fixed-header"}>
-        <div className="border-2 border-blackColor px-2 mt-2 md:mx-8 mx-2 bg-white py-1 text-white rounded-lg">
+      <div className={"fixed-header w-full"}>
+        <div className="mx-2 mt-2 rounded-lg border-2 border-blackColor bg-white px-2 py-1 text-white md:mx-8">
           <div className="flex justify-between md:content-center md:items-center">
             <Link href="/">
               <Image src={Logo} height={100} width={180} alt={"logo"} priority />
             </Link>
             <div
               className={classNames(
-                "md:flex hidden md:justify-evenly gap-10 text-blackColor mx-3 mt-1 font-semibold",
+                "mx-3 mt-1 hidden gap-10 font-semibold text-blackColor md:flex md:justify-evenly",
                 font_montserrat.className,
               )}
             >
               <Link href="/">
                 <div
                   className={classNames(
-                    "block py-2 rounded-md my-3",
+                    "my-3 block rounded-md py-2",
                     router.pathname === "/"
-                      ? "text-yellowColor font-bold"
+                      ? "font-bold text-yellowColor"
                       : "hover:text-yellowColorHover",
                   )}
                 >
@@ -44,9 +44,9 @@ export function Sidebar({ children }: ILayoutProps) {
               <Link href="/swap">
                 <div
                   className={classNames(
-                    "block py-2 rounded-md my-3",
+                    "my-3 block rounded-md py-2",
                     router.pathname === "/swap"
-                      ? "text-purpleColor font-bold"
+                      ? "font-bold text-purpleColor"
                       : "hover:text-purpleColor",
                   )}
                 >
@@ -55,12 +55,12 @@ export function Sidebar({ children }: ILayoutProps) {
               </Link>
             </div>
 
-            <div className="hidden md:flex h-12 gap-8 mt-2 items-center">
+            <div className="mt-2 hidden h-12 items-center gap-8 md:flex">
               <div
                 className={classNames(
                   "flex flex-col items-center justify-center",
                   "text-black2Color",
-                  "group py-2 text-xs font-medium hover:text-[#8d6eec] rounded-2xl cursor-pointer",
+                  "group cursor-pointer rounded-2xl py-2 text-xs font-medium hover:text-[#8d6eec]",
                   font_montserrat.className,
                 )}
               >
@@ -72,7 +72,7 @@ export function Sidebar({ children }: ILayoutProps) {
                 className={classNames(
                   "flex flex-col items-center justify-center",
                   "text-black2Color",
-                  "group py-2 text-xs font-medium group-hover:text-[#6ea0ec] hover:fill-[#6ea0ec] hover:text-[#6ea0ec] rounded-2xl cursor-pointer",
+                  "group cursor-pointer rounded-2xl py-2 text-xs font-medium hover:fill-[#6ea0ec] hover:text-[#6ea0ec] group-hover:text-[#6ea0ec]",
                   font_montserrat.className,
                 )}
               >
@@ -95,8 +95,8 @@ export function Sidebar({ children }: ILayoutProps) {
     <div className="mt-4">
       <Header />
       <div className="flex flex-1 flex-col">
-        <main className="flex-1 h-full bg-basicColor">
-          <div className="mx-auto max-w-7xl w-full px-0 sm:pl-[5rem] sm:pr-[1.5rem] md:px-8">
+        <main className="h-full flex-1 bg-basicColor">
+          <div className="mx-auto w-full max-w-7xl px-0 sm:pl-[5rem] sm:pr-[1.5rem] md:px-8">
             {children}
           </div>
         </main>

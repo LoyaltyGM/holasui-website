@@ -11,10 +11,9 @@ const CreateDAO = () => {
   ) : (
     <main
       className={classNames(
-        "flex min-h-[100vh] md:min-h-[65vh] flex-col pl-2 pr-2 md:pl-16 py-6 md:mt-14 mt-18 md:pr-10 z-10 rounded-lg mt-8 "
+        "mt-18 z-10 mt-8 flex min-h-[100vh] flex-col rounded-lg py-6 pl-2 pr-2 md:mt-14 md:min-h-[65vh] md:pl-16 md:pr-10 ",
       )}
     >
-
       <h1>Hello how are you?</h1>
     </main>
   );

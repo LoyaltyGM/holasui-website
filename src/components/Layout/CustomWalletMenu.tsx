@@ -15,7 +15,7 @@ const CustomWalletMenu = () => {
       ) : (
         <button
           className={
-            "py-3 px-4 text-pinkColor border-pinkColor border pinkColor-second-state rounded-xl"
+            "pinkColor-second-state rounded-xl border border-pinkColor px-4 py-3 text-pinkColor"
           }
           onClick={() => setOpenWallet(!openWallet)}
         >
@@ -24,13 +24,13 @@ const CustomWalletMenu = () => {
       )}
       {openWallet && (
         <button
-          className={"absolute w-[100vw] z-10 h-[100vh] bg-black/20 left-0 top-0"}
+          className={"absolute left-0 top-0 z-10 h-[100vh] w-[100vw] bg-black/20"}
           onClick={() => setOpenWallet(false)}
         >
-          <div className={"absolute z-20 right-0 top-[60px] cursor-default"}>
+          <div className={"absolute right-0 top-[60px] z-20 cursor-default"}>
             <div
               className={
-                "relative border-black2Color border-2 px-5 py-4 right-[30px] bg-white mt-12 rounded-2xl h-44 w-64"
+                "relative right-[30px] mt-12 h-44 w-64 rounded-2xl border-2 border-black2Color bg-white px-5 py-4"
               }
             >
               <p className={"font-medium text-blackColor"}>
@@ -38,7 +38,7 @@ const CustomWalletMenu = () => {
               </p>
               <div
                 className={
-                  "h-12 flex justify-center gap-2 bg-basicColor mt-5 rounded-xl content-center items-center"
+                  "mt-5 flex h-12 content-center items-center justify-center gap-2 rounded-xl bg-basicColor"
                 }
               >
                 <Image
@@ -55,7 +55,7 @@ const CustomWalletMenu = () => {
                 </p>
               </div>
               <button
-                className={"mt-5 text-blackColor justify-start w-full py-2"}
+                className={"mt-5 w-full justify-start py-2 text-blackColor"}
                 onClick={() => {
                   wallet?.disconnect();
                   setOpenWallet(false);
@@ -63,10 +63,10 @@ const CustomWalletMenu = () => {
               >
                 <div
                   className={
-                    "flex gap-2 justify-start content-center items-center fill-blackColor hover:text-grayColor"
+                    "flex content-center items-center justify-start gap-2 fill-blackColor hover:text-grayColor"
                   }
                 >
-                  <Image src={LogoutIcon} alt={"logout icon"} className={"w-5 h-5"} />
+                  <Image src={LogoutIcon} alt={"logout icon"} className={"h-5 w-5"} />
                   <p>Logout</p>
                 </div>
               </button>

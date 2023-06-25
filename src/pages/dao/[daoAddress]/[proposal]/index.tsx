@@ -35,7 +35,7 @@ const ProposalPage: NextPage<IProposalProps> = ({ proposal }) => {
 
   const BradcrumbsHeader = () => {
     return (
-      <nav className="flex mt-10" aria-label="Breadcrumb">
+      <nav className="mt-10 flex" aria-label="Breadcrumb">
         <ol className="inline-flex items-center space-x-1 md:space-x-3">
           <li className="inline-flex items-center">
             <Link
@@ -44,7 +44,7 @@ const ProposalPage: NextPage<IProposalProps> = ({ proposal }) => {
             >
               <svg
                 aria-hidden="true"
-                className="w-4 h-4 mr-2"
+                className="mr-2 h-4 w-4"
                 fill="currentColor"
                 viewBox="0 0 20 20"
                 xmlns="http://www.w3.org/2000/svg"
@@ -85,16 +85,16 @@ const ProposalPage: NextPage<IProposalProps> = ({ proposal }) => {
     );
   };
   const ProposalTitle = () => {
-    return <div className={"font-medium mt-16 mb-4 text-grayColor"}>Proposal 1</div>;
+    return <div className={"mb-4 mt-16 font-medium text-grayColor"}>Proposal 1</div>;
   };
 
   const ProposalInfo = () => {
     return (
-      <div className={"flex justify-between mb-10"}>
+      <div className={"mb-10 flex justify-between"}>
         <p className={"text-4xl font-bold text-blackColor"}>Proposal name</p>
         <div
           className={
-            "py-1 px-5 content-center items-center flex border rounded-xl border-purpleColor text-purpleColor"
+            "flex content-center items-center rounded-xl border border-purpleColor px-5 py-1 text-purpleColor"
           }
         >
           Active
@@ -105,20 +105,20 @@ const ProposalPage: NextPage<IProposalProps> = ({ proposal }) => {
 
   const VotingCards = () => {
     return (
-      <div className={"w-full flex justify-between"}>
+      <div className={"flex w-full justify-between"}>
         <div
-          className={"h-[330px] w-[300px] px-6 py-4 border border-black2Color rounded-3xl bg-white"}
+          className={"h-[330px] w-[300px] rounded-3xl border border-black2Color bg-white px-6 py-4"}
         >
           <div className={"flex justify-between text-lg"}>
-            <p className={"text-greenColor font-medium"}>For</p>
+            <p className={"font-medium text-greenColor"}>For</p>
             <p className={"font-semibold text-blackColor"}>123</p>
           </div>
-          <div className={"mt-4 w-full bg-[#F2F2F2] h-[10px] rounded-2xl"}>
-            <div className={"mt-4 w-[150px] bg-greenColor h-[10px] rounded-2xl"}></div>
+          <div className={"mt-4 h-[10px] w-full rounded-2xl bg-[#F2F2F2]"}>
+            <div className={"mt-4 h-[10px] w-[150px] rounded-2xl bg-greenColor"}></div>
           </div>
         </div>
-        <div className={"h-[330px] w-[300px] border border-black2Color rounded-3xl bg-white"}></div>
-        <div className={"h-[330px] w-[300px] border border-black2Color rounded-3xl bg-white"}></div>
+        <div className={"h-[330px] w-[300px] rounded-3xl border border-black2Color bg-white"}></div>
+        <div className={"h-[330px] w-[300px] rounded-3xl border border-black2Color bg-white"}></div>
       </div>
     );
   };
@@ -128,7 +128,7 @@ const ProposalPage: NextPage<IProposalProps> = ({ proposal }) => {
   ) : (
     <main
       className={classNames(
-        "flex min-h-[100vh] md:min-h-[65vh] max-w-5xl flex-col pl-2 pr-2 md:pl-16 py-6 md:mt-14 mt-18 md:pr-10 z-10 rounded-lg mt-8 ",
+        "mt-18 z-10 mt-8 flex min-h-[100vh] max-w-5xl flex-col rounded-lg py-6 pl-2 pr-2 md:mt-14 md:min-h-[65vh] md:pl-16 md:pr-10 ",
       )}
     >
       <BradcrumbsHeader />

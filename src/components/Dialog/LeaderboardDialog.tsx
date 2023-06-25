@@ -12,7 +12,15 @@ type LeaderboardEntry = {
   s: number;
 };
 
-export const LeaderboardDialog = ({ wallet, opened, setOpened }: { wallet: any; opened: boolean; setOpened: any }) => {
+export const LeaderboardDialog = ({
+  wallet,
+  opened,
+  setOpened,
+}: {
+  wallet: any;
+  opened: boolean;
+  setOpened: any;
+}) => {
   if (!wallet) return <></>;
 
   const [data, setData] = useState<LeaderboardEntry[]>([]);
@@ -54,15 +62,15 @@ export const LeaderboardDialog = ({ wallet, opened, setOpened }: { wallet: any; 
 
         <div className="fixed inset-0 z-10 overflow-auto">
           <div className="flex min-h-full items-center justify-center">
-            <Dialog.Panel className="max-w-4xl md:h-[65vh] h-[70vh] w-full relative transform overflow-auto rounded-lg bg-basicColor px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:p-6">
+            <Dialog.Panel className="relative h-[70vh] w-full max-w-4xl transform overflow-auto rounded-lg bg-basicColor px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:p-6 md:h-[65vh]">
               <Dialog.Title
                 as="h3"
                 className={classNames(
-                  "flex justify-between text-base leading-6 text-black2Color text-center mb-2 font-bold",
-                  font_montserrat.className
+                  "mb-2 flex justify-between text-center text-base font-bold leading-6 text-black2Color",
+                  font_montserrat.className,
                 )}
               >
-                <p className="mt-1 md:text-xl text-lg">Leaderboard</p>
+                <p className="mt-1 text-lg md:text-xl">Leaderboard</p>
                 <button onClick={() => setOpened(false)}>
                   <XMarkIcon className="flex h-7 w-7" />
                 </button>
@@ -72,7 +80,7 @@ export const LeaderboardDialog = ({ wallet, opened, setOpened }: { wallet: any; 
                   <div className={classNames("flex flex-col", font_montserrat.className)}>
                     {data ? (
                       <>
-                        <table className="table-auto w-full mt-2">
+                        <table className="mt-2 w-full table-auto">
                           <thead>
                             <tr>
                               <th className="px-4 py-2">#</th>
@@ -84,7 +92,7 @@ export const LeaderboardDialog = ({ wallet, opened, setOpened }: { wallet: any; 
                             {data.map((entry, index) => (
                               <tr key={index} className={index % 2 === 0 ? "bg-gray-300" : ""}>
                                 <td className="px-4 py-2">{index + 1}</td>
-                                <td className="px-4 py-2 w-full md:overflow-ellipsis md:overflow-hidden md:line-clamp-5">
+                                <td className="w-full px-4 py-2 md:line-clamp-5 md:overflow-hidden md:overflow-ellipsis">
                                   {entry.p}
                                 </td>
                                 <td className="px-4 py-2">{entry.s}</td>
@@ -94,8 +102,8 @@ export const LeaderboardDialog = ({ wallet, opened, setOpened }: { wallet: any; 
                         </table>
                         <button
                           className={classNames(
-                            "w-full block mx-auto my-4 px-3 text-sm py-2 bg-purpleColor text-white font-black rounded-md hover:bg-purpleColor/90 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed",
-                            font_montserrat.className
+                            "mx-auto my-4 block w-full cursor-pointer rounded-md bg-purpleColor px-3 py-2 text-sm font-black text-white hover:bg-purpleColor/90 disabled:cursor-not-allowed disabled:opacity-50",
+                            font_montserrat.className,
                           )}
                           onClick={() => {
                             setOpened(false);

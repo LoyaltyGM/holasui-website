@@ -6,7 +6,10 @@ export default function Document() {
       <Head>
         <meta name="description" content="NFT staking platform on Sui" />
 
-        <meta name="keywords" content="Sui, NFT, Staking, Reward platform,Token reward, Points rewards" />
+        <meta
+          name="keywords"
+          content="Sui, NFT, Staking, Reward platform,Token reward, Points rewards"
+        />
         {/* icons */}
         <link rel="shortcut icon" href="/favicon.ico" />
         <link rel="icon" href="/favicon.ico" />

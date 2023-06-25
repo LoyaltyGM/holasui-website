@@ -5,7 +5,7 @@ import {
   PACKAGE_ID_V1,
   PRICE_STACKED,
   PRICE_UNSTACKED,
-  STAKING_HUB_ID
+  STAKING_HUB_ID,
 } from "utils";
 
 // start sleep
@@ -33,7 +33,7 @@ export const singTransactionsToBatchStartStaking = (frens_ids: string[]) => {
   const txb = new TransactionBlock();
   const coin = txb.splitCoins(
     txb.gas,
-    frens_ids.map((_) => txb.pure(PRICE_STACKED! * 1e9, "u64"))
+    frens_ids.map((_) => txb.pure(PRICE_STACKED! * 1e9, "u64")),
   );
   // First, split the gas coin into multiple coins:
   frens_ids.forEach((frens_id, index) => {
@@ -75,7 +75,7 @@ export const singTransactionsToBatchUnstaking = (unstaked_frens_ids: string[]) =
   const txb = new TransactionBlock();
   const coin = txb.splitCoins(
     txb.gas,
-    unstaked_frens_ids.map((_) => txb.pure(PRICE_UNSTACKED! * 1e9, "u64"))
+    unstaked_frens_ids.map((_) => txb.pure(PRICE_UNSTACKED! * 1e9, "u64")),
   );
   // First, split the gas coin into multiple coins:
   unstaked_frens_ids.forEach((frens_id, index) => {

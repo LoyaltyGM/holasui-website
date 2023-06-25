@@ -6,11 +6,10 @@ import { CustomToast, Sidebar } from "components";
 import { SUI_RPC_URL } from "../utils";
 import { Montserrat } from "next/font/google";
 
-
 const font_montserrat = Montserrat({
-    variable: "--montserrat-font",
-    subsets: ["latin"],
-    });
+  variable: "--montserrat-font",
+  subsets: ["latin"],
+});
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <div className={`${font_montserrat.variable} font-sans`}>

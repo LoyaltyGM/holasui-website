@@ -81,17 +81,17 @@ const Swap = () => {
   }
   const Title = () => {
     return (
-      <div className="md:mt-20 mt-4 md:mb-0 mb-4 md:flex justify-between">
+      <div className="mb-4 mt-4 justify-between md:mb-0 md:mt-20 md:flex">
         <div>
-          <h1 className={classNames("md:text-4xl text-2xl font-bold text-blackColor")}>
+          <h1 className={classNames("text-2xl font-bold text-blackColor md:text-4xl")}>
             Welcome to Hola P2P Swap
           </h1>
-          <p className={classNames("md:text-lg text-sm font-medium mt-1 text-black2Color")}>
+          <p className={classNames("mt-1 text-sm font-medium text-black2Color md:text-lg")}>
             Swap NFTs secure and without third-parties companies!
           </p>
         </div>
         <Link href={"./swap/history"}>
-          <button className="w-full mt-4 md:mt-0 md:w-40 font-semibold rounded-lg border-2 h-12 border-black2Color text-blackColor bg-white hover:bg-yellowColor hover:border-yellowColor hover:text-white">
+          <button className="mt-4 h-12 w-full rounded-lg border-2 border-black2Color bg-white font-semibold text-blackColor hover:border-yellowColor hover:bg-yellowColor hover:text-white md:mt-0 md:w-40">
             View History
           </button>
         </Link>
@@ -104,14 +104,14 @@ const Swap = () => {
   ) : (
     <main
       className={classNames(
-        "flex min-h-[100vh] md:min-h-[65vh] flex-col pl-2 pr-2 md:pl-16 py-6 md:mt-14 mt-18 md:pr-10 z-10 rounded-lg mt-14 ",
+        "mt-18 z-10 mt-14 flex min-h-[100vh] flex-col rounded-lg py-6 pl-2 pr-2 md:mt-14 md:min-h-[65vh] md:pl-16 md:pr-10 ",
       )}
     >
       <>
         <Title />
-        <div className="md:flex gap-10 justify-items-center justify-evenly items-center rounded-2xl md:h-[50vh] h-full">
-          <div className="w-full bg-white rounded-xl border-purpleColor border-2 items-center gap-1 justify-between mb-4 py-2">
-            <p className={"px-3 mb-4 mt-2 text-blackColor font-medium"}>Your offer</p>
+        <div className="h-full items-center justify-evenly justify-items-center gap-10 rounded-2xl md:flex md:h-[50vh]">
+          <div className="mb-4 w-full items-center justify-between gap-1 rounded-xl border-2 border-purpleColor bg-white py-2">
+            <p className={"mb-4 mt-2 px-3 font-medium text-blackColor"}>Your offer</p>
 
             <SwapInformation
               userObjectIds={creatorObjectIds}
@@ -120,10 +120,10 @@ const Swap = () => {
               coinAmount={creatorCoinAmount}
             />
           </div>
-          <div className="w-full bg-white rounded-xl border-pinkColor border-2 items-center gap-1 justify-between mb-4 py-2">
-            <div className={"flex justify-between content-center items-center"}>
-              <p className={"px-3 mb-4 mt-2 text-blackColor font-medium"}>You want to get</p>
-              <div className={"px-3 flex content-center items-center gap-1"}>
+          <div className="mb-4 w-full items-center justify-between gap-1 rounded-xl border-2 border-pinkColor bg-white py-2">
+            <div className={"flex content-center items-center justify-between"}>
+              <p className={"mb-4 mt-2 px-3 font-medium text-blackColor"}>You want to get</p>
+              <div className={"flex content-center items-center gap-1 px-3"}>
                 {recipientAddress && (
                   <p className="text-sm text-black2Color">{`${formatSuiAddress(
                     recipientAddress,
@@ -131,7 +131,7 @@ const Swap = () => {
                 )}
                 {recipientAddress && (
                   <XMarkIcon
-                    className={"w-5 h-5 text-black2Color cursor-pointer"}
+                    className={"h-5 w-5 cursor-pointer text-black2Color"}
                     onClick={() => {
                       setRecipientAddress("");
                       setRecipientObjectIds([]);
@@ -159,16 +159,16 @@ const Swap = () => {
             (!creatorObjectIds.length && !creatorCoinAmount) ||
             (!recipientObjectIds.length && !recipientCoinAmount)
           }
-          className="w-full md:w-[200px] py-3 bg-greenColor text-white font-medium mb-4 rounded-md disabled:opacity-40 disabled:cursor-not-allowed"
+          className="mb-4 w-full rounded-md bg-greenColor py-3 font-medium text-white disabled:cursor-not-allowed disabled:opacity-40 md:w-[200px]"
         >
           Create Offer
         </button>
 
-        <div className="flex gap-10 justify-center">
+        <div className="flex justify-center gap-10">
           <a className="text-sm underline" href={"https://twitter.com/Hola_sui"} target={"_blank"}>
             How it works?
           </a>
-          <div className="flex content-center items-center gap-1 text-sm text-right md:text-center">
+          <div className="flex content-center items-center gap-1 text-right text-sm md:text-center">
             <p>Fee Swap 0.1</p>
             <Image src={ImageSuiToken} alt={"sui token"} className={"h-4 w-4"} />
           </div>

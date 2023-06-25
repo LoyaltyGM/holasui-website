@@ -39,32 +39,38 @@ const DetailDaoAddress: NextPage<IDaoAddressProps> = ({ daoAddress }) => {
   const InfoDao = () => {
     return (
       <div className={"mt-10"}>
-        <div className={"flex justify-between w-full"}>
+        <div className={"flex w-full justify-between"}>
           <div className={"flex w-full justify-between"}>
             <div className={"flex gap-4"}>
               <Image
-                src={"https://pbs.twimg.com/profile_images/1666614102737797122/6E0poPYm_400x400.jpg"}
+                src={
+                  "https://pbs.twimg.com/profile_images/1666614102737797122/6E0poPYm_400x400.jpg"
+                }
                 alt={"logo-dao"}
                 height={150}
                 width={150}
-                className={"rounded-full w-30 h-30"}
+                className={"w-30 h-30 rounded-full"}
               />
               <div>
-                <div className={"flex gap-3 justify-start content-center items-center"}>
-                  <h1 className={"text-blackColor font-semibold text-4xl"}>Capy DAO</h1>
-                  <Image src={ExternalWebsiteIcon} alt={"external website icon"} className={"w-5 h-5 cursor-pointer"} />
+                <div className={"flex content-center items-center justify-start gap-3"}>
+                  <h1 className={"text-4xl font-semibold text-blackColor"}>Capy DAO</h1>
+                  <Image
+                    src={ExternalWebsiteIcon}
+                    alt={"external website icon"}
+                    className={"h-5 w-5 cursor-pointer"}
+                  />
                 </div>
                 <InfoDaoDescription />
               </div>
             </div>
 
             <div className={"flex flex-col justify-center"}>
-              <button className={"bg-pinkColor text-white px-5 py-3 rounded-lg min-w-[170px]"}>
+              <button className={"min-w-[170px] rounded-lg bg-pinkColor px-5 py-3 text-white"}>
                 <p className={"font-medium"}>Create SubDAO</p>
               </button>
               <div
                 className={
-                  "w-full flex text-black2Color cursor-pointer justify-center mt-2 px-2 text-xs underline underline-offset-2"
+                  "mt-2 flex w-full cursor-pointer justify-center px-2 text-xs text-black2Color underline underline-offset-2"
                 }
               >
                 What is Sub DAO?
@@ -78,10 +84,15 @@ const DetailDaoAddress: NextPage<IDaoAddressProps> = ({ daoAddress }) => {
 
   const InfoDaoDescription = () => {
     return (
-      <div className={"w-3/4 max-h-[52px] text-clip overflow-hidden text-base mt-4 font-bold text-black2Color"}>
+      <div
+        className={
+          "mt-4 max-h-[52px] w-3/4 overflow-hidden text-clip text-base font-bold text-black2Color"
+        }
+      >
         <p>
-          DAO description DAO description DAO description DAO description DAO description DAO description DAO
-          description DAO description DAO description DAO description DAO description DAO description DAO description
+          DAO description DAO description DAO description DAO description DAO description DAO
+          description DAO description DAO description DAO description DAO description DAO
+          description DAO description DAO description
         </p>
       </div>
     );
@@ -91,20 +102,24 @@ const DetailDaoAddress: NextPage<IDaoAddressProps> = ({ daoAddress }) => {
     return (
       <div
         className={
-          "px-4 flex justify-between bg-white content-center items-center py-2 border-2 w-full mt-6 min-h-[125px] border-grayColor rounded-xl"
+          "mt-6 flex min-h-[125px] w-full content-center items-center justify-between rounded-xl border-2 border-grayColor bg-white px-4 py-2"
         }
       >
         <div className={""}>
-          <p className={"font-bold text-lg text-grayColor"}>Treasury</p>
-          <div className={"flex mt-4 gap-2 font-bold content-center text-blackColor items-center text-3xl"}>
+          <p className={"text-lg font-bold text-grayColor"}>Treasury</p>
+          <div
+            className={
+              "mt-4 flex content-center items-center gap-2 text-3xl font-bold text-blackColor"
+            }
+          >
             <Image src={SuiToken} alt={"sui token logo"} className={"h-9 w-9"} />
             <p className={"text-blackColor"}>1111</p>
             <p>SUI</p>
           </div>
         </div>
-        <p className={"max-w-[280px] text-black2Color text-sm"}>
-          This treasury exists for Capy DAO participants to allocate resources for the long-term growth and prosperity
-          of the Capy’s project.
+        <p className={"max-w-[280px] text-sm text-black2Color"}>
+          This treasury exists for Capy DAO participants to allocate resources for the long-term
+          growth and prosperity of the Capy’s project.
         </p>
       </div>
     );
@@ -122,7 +137,7 @@ const DetailDaoAddress: NextPage<IDaoAddressProps> = ({ daoAddress }) => {
       setIsLeftVisible(scrollContainer.current.scrollLeft > 0);
       setIsRightVisible(
         scrollContainer.current.scrollWidth >
-          scrollContainer.current.clientWidth + scrollContainer.current.scrollLeft + 1
+          scrollContainer.current.clientWidth + scrollContainer.current.scrollLeft + 1,
       );
     };
 
@@ -132,106 +147,122 @@ const DetailDaoAddress: NextPage<IDaoAddressProps> = ({ daoAddress }) => {
     };
 
     const Title = () => {
-      return <p className={"font-bold text-2xl"}>Sub CapyDAO</p>;
+      return <p className={"text-2xl font-bold"}>Sub CapyDAO</p>;
     };
 
     return (
       <div className={"mt-14"}>
         <Title />
-        <div className="flex gap-8 mt-10">
+        <div className="mt-10 flex gap-8">
           <button
-            className="z-20 cursor-pointer px-3 py-2 content-center"
+            className="z-20 cursor-pointer content-center px-3 py-2"
             disabled={!isLeftVisible}
             onClick={() => scroll(-335)}
           >
             <div
               className={classNames(
-                "border p-2 rounded-xl stroke-[2px]",
-                isLeftVisible ? "border-blackColor text-blackColor" : "border-grayColor text-grayColor"
+                "rounded-xl border stroke-[2px] p-2",
+                isLeftVisible
+                  ? "border-blackColor text-blackColor"
+                  : "border-grayColor text-grayColor",
               )}
             >
               <ChevronLeftIcon className={"h-5 w-5"} />
             </div>
           </button>
-          <div ref={scrollContainer} onScroll={checkScroll} className="flex gap-16 overflow-x-scroll hide-scroll-bar">
+          <div
+            ref={scrollContainer}
+            onScroll={checkScroll}
+            className="hide-scroll-bar flex gap-16 overflow-x-scroll"
+          >
             {/* Here you would map through your cards. I'm just using a static example */}
-            <div className="flex bg-yellowColor border border-black2Color rounded-xl h-[170px] min-w-[256px] max-w-[256px] mr-4">
-              <p className="px-5 py-4 text-white font-bold text-xl z-10">Ear4</p>
+            <div className="mr-4 flex h-[170px] min-w-[256px] max-w-[256px] rounded-xl border border-black2Color bg-yellowColor">
+              <p className="z-10 px-5 py-4 text-xl font-bold text-white">Ear4</p>
               <Image
                 src="https://api-mainnet.suifrens.sui.io/suifrens/0x211a0715238cba5bd45b0910697b7c7b6058723dee4c35378b7336ccdf1304d1/svg"
                 alt="capy"
-                className="h-full z-[9]"
-                width={200}
-                height={250}
-              />
-            </div>
-            <div
-              className={"flex bg-pinkColor border border-black2Color rounded-xl h-[170px] min-w-[256px] max-w-[256px]"}
-            >
-              <p className={"px-5 py-4 text-white font-bold text-xl z-10"}>Ear4</p>
-              <Image
-                src={
-                  "https://api-mainnet.suifrens.sui.io/suifrens/0x211a0715238cba5bd45b0910697b7c7b6058723dee4c35378b7336ccdf1304d1/svg"
-                }
-                alt={"capy"}
-                className={"h-full z-[9]"}
+                className="z-[9] h-full"
                 width={200}
                 height={250}
               />
             </div>
             <div
               className={
-                "flex bg-orange-300 border border-yellowColor rounded-xl h-[170px] min-w-[256px] max-w-[256px]"
+                "flex h-[170px] min-w-[256px] max-w-[256px] rounded-xl border border-black2Color bg-pinkColor"
               }
             >
-              <p className={"px-5 py-4 text-white font-bold text-xl z-10"}>Ear4</p>
+              <p className={"z-10 px-5 py-4 text-xl font-bold text-white"}>Ear4</p>
               <Image
                 src={
                   "https://api-mainnet.suifrens.sui.io/suifrens/0x211a0715238cba5bd45b0910697b7c7b6058723dee4c35378b7336ccdf1304d1/svg"
                 }
                 alt={"capy"}
-                className={"h-full z-[9]"}
+                className={"z-[9] h-full"}
                 width={200}
                 height={250}
               />
             </div>
             <div
               className={
-                "flex bg-yellowColor border border-black2Color rounded-xl h-[170px] min-w-[256px] max-w-[256px]"
+                "flex h-[170px] min-w-[256px] max-w-[256px] rounded-xl border border-yellowColor bg-orange-300"
               }
             >
-              <p className={"px-5 py-4 text-white font-bold text-xl z-10"}>Ear4</p>
+              <p className={"z-10 px-5 py-4 text-xl font-bold text-white"}>Ear4</p>
               <Image
                 src={
                   "https://api-mainnet.suifrens.sui.io/suifrens/0x211a0715238cba5bd45b0910697b7c7b6058723dee4c35378b7336ccdf1304d1/svg"
                 }
                 alt={"capy"}
-                className={"h-full z-[9]"}
+                className={"z-[9] h-full"}
                 width={200}
                 height={250}
               />
             </div>
             <div
-              className={"flex bg-pinkColor border border-yellowColor rounded-xl h-[170px] min-w-[256px] max-w-[256px]"}
+              className={
+                "flex h-[170px] min-w-[256px] max-w-[256px] rounded-xl border border-black2Color bg-yellowColor"
+              }
             >
-              <p className={"px-5 py-4 text-white font-bold text-xl z-10"}>Ear4</p>
+              <p className={"z-10 px-5 py-4 text-xl font-bold text-white"}>Ear4</p>
               <Image
                 src={
                   "https://api-mainnet.suifrens.sui.io/suifrens/0x211a0715238cba5bd45b0910697b7c7b6058723dee4c35378b7336ccdf1304d1/svg"
                 }
                 alt={"capy"}
-                className={"h-full z-[9]"}
+                className={"z-[9] h-full"}
+                width={200}
+                height={250}
+              />
+            </div>
+            <div
+              className={
+                "flex h-[170px] min-w-[256px] max-w-[256px] rounded-xl border border-yellowColor bg-pinkColor"
+              }
+            >
+              <p className={"z-10 px-5 py-4 text-xl font-bold text-white"}>Ear4</p>
+              <Image
+                src={
+                  "https://api-mainnet.suifrens.sui.io/suifrens/0x211a0715238cba5bd45b0910697b7c7b6058723dee4c35378b7336ccdf1304d1/svg"
+                }
+                alt={"capy"}
+                className={"z-[9] h-full"}
                 width={200}
                 height={250}
               />
             </div>
             {/* Other cards */}
           </div>
-          <button className="z-20 cursor-pointer px-3 py-2" disabled={!isRightVisible} onClick={() => scroll(335)}>
+          <button
+            className="z-20 cursor-pointer px-3 py-2"
+            disabled={!isRightVisible}
+            onClick={() => scroll(335)}
+          >
             <div
               className={classNames(
-                "border p-2 rounded-xl stroke-[2px]",
-                isRightVisible ? "border-blackColor text-blackColor" : "border-grayColor text-grayColor"
+                "rounded-xl border stroke-[2px] p-2",
+                isRightVisible
+                  ? "border-blackColor text-blackColor"
+                  : "border-grayColor text-grayColor",
               )}
             >
               <ChevronRightIcon className={"h-5 w-5"} />
@@ -252,16 +283,18 @@ const DetailDaoAddress: NextPage<IDaoAddressProps> = ({ daoAddress }) => {
     return (
       <div
         className={
-          "flex content-center items-center justify-between py-4 px-6 bg-white border border-[#595959] w-full min-h-[80px] max-h-[80px] rounded-3xl cursor-pointer"
+          "flex max-h-[80px] min-h-[80px] w-full cursor-pointer content-center items-center justify-between rounded-3xl border border-[#595959] bg-white px-6 py-4"
         }
       >
-        <div className={"flex gap-10 content-center items-center"}>
-          <p className={"text-black2Color text-xl font-bold"}>1</p>
-          <p className={"min-w-[300px] w-1/2 text-xl font-medium"}>Proposal Name</p>
+        <div className={"flex content-center items-center gap-10"}>
+          <p className={"text-xl font-bold text-black2Color"}>1</p>
+          <p className={"w-1/2 min-w-[300px] text-xl font-medium"}>Proposal Name</p>
         </div>
-        <div className={"flex gap-10 content-center items-center"}>
+        <div className={"flex content-center items-center gap-10"}>
           <div className={"text-black2Color"}>Starts in 2 days</div>
-          <div className={"border-yellowColor text-yellowColor rounded-xl border px-4 py-2"}>Pending</div>
+          <div className={"rounded-xl border border-yellowColor px-4 py-2 text-yellowColor"}>
+            Pending
+          </div>
         </div>
       </div>
     );
@@ -269,10 +302,10 @@ const DetailDaoAddress: NextPage<IDaoAddressProps> = ({ daoAddress }) => {
 
   const Proposals = () => {
     return (
-      <div className={"mt-14 mb-10"}>
-        <div className={"flex mt-10 justify-between content-center items-center"}>
-          <p className={"font-bold text-2xl"}>Proposals</p>
-          <button className={"bg-yellowColor text-white px-5 py-3 rounded-lg"}>
+      <div className={"mb-10 mt-14"}>
+        <div className={"mt-10 flex content-center items-center justify-between"}>
+          <p className={"text-2xl font-bold"}>Proposals</p>
+          <button className={"rounded-lg bg-yellowColor px-5 py-3 text-white"}>
             <p className={"font-medium"}>Submit Proposal</p>
           </button>
         </div>
@@ -289,7 +322,7 @@ const DetailDaoAddress: NextPage<IDaoAddressProps> = ({ daoAddress }) => {
 
   const BradcrumbsHeader = () => {
     return (
-      <nav className="flex mt-10" aria-label="Breadcrumb">
+      <nav className="mt-10 flex" aria-label="Breadcrumb">
         <ol className="inline-flex items-center space-x-1 md:space-x-3">
           <li className="inline-flex items-center">
             <Link
@@ -298,7 +331,7 @@ const DetailDaoAddress: NextPage<IDaoAddressProps> = ({ daoAddress }) => {
             >
               <svg
                 aria-hidden="true"
-                className="w-4 h-4 mr-2"
+                className="mr-2 h-4 w-4"
                 fill="currentColor"
                 viewBox="0 0 20 20"
                 xmlns="http://www.w3.org/2000/svg"
@@ -331,7 +364,7 @@ const DetailDaoAddress: NextPage<IDaoAddressProps> = ({ daoAddress }) => {
   ) : (
     <main
       className={classNames(
-        "flex min-h-[100vh] md:min-h-[65vh] flex-col pl-2 pr-2 md:pl-16 py-6 md:mt-14 mt-18 md:pr-10 z-10 rounded-lg mt-8 "
+        "mt-18 z-10 mt-8 flex min-h-[100vh] flex-col rounded-lg py-6 pl-2 pr-2 md:mt-14 md:min-h-[65vh] md:pl-16 md:pr-10 ",
       )}
     >
       <BradcrumbsHeader />
