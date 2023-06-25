@@ -44,7 +44,7 @@ const Swap = () => {
 
   async function createOffer() {
     if (!wallet || !recipientAddress) return;
-    console.log(swapType)
+    console.log(swapType);
     setWaitSui(true);
     try {
       const response = await wallet.signAndExecuteTransactionBlock({
@@ -79,12 +79,13 @@ const Swap = () => {
       setWaitSui(false);
     }
   }
-
   const Title = () => {
     return (
       <div className="md:mt-20 mt-4 md:mb-0 mb-4 md:flex justify-between">
         <div>
-          <h1 className={classNames("md:text-4xl text-2xl font-bold text-blackColor")}>Welcome to Hola P2P Swap</h1>
+          <h1 className={classNames("md:text-4xl text-2xl font-bold text-blackColor")}>
+            Welcome to Hola P2P Swap
+          </h1>
           <p className={classNames("md:text-lg text-sm font-medium mt-1 text-black2Color")}>
             Swap NFTs secure and without third-parties companies!
           </p>
@@ -103,7 +104,7 @@ const Swap = () => {
   ) : (
     <main
       className={classNames(
-        "flex min-h-[100vh] md:min-h-[65vh] flex-col pl-2 pr-2 md:pl-16 py-6 md:mt-14 mt-18 md:pr-10 z-10 rounded-lg mt-14 "
+        "flex min-h-[100vh] md:min-h-[65vh] flex-col pl-2 pr-2 md:pl-16 py-6 md:mt-14 mt-18 md:pr-10 z-10 rounded-lg mt-14 ",
       )}
     >
       <>
@@ -124,7 +125,9 @@ const Swap = () => {
               <p className={"px-3 mb-4 mt-2 text-blackColor font-medium"}>You want to get</p>
               <div className={"px-3 flex content-center items-center gap-1"}>
                 {recipientAddress && (
-                  <p className="text-sm text-black2Color">{`${formatSuiAddress(recipientAddress)}`}</p>
+                  <p className="text-sm text-black2Color">{`${formatSuiAddress(
+                    recipientAddress,
+                  )}`}</p>
                 )}
                 {recipientAddress && (
                   <XMarkIcon
@@ -182,18 +185,18 @@ const Swap = () => {
           />
         )}
         {showReceivedNFT && (
-            <RecipientCollectionDialog
-                creatorBatchIdTrade={creatorObjectIds}
-                wallet={wallet}
-                opened={showReceivedNFT}
-                setOpened={setShowReceivedNFT}
-                batchIdTrade={recipientObjectIds}
-                setBatchIdTrade={setRecipientObjectIds}
-                walletAddressToSearch={recipientAddress}
-                setWalletAddressToSearch={setRecipientAddress}
-                setTypeSwap={setSwapType}
-                typeSwap={swapType}
-            />
+          <RecipientCollectionDialog
+            creatorBatchIdTrade={creatorObjectIds}
+            wallet={wallet}
+            opened={showReceivedNFT}
+            setOpened={setShowReceivedNFT}
+            batchIdTrade={recipientObjectIds}
+            setBatchIdTrade={setRecipientObjectIds}
+            walletAddressToSearch={recipientAddress}
+            setWalletAddressToSearch={setRecipientAddress}
+            setTypeSwap={setSwapType}
+            typeSwap={swapType}
+          />
         )}
         {offerCreated && offerTransactionHash && (
           <YourOfferLinkDialog
@@ -203,7 +206,6 @@ const Swap = () => {
             setOpened={setOfferCreated}
           />
         )}
-
       </>
     </main>
   );

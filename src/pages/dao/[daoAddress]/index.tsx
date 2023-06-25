@@ -196,7 +196,9 @@ const DetailDaoAddress: NextPage<IDaoAddressProps> = ({ daoAddress }) => {
               />
             </div>
             <div
-              className={"flex bg-yellowColor border border-black2Color rounded-xl h-[170px] min-w-[256px] max-w-[256px]"}
+              className={
+                "flex bg-yellowColor border border-black2Color rounded-xl h-[170px] min-w-[256px] max-w-[256px]"
+              }
             >
               <p className={"px-5 py-4 text-white font-bold text-xl z-10"}>Ear4</p>
               <Image
@@ -275,7 +277,9 @@ const DetailDaoAddress: NextPage<IDaoAddressProps> = ({ daoAddress }) => {
           </button>
         </div>
         <div className={"mt-10 space-y-4"}>
-          <ProposalCard />
+          <Link href={`/dao/${daoAddress}/0x02`}>
+            <ProposalCard />
+          </Link>
           <ProposalCard />
           <ProposalCard />
         </div>

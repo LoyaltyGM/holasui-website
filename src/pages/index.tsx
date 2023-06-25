@@ -76,7 +76,7 @@ const Home = () => {
                 options: { showDisplay: true },
               });
               staked.url = (response.data?.display?.data! as Record<string, string>)?.image_url!;
-            })
+            }),
           ).then(() => setStakedFrens(stakingTickets));
         }
       } catch (e) {
@@ -341,7 +341,7 @@ const Home = () => {
               ? batchIdStake.includes(capy.id)
                 ? "border-yellowColor"
                 : "border-black2Color"
-              : "border-[#FFFFFF]"
+              : "border-[#FFFFFF]",
           )}
         >
           <div className="relative">
@@ -365,7 +365,11 @@ const Home = () => {
         <div
           className={classNames(
             "flex flex-col items-center gap-2 bg-white rounded-xl py-8 border-2",
-            batchMode ? (batchIdUnstake.includes(staking.id) ? "border-pinkColor" : "border-black2Color") : "border-white"
+            batchMode
+              ? batchIdUnstake.includes(staking.id)
+                ? "border-pinkColor"
+                : "border-black2Color"
+              : "border-white",
           )}
         >
           <div className="relative">
@@ -399,7 +403,10 @@ const Home = () => {
         <>
           <div className="flex justify-between">
             <h1
-              className={classNames("mt-8 md:text-4xl text-xl font-semibold text-black2Color", font_montserrat.className)}
+              className={classNames(
+                "mt-8 md:text-4xl text-xl font-semibold text-black2Color",
+                font_montserrat.className,
+              )}
             >
               My Staked Frens
             </h1>
@@ -417,7 +424,7 @@ const Home = () => {
               </p>
               <button
                 className={classNames(
-                  "md:mt-8 text-sm min-w-[220px] md:text-lg border-2 px-3 py-4 md:py-2 md:px-8 w-full rounded-xl bg-white border-pinkColor text-pinkColor hover:bg-[#cc5480] hover:text-gray-50 hover:border-transparent"
+                  "md:mt-8 text-sm min-w-[220px] md:text-lg border-2 px-3 py-4 md:py-2 md:px-8 w-full rounded-xl bg-white border-pinkColor text-pinkColor hover:bg-[#cc5480] hover:text-gray-50 hover:border-transparent",
                 )}
                 onClick={() => {
                   batchUnstakeMode
@@ -440,7 +447,9 @@ const Home = () => {
       )}
 
       <div className="flex justify-between">
-        <h1 className={classNames("mt-8 md:text-4xl text-xl font-semibold text-black2Color", font_montserrat.className)}>
+        <h1
+          className={classNames("mt-8 md:text-4xl text-xl font-semibold text-black2Color", font_montserrat.className)}
+        >
           My Frens
         </h1>
         {frens?.length !== 0 ? (
@@ -459,7 +468,7 @@ const Home = () => {
               </p>
               <button
                 className={classNames(
-                  "md:mt-8 md:min-w-[220px] text-sm md:text-lg bg-white border-yellowColor border-2 px-3 py-4 md:py-2 md:px-8 w-full rounded-xl text-yellowColor hover:bg-yellowColor hover:text-gray-50 hover:border-transparent"
+                  "md:mt-8 md:min-w-[220px] text-sm md:text-lg bg-white border-yellowColor border-2 px-3 py-4 md:py-2 md:px-8 w-full rounded-xl text-yellowColor hover:bg-yellowColor hover:text-gray-50 hover:border-transparent",
                 )}
                 onClick={() => {
                   batchStakeMode

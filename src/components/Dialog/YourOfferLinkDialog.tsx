@@ -8,7 +8,12 @@ import { CopyTextButton } from "../Utils";
 
 const font_montserrat = Montserrat({ subsets: ["latin"] });
 
-export const YourOfferLinkDialog = ({ recipientAddress, transactionHash, opened, setOpened }: IYourOfferLinkDialog) => {
+export const YourOfferLinkDialog = ({
+  recipientAddress,
+  transactionHash,
+  opened,
+  setOpened,
+}: IYourOfferLinkDialog) => {
   return (
     <Transition.Root show={opened} as={Fragment}>
       <Dialog
@@ -37,20 +42,26 @@ export const YourOfferLinkDialog = ({ recipientAddress, transactionHash, opened,
                 as="h3"
                 className={classNames(
                   "flex justify-between text-base leading-6 px-5 text-black2Color text-center mb-2 font-bold",
-                  font_montserrat.className
+                  font_montserrat.className,
                 )}
               >
-                <p className="mt-1 md:text-2xl text-blackColor text-lg font-bold">{`Your offer to ${recipientAddress && formatSuiAddress(recipientAddress) || 'underfiend'}`}</p>
+                <p className="mt-1 md:text-2xl text-blackColor text-lg font-bold">{`Your offer to ${
+                  (recipientAddress && formatSuiAddress(recipientAddress)) || "underfiend"
+                }`}</p>
               </Dialog.Title>
               <div className="flex flex-col px-5 items-center justify-center">
-                <div className={'mt-5 text-black2Color leading-5 font-medium'}>
-                  Copy link and send it to your friend. He will be able to accept your offer by clicking on the link.
+                <div className={"mt-5 text-black2Color leading-5 font-medium"}>
+                  Copy link and send it to your friend. He will be able to accept your offer by
+                  clicking on the link.
                 </div>
-                <div className={'w-full mt-4 text-black2Color'}>
-                  <p className={'font-bold'}>Link</p>
-                  <div className={'mt-2'}>
+                <div className={"w-full mt-4 text-black2Color"}>
+                  <p className={"font-bold"}>Link</p>
+                  <div className={"mt-2"}>
                     <CopyTextButton
-                      showText={"https://dashboard.holasui.app/swap/history/" + formatSuiAddress(transactionHash)}
+                      showText={
+                        "https://dashboard.holasui.app/swap/history/" +
+                        formatSuiAddress(transactionHash)
+                      }
                       copyText={"https://dashboard.holasui.app/swap/history/" + transactionHash}
                     />
                   </div>
@@ -59,7 +70,7 @@ export const YourOfferLinkDialog = ({ recipientAddress, transactionHash, opened,
                   <button
                     className={classNames(
                       "w-2/5 px-3 text-sm py-3 bg-white text-purpleColor border border-purpleColor hover:bg-purpleColor hover:text-white font-bold rounded-md hover:bg-purpleColor/90 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed",
-                      font_montserrat.className
+                      font_montserrat.className,
                     )}
                     onClick={() => {
                       setOpened(false);
@@ -71,7 +82,7 @@ export const YourOfferLinkDialog = ({ recipientAddress, transactionHash, opened,
                     href={"/swap/history/" + transactionHash}
                     className={classNames(
                       "w-2/5 text-center px-3 text-sm py-3 bg-purpleColor text-white font-bold rounded-md hover:bg-purpleColor/90 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed",
-                      font_montserrat.className
+                      font_montserrat.className,
                     )}
                   >
                     <p>Go to my offer</p>

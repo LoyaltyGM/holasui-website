@@ -17,7 +17,7 @@ export function Sidebar({ children }: ILayoutProps) {
 
   const Header = () => {
     return (
-      <div className={'w-full fixed-header'}>
+      <div className={"w-full fixed-header"}>
         <div className="border-2 border-blackColor px-2 mt-2 md:mx-8 mx-2 bg-white py-1 text-white rounded-lg">
           <div className="flex justify-between md:content-center md:items-center">
             <Link href="/">
@@ -26,14 +26,16 @@ export function Sidebar({ children }: ILayoutProps) {
             <div
               className={classNames(
                 "md:flex hidden md:justify-evenly gap-10 text-blackColor mx-3 mt-1 font-semibold",
-                font_montserrat.className
+                font_montserrat.className,
               )}
             >
               <Link href="/">
                 <div
                   className={classNames(
                     "block py-2 rounded-md my-3",
-                    router.pathname === "/" ? "text-yellowColor font-bold" : "hover:text-yellowColorHover"
+                    router.pathname === "/"
+                      ? "text-yellowColor font-bold"
+                      : "hover:text-yellowColorHover",
                   )}
                 >
                   Staking
@@ -43,7 +45,9 @@ export function Sidebar({ children }: ILayoutProps) {
                 <div
                   className={classNames(
                     "block py-2 rounded-md my-3",
-                    router.pathname === "/swap" ? "text-purpleColor font-bold" : "hover:text-purpleColor"
+                    router.pathname === "/swap"
+                      ? "text-purpleColor font-bold"
+                      : "hover:text-purpleColor",
                   )}
                 >
                   P2P Swap
@@ -57,7 +61,7 @@ export function Sidebar({ children }: ILayoutProps) {
                   "flex flex-col items-center justify-center",
                   "text-black2Color",
                   "group py-2 text-xs font-medium hover:text-[#8d6eec] rounded-2xl cursor-pointer",
-                  font_montserrat.className
+                  font_montserrat.className,
                 )}
               >
                 <a href="https://discord.gg/X8SXejkVHs" target="_black">
@@ -69,7 +73,7 @@ export function Sidebar({ children }: ILayoutProps) {
                   "flex flex-col items-center justify-center",
                   "text-black2Color",
                   "group py-2 text-xs font-medium group-hover:text-[#6ea0ec] hover:fill-[#6ea0ec] hover:text-[#6ea0ec] rounded-2xl cursor-pointer",
-                  font_montserrat.className
+                  font_montserrat.className,
                 )}
               >
                 <a href="https://twitter.com/Hola_Sui" target="_black">
@@ -92,7 +96,9 @@ export function Sidebar({ children }: ILayoutProps) {
       <Header />
       <div className="flex flex-1 flex-col">
         <main className="flex-1 h-full bg-basicColor">
-          <div className="mx-auto max-w-7xl w-full px-0 sm:pl-[5rem] sm:pr-[1.5rem] md:px-8">{children}</div>
+          <div className="mx-auto max-w-7xl w-full px-0 sm:pl-[5rem] sm:pr-[1.5rem] md:px-8">
+            {children}
+          </div>
         </main>
       </div>
     </div>

@@ -38,7 +38,7 @@ const Index = () => {
               options: { showContent: true },
             });
             return getObjectFields(suiObject) as IOffer;
-          })
+          }),
         ).then((offers) => {
           const sent = offers
             .filter((offer) => offer.creator === wallet.address)
@@ -65,7 +65,7 @@ const Index = () => {
           onClick={() => setActiveTab("sent")}
           className={classNames(
             "px-4 w-64 font-medium py-2 rounded-full",
-            activeTab === "sent" ? "text-white bg-pinkColor" : "bg-white text-black2Color"
+            activeTab === "sent" ? "text-white bg-pinkColor" : "bg-white text-black2Color",
           )}
         >
           Sent offers
@@ -74,7 +74,7 @@ const Index = () => {
           onClick={() => setActiveTab("received")}
           className={classNames(
             "px-4 w-64 font-medium py-2 rounded-full",
-            activeTab === "received" ? "text-white bg-purpleColor" : "bg-white text-black2Color"
+            activeTab === "received" ? "text-white bg-purpleColor" : "bg-white text-black2Color",
           )}
         >
           Awaiting offers
@@ -87,7 +87,7 @@ const Index = () => {
   ) : (
     <main
       className={classNames(
-        "flex min-h-[100vh] md:min-h-[65vh] flex-col pl-2 pr-2 md:pl-16 py-6 md:mt-14 mt-18 md:pr-10 z-10 rounded-lg mt-8 "
+        "flex min-h-[100vh] md:min-h-[65vh] flex-col pl-2 pr-2 md:pl-16 py-6 md:mt-14 mt-18 md:pr-10 z-10 rounded-lg mt-8 ",
       )}
     >
       <button
@@ -167,7 +167,7 @@ const Index = () => {
                           ? "text-pinkColor"
                           : offer.status === 1
                           ? "text-yellowColor"
-                          : "text-green-700"
+                          : "text-green-700",
                       )}
                     >
                       {offer.status === 0 ? "Canceled" : offer.status === 1 ? "Active" : "Exchanged"}
@@ -256,7 +256,7 @@ const Index = () => {
                           ? "text-pinkColor"
                           : offer.status === 1
                           ? "text-yellowColor"
-                          : "text-green-700"
+                          : "text-green-700",
                       )}
                     >
                       {offer.status === 0 ? "Canceled" : offer.status === 1 ? "Active" : "Exchanged"}

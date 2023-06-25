@@ -11,7 +11,10 @@ export const CustomToast = () => {
       {(t) => (
         <ToastBar toast={t} style={{}}>
           {({ icon, message }) => (
-            <button className={"bg-primary/25 p-2 rounded-md flex items-center"} onClick={() => toast.dismiss(t.id)}>
+            <button
+              className={"bg-primary/25 p-2 rounded-md flex items-center"}
+              onClick={() => toast.dismiss(t.id)}
+            >
               {icon}
               {message}
             </button>
@@ -74,6 +77,7 @@ export function AlertErrorMessage(errorCode: string) {
       errorMessage = "Something went wrong";
       break;
   }
+
   return toast.error(errorMessage, {
     duration: 9000,
     icon: "❌",

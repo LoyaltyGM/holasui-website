@@ -51,7 +51,7 @@ const DetailSwapOffer: NextPage<IDetailOfferProps> = ({ offerId }) => {
         await suiProvider.getObject({
           id: offerId,
           options: { showContent: true, showDisplay: true },
-        })
+        }),
       ) as IOffer;
 
       setOffer(offerObject);
@@ -80,7 +80,7 @@ const DetailSwapOffer: NextPage<IDetailOfferProps> = ({ offerId }) => {
           };
 
           tradeObjects.push(tradeObject);
-        })
+        }),
       );
 
       setRecipientObjects(tradeObjects);
@@ -104,7 +104,7 @@ const DetailSwapOffer: NextPage<IDetailOfferProps> = ({ offerId }) => {
           };
 
           tradeObjects.push(tradeObject);
-        })
+        }),
       );
 
       setCreatorObjects(tradeObjects);
@@ -153,7 +153,7 @@ const DetailSwapOffer: NextPage<IDetailOfferProps> = ({ offerId }) => {
       const response = await wallet.signAndExecuteTransactionBlock({
         transactionBlock: signTransactionCancelEscrow(
           offerId,
-          creatorObjects.length > 0 ? creatorObjects[0].type : recipientObjects[0].type
+          creatorObjects.length > 0 ? creatorObjects[0].type : recipientObjects[0].type,
         ),
         options: {
           showEffects: true,
@@ -200,7 +200,7 @@ const DetailSwapOffer: NextPage<IDetailOfferProps> = ({ offerId }) => {
                   onClick={() => window.open(`https://suiexplorer.com/object/${object.id}`, "_blank")}
                   key={object.id}
                   className={classNames(
-                    "border bg-white w-24 h-24 flex flex-col content-center justify-center items-center p-2 rounded-md  cursor-pointer"
+                    "border bg-white w-24 h-24 flex flex-col content-center justify-center items-center p-2 rounded-md  cursor-pointer",
                   )}
                 >
                   <Image src={object.url} alt="collection_img" width={90} height={90} className="mt-1" />
@@ -218,7 +218,7 @@ const DetailSwapOffer: NextPage<IDetailOfferProps> = ({ offerId }) => {
   ) : offer ? (
     <main
       className={classNames(
-        "flex flex-col gap-10 min-h-[100vh] md:min-h-[65vh] pl-2 pr-2 md:pl-16 py-6 md:mt-14 mt-18 md:pr-10 z-10 rounded-lg mt-8 "
+        "flex flex-col gap-10 min-h-[100vh] md:min-h-[65vh] pl-2 pr-2 md:pl-16 py-6 md:mt-14 mt-18 md:pr-10 z-10 rounded-lg mt-8 ",
       )}
     >
       <button
