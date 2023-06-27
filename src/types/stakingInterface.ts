@@ -6,6 +6,7 @@ export interface ICapy {
     url: string;
     link: string;
     type: string;
+    birth_location?: string;
 }
 
 export interface IObjectDetailDialog {

@@ -51,6 +51,7 @@ function initializeSuifren(nftObject: SuiNFT): ICapy {
     url: nftObject?.imageUrl!,
     link: nftObject?.link!,
     type: nftObject?.type!,
+    birth_location: nftObject?.fields?.birth_location!,
   };
 }
 
