@@ -9,6 +9,7 @@ import { Montserrat } from "next/font/google";
 import HamburgerMenu from "./HamburgerMenu";
 import { useRouter } from "next/router";
 import CustomWalletMenu from "./CustomWalletMenu";
+import { NewsTicker } from "./NewsTicker";
 
 const font_montserrat = Montserrat({ subsets: ["latin"] });
 
@@ -18,7 +19,14 @@ export function Sidebar({ children }: ILayoutProps) {
   const Header = () => {
     return (
       <div className={"fixed-header w-full"}>
-        <div className="mx-2 mt-2 rounded-lg border-2 border-blackColor bg-white px-2 py-1 text-white md:mx-8">
+        <div
+          className={classNames(
+            "mx-2 rounded-lg border-2 border-blackColor bg-white px-2 py-1 text-white md:mx-8",
+            router.pathname === "/dao" || router.pathname === "/dao/[daoAddress]"
+              ? "mt-4 md:mt-20"
+              : "mt-4",
+          )}
+        >
           <div className="flex justify-between md:content-center md:items-center">
             <Link href="/">
               <Image src={Logo} height={60} width={140} alt={"logo"} priority unoptimized={true} />
@@ -92,15 +100,28 @@ export function Sidebar({ children }: ILayoutProps) {
   };
 
   return (
-    <div className="mt-4">
-      <Header />
-      <div className="flex flex-1 flex-col">
-        <main className="h-full flex-1 bg-basicColor">
-          <div className="mx-auto w-full max-w-7xl px-0 sm:pl-[5rem] sm:pr-[1.5rem] md:px-8">
-            {children}
-          </div>
-        </main>
+    <>
+      {router.pathname === "/dao" || router.pathname === "/dao/[daoAddress]" ? (
+        <div className={"left-0 top-0 h-[65px] w-full md:fixed"}>
+          <NewsTicker />
+        </div>
+      ) : null}
+      <div
+        className={classNames(
+          router.pathname === "/dao" || router.pathname === "/dao/[daoAddress]"
+            ? "md:mt-14"
+            : "mt-4",
+        )}
+      >
+        <Header />
+        <div className="flex flex-1 flex-col">
+          <main className="h-full flex-1 bg-basicColor">
+            <div className="mx-auto w-full max-w-7xl px-0 sm:pl-[5rem] sm:pr-[1.5rem] md:px-8">
+              {children}
+            </div>
+          </main>
+        </div>
       </div>
-    </div>
+    </>
   );
 }

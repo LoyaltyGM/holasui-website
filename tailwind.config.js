@@ -1,16 +1,16 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
-    './src/pages/**/*.{js,ts,jsx,tsx}',
-    './src/components/**/*.{js,ts,jsx,tsx}',
-    './src/app/**/*.{js,ts,jsx,tsx}',
+    "./src/pages/**/*.{js,ts,jsx,tsx}",
+    "./src/components/**/*.{js,ts,jsx,tsx}",
+    "./src/app/**/*.{js,ts,jsx,tsx}",
     "./**/*.{jsx,tsx}",
   ],
   darkMode: false, // or 'media' or 'class'
   theme: {
     extend: {
-      fontFamily:{
-       sans: ['var(--montserrat-font)'],
+      fontFamily: {
+        sans: ["var(--montserrat-font)"],
       },
       screens: {
         sm: "480px",
@@ -35,7 +35,16 @@ module.exports = {
         redColor: "#DA3E3E",
         black3Color: `rgb((89,89,89) / 60)`,
       },
+      animation: {
+        marquee: "marquee 32s linear infinite",
+      },
+      keyframes: {
+        marquee: {
+          "0%": { transform: "translateX(0%)" },
+          "100%": { transform: "translateX(-100%)" },
+        },
+      },
     },
   },
   plugins: [],
-}
+};
