@@ -1,13 +1,17 @@
 import { GetServerSideProps, NextPage } from "next";
 import { ethos, EthosConnectStatus } from "ethos-connect";
 import { NoConnectWallet } from "components";
-import { classNames } from "utils";
-import { useRef, useState } from "react";
+import { classNames, formatSuiAddress } from "utils";
+import { useEffect, useRef, useState } from "react";
 import { ChevronLeftIcon, ChevronRightIcon, FolderIcon } from "@heroicons/react/24/solid";
 import Image from "next/image";
 import ExternalWebsiteIcon from "/public/img/ExternalLinkIcon.svg";
 import SuiToken from "/public/img/SuiToken.png";
 import Link from "next/link";
+import { suiProvider } from "services/sui";
+import { getObjectFields } from "@mysten/sui.js";
+import { IDao } from "types/daoInterface";
+import frensLogo from "/public/img/frens-logo.svg";
 
 interface IDaoAddressProps {
   daoAddress: string;
@@ -31,8 +35,30 @@ export const getServerSideProps: GetServerSideProps<IDaoAddressProps> = async ({
   }
 };
 
+interface IProposalCard {
+  title: string;
+  startDate: string;
+  status: boolean;
+}
+
 const DetailDaoAddress: NextPage<IDaoAddressProps> = ({ daoAddress }) => {
   const { status, wallet } = ethos.useWallet();
+  const [dao, setDao] = useState<IDao>();
+  useEffect(() => {
+    async function fetchDao() {
+      const dao = await suiProvider.getObject({
+        id: daoAddress,
+        options: {
+          showContent: true,
+        },
+      });
+      setDao(getObjectFields(dao) as IDao);
+    }
+
+    fetchDao().then();
+  }, []);
+
+  console.log(dao);
 
   const InfoDao = () => {
     return (
@@ -41,9 +67,7 @@ const DetailDaoAddress: NextPage<IDaoAddressProps> = ({ daoAddress }) => {
           <div className={"flex w-full justify-between"}>
             <div className={"flex gap-4"}>
               <Image
-                src={
-                  "https://pbs.twimg.com/profile_images/1666614102737797122/6E0poPYm_400x400.jpg"
-                }
+                src={dao?.image || frensLogo}
                 alt={"logo-dao"}
                 height={150}
                 width={150}
@@ -51,7 +75,7 @@ const DetailDaoAddress: NextPage<IDaoAddressProps> = ({ daoAddress }) => {
               />
               <div>
                 <div className={"flex content-center items-center justify-start gap-3"}>
-                  <h1 className={"text-4xl font-semibold text-blackColor"}>Capy DAO</h1>
+                  <h1 className={"text-4xl font-semibold text-blackColor"}>{dao?.name}</h1>
                   <Image
                     src={ExternalWebsiteIcon}
                     alt={"external website icon"}
@@ -63,9 +87,11 @@ const DetailDaoAddress: NextPage<IDaoAddressProps> = ({ daoAddress }) => {
             </div>
 
             <div className={"flex flex-col justify-center"}>
-              <button className={"min-w-[170px] rounded-lg bg-pinkColor px-5 py-3 text-white"}>
-                <p className={"font-medium"}>Create SubDAO</p>
-              </button>
+              <Link href={`/dao/${daoAddress}/create-subdao`}>
+                <button className={"min-w-[170px] rounded-lg bg-pinkColor px-5 py-3 text-white"}>
+                  <p className={"font-medium"}>Create SubDAO</p>
+                </button>
+              </Link>
               <div
                 className={
                   "mt-2 flex w-full cursor-pointer justify-center px-2 text-xs text-black2Color underline underline-offset-2"
@@ -87,11 +113,7 @@ const DetailDaoAddress: NextPage<IDaoAddressProps> = ({ daoAddress }) => {
           "mt-4 max-h-[52px] w-3/4 overflow-hidden text-clip text-base font-bold text-black2Color"
         }
       >
-        <p>
-          DAO description DAO description DAO description DAO description DAO description DAO
-          description DAO description DAO description DAO description DAO description DAO
-          description DAO description DAO description
-        </p>
+        <p className={"w-full"}>{dao?.description}</p>
       </div>
     );
   };
@@ -111,13 +133,13 @@ const DetailDaoAddress: NextPage<IDaoAddressProps> = ({ daoAddress }) => {
             }
           >
             <Image src={SuiToken} alt={"sui token logo"} className={"h-9 w-9"} />
-            <p className={"text-blackColor"}>1111</p>
+            <p className={"text-blackColor"}>{dao?.treasury}</p>
             <p>SUI</p>
           </div>
         </div>
         <p className={"max-w-[280px] text-sm text-black2Color"}>
-          This treasury exists for Capy DAO participants to allocate resources for the long-term
-          growth and prosperity of the Capy’s project.
+          This treasury exists for {dao?.name} participants to allocate resources for the long-term
+          growth and prosperity of the project.
         </p>
       </div>
     );
@@ -268,12 +290,6 @@ const DetailDaoAddress: NextPage<IDaoAddressProps> = ({ daoAddress }) => {
     );
   };
 
-  interface IProposalCard {
-    title: string;
-    startDate: string;
-    status: boolean;
-  }
-
   const ProposalCard = () => {
     return (
       <div
@@ -300,9 +316,11 @@ const DetailDaoAddress: NextPage<IDaoAddressProps> = ({ daoAddress }) => {
       <div className={"mb-10 mt-14"}>
         <div className={"mt-10 flex content-center items-center justify-between"}>
           <p className={"text-2xl font-bold"}>Proposals</p>
-          <button className={"rounded-lg bg-yellowColor px-5 py-3 text-white"}>
-            <p className={"font-medium"}>Submit Proposal</p>
-          </button>
+          <Link href={`/dao/${daoAddress}/create-proposal`}>
+            <button className={"rounded-lg bg-yellowColor px-5 py-3 text-white"}>
+              <p className={"font-medium"}>Submit Proposal</p>
+            </button>
+          </Link>
         </div>
         <div className={"mt-10 space-y-4"}>
           <Link href={`/dao/${daoAddress}/0x02`}>
@@ -332,7 +350,9 @@ const DetailDaoAddress: NextPage<IDaoAddressProps> = ({ daoAddress }) => {
             <div className="flex items-center">
               <p className={"font-semibold text-grayColor md:ml-2 md:mr-2"}>/</p>
               <FolderIcon className={"mr-1.5 h-4 w-4 text-black2Color"} />
-              <span className="text-sm font-medium text-black2Color">Capy DAO</span>
+              <span className="text-sm font-medium text-black2Color">
+                {formatSuiAddress(daoAddress)}
+              </span>
             </div>
           </li>
         </ol>
