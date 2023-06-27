@@ -112,6 +112,8 @@ const CreateSubDAO = () => {
         if (error_status) AlertErrorMessage(error_status);
       } else {
         AlertSucceed("CreateDao");
+        // go back to DAO page
+        router.push(`/dao/${originDaoAddress}`).then();
       }
     } catch (e) {
       console.error(e);
