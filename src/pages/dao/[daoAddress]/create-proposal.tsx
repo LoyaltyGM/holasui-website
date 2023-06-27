@@ -1,6 +1,6 @@
 import { ethos, EthosConnectStatus } from "ethos-connect";
 import { Label, NoConnectWallet } from "components";
-import { classNames } from "utils";
+import { classNames, formatSuiAddress } from "utils";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useState } from "react";
 import Link from "next/link";
@@ -79,7 +79,7 @@ const CreateProposal = () => {
                 <path d="M5.555 17.776l8-16 .894.448-8 16-.894-.448z" />
               </svg>
               <span className="ml-1 text-sm font-medium text-gray-300 md:ml-2">
-                {router.query.daoAddress as string}
+                {formatSuiAddress(router.query.daoAddress as string)}
               </span>
             </div>
           </li>
