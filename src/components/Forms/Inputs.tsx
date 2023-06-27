@@ -4,7 +4,7 @@ import { ReactNode } from "react";
 
 export const Label = ({ label, className }: { label: string; className?: string }) => (
   <label className="label">
-    <span className={classNames("input-label", className)}>{label}</span>
+    <span className={classNames("text-base font-semibold", className)}>{label}</span>
   </label>
 );
 export const LabeledInput = ({
