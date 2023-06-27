@@ -115,7 +115,7 @@ const CreateDAO = () => {
       <BradcrumbsHeader />
 
       <h1 className={"text-2xl font-bold"}>New DAO</h1>
-      <form onSubmit={handleSubmit(onSubmit)} className={'className={"flex gap-6"} flex-col'}>
+      <form onSubmit={handleSubmit(onSubmit)} className={"flex flex-col gap-6"}>
         <DragAndDropImageForm
           label="Image"
           className="h-40 w-40 cursor-pointer"
