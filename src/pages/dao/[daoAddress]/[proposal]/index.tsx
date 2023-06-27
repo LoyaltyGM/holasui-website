@@ -6,6 +6,7 @@ import { useRef, useState } from "react";
 import Image from "next/image";
 import SuiToken from "/public/img/SuiToken.png";
 import Link from "next/link";
+import { FolderIcon } from "@heroicons/react/24/solid";
 
 interface IProposalProps {
   proposal: string;
@@ -36,48 +37,33 @@ const ProposalPage: NextPage<IProposalProps> = ({ proposal }) => {
   const BradcrumbsHeader = () => {
     return (
       <nav className="mt-10 flex" aria-label="Breadcrumb">
-        <ol className="inline-flex items-center space-x-1 md:space-x-3">
+        <ol className="inline-flex items-center space-x-1">
           <li className="inline-flex items-center">
             <Link
               href="/dao"
               className="inline-flex items-center text-sm font-medium text-grayColor hover:text-black2Color"
             >
-              <svg
-                aria-hidden="true"
-                className="mr-2 h-4 w-4"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path>
-              </svg>
-              DAOs
+              <FolderIcon className={"mr-1.5 h-4 w-4"} />
+              <p>Hola DAOs</p>
             </Link>
           </li>
           <li aria-current="page">
-            <div className="flex items-center">
-              <svg
-                className="h-5 w-5 flex-shrink-0 text-gray-300"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-                aria-hidden="true"
+            <div className="flex items-center text-grayColor">
+              <p className={"font-semibold text-grayColor md:ml-2 md:mr-2"}>/</p>
+              <Link
+                href="/dao"
+                className="inline-flex items-center text-sm font-medium text-grayColor hover:text-black2Color"
               >
-                <path d="M5.555 17.776l8-16 .894.448-8 16-.894-.448z" />
-              </svg>
-              <span className="ml-1 text-sm font-medium text-gray-300 md:ml-2">Capy DAO</span>
+                <FolderIcon className={"mr-1.5 h-4 w-4"} />
+                <span className="text-sm font-medium">Capy DAO</span>
+              </Link>
             </div>
           </li>
           <li aria-current="page">
             <div className="flex items-center">
-              <svg
-                className="h-5 w-5 flex-shrink-0 text-gray-300"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-                aria-hidden="true"
-              >
-                <path d="M5.555 17.776l8-16 .894.448-8 16-.894-.448z" />
-              </svg>
-              <span className="ml-1 text-sm font-medium text-gray-300 md:ml-2">Proposal</span>
+              <p className={"font-semibold text-grayColor md:ml-2 md:mr-2"}>/</p>
+              <FolderIcon className={"mr-1.5 h-4 w-4 text-black2Color"} />
+              <span className="text-sm font-medium text-black2Color">Proposal 1</span>
             </div>
           </li>
         </ol>

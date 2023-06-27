@@ -21,11 +21,11 @@ export function Sidebar({ children }: ILayoutProps) {
         <div className="mx-2 mt-2 rounded-lg border-2 border-blackColor bg-white px-2 py-1 text-white md:mx-8">
           <div className="flex justify-between md:content-center md:items-center">
             <Link href="/">
-              <Image src={Logo} height={100} width={180} alt={"logo"} priority />
+              <Image src={Logo} height={60} width={140} alt={"logo"} priority unoptimized={true} />
             </Link>
             <div
               className={classNames(
-                "mx-3 mt-1 hidden gap-10 font-semibold text-blackColor md:flex md:justify-evenly",
+                "mx-3 mt-1 hidden gap-10 font-semibold text-blackColor md:flex md:items-center md:justify-evenly",
                 font_montserrat.className,
               )}
             >
