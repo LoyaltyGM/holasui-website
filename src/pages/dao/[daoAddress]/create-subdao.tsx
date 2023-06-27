@@ -1,16 +1,27 @@
 import { ethos, EthosConnectStatus } from "ethos-connect";
-import { DragAndDropImageForm, Label, NoConnectWallet, Tooltip } from "components";
+import {
+  AlertErrorMessage,
+  AlertSucceed,
+  DragAndDropImageForm,
+  Label,
+  NoConnectWallet,
+  Tooltip,
+} from "components";
 import { classNames, formatSuiAddress } from "utils";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { QuestionMarkCircleIcon } from "@heroicons/react/24/outline";
 import { useRouter } from "next/router";
 import toast from "react-hot-toast";
-import { storeNFT } from "services/ipfs";
+import { fetchCapyStaking, signTransactionCreateCapySubDao } from "services/sui";
+import { getExecutionStatus, getExecutionStatusError } from "@mysten/sui.js";
+import { ICapy } from "types";
+import { storeNFT } from "../../../services/ipfs";
 
 type Inputs = {
-  nftType: string;
+  // nftType: string;
+  birthLocation: string;
   imageUrl: string;
   name: string;
   description: string;
@@ -19,11 +30,16 @@ type Inputs = {
   votingPeriod: number;
 };
 
+const locations = ["RU", "US", "CA", "GB", "AU", "FR", "IT", "ES", "KI"];
+
 const CreateSubDAO = () => {
   const router = useRouter();
+  const originDaoAddress = router.query.daoAddress as string;
+
   const { wallet, status } = ethos.useWallet();
   const [waitSui, setWaitSui] = useState(false);
 
+  const [frens, setFrens] = useState<ICapy[] | null>();
   const [image, setImage] = useState<File | null>(null);
   const {
     register,
@@ -31,6 +47,27 @@ const CreateSubDAO = () => {
     watch,
     formState: { errors },
   } = useForm<Inputs>();
+
+  useEffect(() => {
+    async function fetchWalletFrens() {
+      if (!wallet?.address) {
+        setFrens(null);
+        return;
+      }
+      try {
+        const nfts = wallet?.contents?.nfts!;
+        const fetchedFrens = fetchCapyStaking(nfts);
+        console.log(fetchedFrens);
+        if (fetchedFrens && fetchedFrens.length > 0) {
+          setFrens(fetchedFrens);
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    fetchWalletFrens().then();
+  }, [wallet?.address, wallet?.contents?.nfts]);
 
   const onSubmit: SubmitHandler<Inputs> = async (form) => {
     if (!wallet) return;
@@ -44,20 +81,38 @@ const CreateSubDAO = () => {
 
       console.log(form);
 
-      /*
-        const response = await wallet.signAndExecuteTransactionBlock({
-        });
-  
-        const status = getExecutionStatus(response);
-  
-        if (status?.status === "failure") {
-          console.log(status.error);
-          const error_status = getExecutionStatusError(response);
-          if (error_status) AlertErrorMessage(error_status);
-        } else {
-          AlertSucceed("CreateDao");
-        }
-      */
+      const requiredFren = frens?.find((fren) => fren.birth_location === form.birthLocation);
+      if (!requiredFren) {
+        toast.error("You don't have Capy Fren with this birth location");
+        return;
+      }
+
+      const response = await wallet.signAndExecuteTransactionBlock({
+        transactionBlock: signTransactionCreateCapySubDao({
+          name: form.name,
+          description: form.description,
+          image: form.imageUrl,
+          quorum: form.quorum,
+          voting_delay: form.votingDelay,
+          voting_period: form.votingPeriod,
+          birth_location: form.birthLocation,
+          frens_id: "fren"!,
+        }),
+        options: {
+          showEffects: true,
+        },
+      });
+      console.log(response);
+
+      const status = getExecutionStatus(response);
+
+      if (status?.status === "failure") {
+        console.log(status.error);
+        const error_status = getExecutionStatusError(response);
+        if (error_status) AlertErrorMessage(error_status);
+      } else {
+        AlertSucceed("CreateDao");
+      }
     } catch (e) {
       console.error(e);
     } finally {
@@ -122,7 +177,7 @@ const CreateSubDAO = () => {
 
   return status === EthosConnectStatus.NoConnection ? (
     <NoConnectWallet title={"Create DAO!"} />
-  ) : (
+  ) : originDaoAddress === "0xe7299e5325ff89eebc8153fc9cb4cb283e3245f79ed35de9380c4d4891ca8261" ? (
     <main
       className={classNames(
         "z-10 mt-20 flex min-h-[100vh] flex-col gap-10 rounded-lg py-6 pl-2 pr-2 md:mt-20 md:min-h-[65vh] md:pl-16 md:pr-10",
@@ -170,20 +225,21 @@ const CreateSubDAO = () => {
         </div>
 
         <div className={"flex flex-col"}>
+          <Label label={"Birth location"} />
+          {/*  select location */}
           <div className={"flex gap-2"}>
-            <Label label={"NFT Type"} />
-            <Tooltip text={"You can find the type on explorer.sui.io"}>
-              <QuestionMarkCircleIcon className={"h-5 w-5 hover:text-pinkColor"} />
-            </Tooltip>
+            <select
+              {...register("birthLocation", { required: true })}
+              className={"mt-1 w-full rounded-md border border-black2Color px-2 py-1"}
+            >
+              <option value={""}>Select location</option>
+              {locations.map((location) => (
+                <option key={location} value={location}>
+                  {location}
+                </option>
+              ))}
+            </select>
           </div>
-
-          <input
-            {...register("nftType", { required: true })}
-            className={"mt-1 w-full rounded-md border border-black2Color px-2 py-1"}
-            placeholder={
-              "0xee496a0cc04d06a345982ba6697c90c619020de9e274408c7819f787ff66e1a1::capy::Capy"
-            }
-          />
         </div>
 
         <div className={"flex flex-col"}>
@@ -259,6 +315,16 @@ const CreateSubDAO = () => {
           </button>
         </div>
       </form>
+    </main>
+  ) : (
+    <main
+      className={classNames(
+        "z-10 mt-20 flex min-h-[100vh] flex-col gap-10 rounded-lg py-6 pl-2 pr-2 md:mt-20 md:min-h-[65vh] md:pl-16 md:pr-10",
+      )}
+    >
+      <BradcrumbsHeader />
+
+      <h1 className={"text-2xl font-semibold"}>SubDAOs currently available only for Capy DAO.</h1>
     </main>
   );
 };
