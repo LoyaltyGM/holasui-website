@@ -96,7 +96,7 @@ const CreateSubDAO = () => {
           voting_delay: form.votingDelay,
           voting_period: form.votingPeriod,
           birth_location: form.birthLocation,
-          frens_id: "fren"!,
+          frens_id: requiredFren.id,
         }),
         options: {
           showEffects: true,
