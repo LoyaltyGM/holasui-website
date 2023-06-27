@@ -1,37 +1,55 @@
 import { ethos, EthosConnectStatus } from "ethos-connect";
-import { Label, NoConnectWallet } from "components";
+import { DragAndDropImageForm, Label, NoConnectWallet, Tooltip } from "components";
 import { classNames, formatSuiAddress } from "utils";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useState } from "react";
 import Link from "next/link";
+import { QuestionMarkCircleIcon } from "@heroicons/react/24/outline";
 import { useRouter } from "next/router";
-import { RadioGroup } from "@headlessui/react";
+import toast from "react-hot-toast";
+import { storeNFT } from "services/ipfs";
 
 type Inputs = {
+  nftType: string;
+  imageUrl: string;
   name: string;
   description: string;
-  type: string;
+  quorum: number;
+  votingDelay: number;
+  votingPeriod: number;
 };
-const proposalTypes = ["Voting", "Execution"];
-const CreateProposal = () => {
+
+const CreateSubDAO = () => {
   const router = useRouter();
   const { wallet, status } = ethos.useWallet();
   const [waitSui, setWaitSui] = useState(false);
 
-  const { register, setValue, handleSubmit, watch } = useForm<Inputs>();
+  const [image, setImage] = useState<File | null>(null);
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm<Inputs>();
 
   const onSubmit: SubmitHandler<Inputs> = async (form) => {
     if (!wallet) return;
     setWaitSui(true);
     try {
+      if (!image) {
+        toast.error("Please upload image");
+        return;
+      }
+      form.imageUrl = await storeNFT(image);
+
       console.log(form);
 
       /*
         const response = await wallet.signAndExecuteTransactionBlock({
         });
-
+  
         const status = getExecutionStatus(response);
-
+  
         if (status?.status === "failure") {
           console.log(status.error);
           const error_status = getExecutionStatusError(response);
@@ -94,9 +112,7 @@ const CreateProposal = () => {
               >
                 <path d="M5.555 17.776l8-16 .894.448-8 16-.894-.448z" />
               </svg>
-              <span className="ml-1 text-sm font-medium text-gray-300 md:ml-2">
-                Create Proposal
-              </span>
+              <span className="ml-1 text-sm font-medium text-gray-300 md:ml-2">Create SubDAO</span>
             </div>
           </li>
         </ol>
@@ -114,8 +130,15 @@ const CreateProposal = () => {
     >
       <BradcrumbsHeader />
 
-      <h1 className={"text-2xl font-bold"}>New Proposal</h1>
+      <h1 className={"text-2xl font-bold"}>New DAO</h1>
       <form onSubmit={handleSubmit(onSubmit)} className={"flex flex-col gap-6"}>
+        <DragAndDropImageForm
+          label="Image"
+          className="h-40 w-40 cursor-pointer"
+          name="image"
+          handleChange={(file) => setImage(file)}
+        />
+
         <div className={"flex flex-col"}>
           <div className={"flex justify-between"}>
             <Label label={"Name"} />
@@ -146,35 +169,77 @@ const CreateProposal = () => {
           />
         </div>
 
-        {/* Type Voting or Execution  radio group*/}
-        <div>
-          <Label label={"Type"} />
-          <RadioGroup
-            value={watch("type")}
-            onChange={(value) => {
-              setValue("type", value);
-            }}
-            className="mt-2"
-          >
-            <div className="grid grid-cols-3 gap-3 sm:grid-cols-6">
-              {proposalTypes.map((type) => (
-                <RadioGroup.Option
-                  key={type}
-                  value={type}
-                  className={({ checked }) =>
-                    classNames(
-                      checked
-                        ? "bg-pinkColor text-white"
-                        : "bg-white text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50",
-                      "flex cursor-pointer items-center justify-center rounded-full px-3 py-3 text-sm font-semibold uppercase sm:flex-1",
-                    )
-                  }
-                >
-                  <RadioGroup.Label as="span">{type}</RadioGroup.Label>
-                </RadioGroup.Option>
-              ))}
-            </div>
-          </RadioGroup>
+        <div className={"flex flex-col"}>
+          <div className={"flex gap-2"}>
+            <Label label={"NFT Type"} />
+            <Tooltip text={"You can find the type on explorer.sui.io"}>
+              <QuestionMarkCircleIcon className={"h-5 w-5 hover:text-pinkColor"} />
+            </Tooltip>
+          </div>
+
+          <input
+            {...register("nftType", { required: true })}
+            className={"mt-1 w-full rounded-md border border-black2Color px-2 py-1"}
+            placeholder={
+              "0xee496a0cc04d06a345982ba6697c90c619020de9e274408c7819f787ff66e1a1::capy::Capy"
+            }
+          />
+        </div>
+
+        <div className={"flex flex-col"}>
+          <div className={"flex gap-2"}>
+            <Label label={"Quorum"} />
+            <Tooltip text={"Votes required for a proposal to pass. (min 50 votes)"}>
+              <QuestionMarkCircleIcon className={"h-5 w-5 hover:text-pinkColor"} />
+            </Tooltip>
+          </div>
+
+          <input
+            {...register("quorum", { required: true })}
+            className={"mt-1 w-full rounded-md border border-black2Color px-2 py-1"}
+            placeholder={"100"}
+            type={"number"}
+            min={50}
+            step={1}
+          />
+        </div>
+
+        <div className={"flex flex-col"}>
+          <div className={"flex gap-2"}>
+            <Label label={"Voting Delay"} />
+            <Tooltip text={"Delay since proposal is created until voting starts (1-7 days)"}>
+              <QuestionMarkCircleIcon className={"h-5 w-5 hover:text-pinkColor"} />
+            </Tooltip>
+          </div>
+
+          <input
+            {...register("votingDelay", { required: true })}
+            className={"mt-1 w-full rounded-md border border-black2Color px-2 py-1"}
+            placeholder={"1"}
+            type={"number"}
+            min={1}
+            max={7}
+            step={1}
+          />
+        </div>
+
+        <div className={"flex flex-col"}>
+          <div className={"flex gap-2"}>
+            <Label label={"Voting Period"} />
+            <Tooltip text={"Length of period during which people can vote (1-7 days)"}>
+              <QuestionMarkCircleIcon className={"h-5 w-5 hover:text-pinkColor"} />
+            </Tooltip>
+          </div>
+
+          <input
+            {...register("votingPeriod", { required: true })}
+            className={"mt-1 w-full rounded-md border border-black2Color px-2 py-1"}
+            placeholder={"7"}
+            type={"number"}
+            min={1}
+            max={7}
+            step={1}
+          />
         </div>
 
         <div className={"flex gap-4"}>
@@ -197,4 +262,4 @@ const CreateProposal = () => {
     </main>
   );
 };
-export default CreateProposal;
+export default CreateSubDAO;
