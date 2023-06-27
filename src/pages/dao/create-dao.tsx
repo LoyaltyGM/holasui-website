@@ -115,134 +115,132 @@ const CreateDAO = () => {
       <BradcrumbsHeader />
 
       <h1 className={"text-2xl font-bold"}>New DAO</h1>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <div className={"flex flex-col gap-6"}>
-          <DragAndDropImageForm
-            label="Image"
-            className="h-40 w-40 cursor-pointer"
-            name="image"
-            handleChange={(file) => setImage(file)}
+      <form onSubmit={handleSubmit(onSubmit)} className={'className={"flex gap-6"} flex-col'}>
+        <DragAndDropImageForm
+          label="Image"
+          className="h-40 w-40 cursor-pointer"
+          name="image"
+          handleChange={(file) => setImage(file)}
+        />
+
+        <div className={"flex flex-col"}>
+          <div className={"flex justify-between"}>
+            <Label label={"Name"} />
+            <p className={"text-sm text-black2Color"}>{`${watch("name")?.length}/200`}</p>
+          </div>
+
+          <input
+            {...register("name", { required: true })}
+            className={"mt-1 w-full rounded-md border border-black2Color px-2 py-1"}
+            maxLength={200}
+            placeholder={"DAO Name"}
           />
+        </div>
 
-          <div className={"flex flex-col"}>
-            <div className={"flex justify-between"}>
-              <Label label={"Name"} />
-              <p className={"text-sm text-black2Color"}>{`${watch("name")?.length}/200`}</p>
-            </div>
-
-            <input
-              {...register("name", { required: true })}
-              className={"mt-1 w-full rounded-md border border-black2Color px-2 py-1"}
-              maxLength={200}
-              placeholder={"DAO Name"}
-            />
+        <div className={"flex flex-col"}>
+          <div className={"flex justify-between"}>
+            <Label label={"Description"} />
+            <p className={"text-sm text-black2Color"}>{`${watch("description")?.length}/1000`}</p>
           </div>
 
-          <div className={"flex flex-col"}>
-            <div className={"flex justify-between"}>
-              <Label label={"Description"} />
-              <p className={"text-sm text-black2Color"}>{`${watch("description")?.length}/1000`}</p>
-            </div>
+          <textarea
+            {...register("description", { required: true })}
+            className={
+              "mt-1 h-28 w-full resize-none rounded-md border border-black2Color px-2 py-1"
+            }
+            maxLength={1000}
+            placeholder={"DAO Description"}
+          />
+        </div>
 
-            <textarea
-              {...register("description", { required: true })}
-              className={
-                "mt-1 h-28 w-full resize-none rounded-md border border-black2Color px-2 py-1"
-              }
-              maxLength={1000}
-              placeholder={"DAO Description"}
-            />
+        <div className={"flex flex-col"}>
+          <div className={"flex gap-2"}>
+            <Label label={"NFT Type"} />
+            <Tooltip text={"You can find the type on explorer.sui.io"}>
+              <QuestionMarkCircleIcon className={"h-5 w-5 hover:text-pinkColor"} />
+            </Tooltip>
           </div>
 
-          <div className={"flex flex-col"}>
-            <div className={"flex gap-2"}>
-              <Label label={"NFT Type"} />
-              <Tooltip text={"You can find the type on explorer.sui.io"}>
-                <QuestionMarkCircleIcon className={"h-5 w-5 hover:text-pinkColor"} />
-              </Tooltip>
-            </div>
+          <input
+            {...register("nftType", { required: true })}
+            className={"mt-1 w-full rounded-md border border-black2Color px-2 py-1"}
+            placeholder={
+              "0xee496a0cc04d06a345982ba6697c90c619020de9e274408c7819f787ff66e1a1::capy::Capy"
+            }
+          />
+        </div>
 
-            <input
-              {...register("nftType", { required: true })}
-              className={"mt-1 w-full rounded-md border border-black2Color px-2 py-1"}
-              placeholder={
-                "0xee496a0cc04d06a345982ba6697c90c619020de9e274408c7819f787ff66e1a1::capy::Capy"
-              }
-            />
+        <div className={"flex flex-col"}>
+          <div className={"flex gap-2"}>
+            <Label label={"Quorum"} />
+            <Tooltip text={"Votes required for a proposal to pass. (min 50 votes)"}>
+              <QuestionMarkCircleIcon className={"h-5 w-5 hover:text-pinkColor"} />
+            </Tooltip>
           </div>
 
-          <div className={"flex flex-col"}>
-            <div className={"flex gap-2"}>
-              <Label label={"Quorum"} />
-              <Tooltip text={"Votes required for a proposal to pass. (min 50 votes)"}>
-                <QuestionMarkCircleIcon className={"h-5 w-5 hover:text-pinkColor"} />
-              </Tooltip>
-            </div>
+          <input
+            {...register("quorum", { required: true })}
+            className={"mt-1 w-full rounded-md border border-black2Color px-2 py-1"}
+            placeholder={"100"}
+            type={"number"}
+            min={50}
+            step={1}
+          />
+        </div>
 
-            <input
-              {...register("quorum", { required: true })}
-              className={"mt-1 w-full rounded-md border border-black2Color px-2 py-1"}
-              placeholder={"100"}
-              type={"number"}
-              min={50}
-              step={1}
-            />
+        <div className={"flex flex-col"}>
+          <div className={"flex gap-2"}>
+            <Label label={"Voting Delay"} />
+            <Tooltip text={"Delay since proposal is created until voting starts (1-7 days)"}>
+              <QuestionMarkCircleIcon className={"h-5 w-5 hover:text-pinkColor"} />
+            </Tooltip>
           </div>
 
-          <div className={"flex flex-col"}>
-            <div className={"flex gap-2"}>
-              <Label label={"Voting Delay"} />
-              <Tooltip text={"Delay since proposal is created until voting starts (1-7 days)"}>
-                <QuestionMarkCircleIcon className={"h-5 w-5 hover:text-pinkColor"} />
-              </Tooltip>
-            </div>
+          <input
+            {...register("votingDelay", { required: true })}
+            className={"mt-1 w-full rounded-md border border-black2Color px-2 py-1"}
+            placeholder={"1"}
+            type={"number"}
+            min={1}
+            max={7}
+            step={1}
+          />
+        </div>
 
-            <input
-              {...register("votingDelay", { required: true })}
-              className={"mt-1 w-full rounded-md border border-black2Color px-2 py-1"}
-              placeholder={"1"}
-              type={"number"}
-              min={1}
-              max={7}
-              step={1}
-            />
+        <div className={"flex flex-col"}>
+          <div className={"flex gap-2"}>
+            <Label label={"Voting Period"} />
+            <Tooltip text={"Length of period during which people can vote (1-7 days)"}>
+              <QuestionMarkCircleIcon className={"h-5 w-5 hover:text-pinkColor"} />
+            </Tooltip>
           </div>
 
-          <div className={"flex flex-col"}>
-            <div className={"flex gap-2"}>
-              <Label label={"Voting Period"} />
-              <Tooltip text={"Length of period during which people can vote (1-7 days)"}>
-                <QuestionMarkCircleIcon className={"h-5 w-5 hover:text-pinkColor"} />
-              </Tooltip>
-            </div>
+          <input
+            {...register("votingPeriod", { required: true })}
+            className={"mt-1 w-full rounded-md border border-black2Color px-2 py-1"}
+            placeholder={"7"}
+            type={"number"}
+            min={1}
+            max={7}
+            step={1}
+          />
+        </div>
 
-            <input
-              {...register("votingPeriod", { required: true })}
-              className={"mt-1 w-full rounded-md border border-black2Color px-2 py-1"}
-              placeholder={"7"}
-              type={"number"}
-              min={1}
-              max={7}
-              step={1}
-            />
-          </div>
-
-          <div className={"flex gap-4"}>
-            <button
-              type="button"
-              className={"rounded-2xl border border-pinkColor px-3 py-2 font-bold md:px-6 md:py-4"}
-              onClick={router.back}
-            >
-              Cancel
-            </button>
-            <button
-              className={"pinkColor-primary-state rounded-2xl px-3 py-2 font-bold md:px-6 md:py-4"}
-              type={"submit"}
-              disabled={waitSui}
-            >
-              Create DAO
-            </button>
-          </div>
+        <div className={"flex gap-4"}>
+          <button
+            type="button"
+            className={"rounded-2xl border border-pinkColor px-3 py-2 font-bold md:px-6 md:py-4"}
+            onClick={router.back}
+          >
+            Cancel
+          </button>
+          <button
+            className={"pinkColor-primary-state rounded-2xl px-3 py-2 font-bold md:px-6 md:py-4"}
+            type={"submit"}
+            disabled={waitSui}
+          >
+            Create DAO
+          </button>
         </div>
       </form>
     </main>
