@@ -1,7 +1,7 @@
 import { TransactionBlock } from "@mysten/sui.js";
 import {
   FRENS_STAKING_POOL_ID,
-  CAPY_TYPE,
+  SUIFREN_CAPY_TYPE,
   PACKAGE_ID_V1,
   PRICE_STACKED,
   PRICE_UNSTACKED,
@@ -22,7 +22,7 @@ export const signTransactionStartStaking = (frens_id: string) => {
       coin,
       tx.pure("0x6"), // time
     ],
-    typeArguments: [CAPY_TYPE!], // type of frens
+    typeArguments: [SUIFREN_CAPY_TYPE!], // type of frens
   });
 
   return tx;
@@ -46,7 +46,7 @@ export const singTransactionsToBatchStartStaking = (frens_ids: string[]) => {
         coin[index],
         txb.object("0x6"), // time
       ],
-      typeArguments: [CAPY_TYPE!], // type of frens
+      typeArguments: [SUIFREN_CAPY_TYPE!], // type of frens
     });
   });
   return txb;
@@ -64,7 +64,7 @@ export const signTransactionEndStaking = (stacked_ticket_address: string) => {
       coin,
       tx.pure("0x6"), // time
     ],
-    typeArguments: [CAPY_TYPE!], // type of frens
+    typeArguments: [SUIFREN_CAPY_TYPE!], // type of frens
   });
 
   return tx;
@@ -88,7 +88,7 @@ export const singTransactionsToBatchUnstaking = (unstaked_frens_ids: string[]) =
         coin[index],
         txb.object("0x6"), // time
       ],
-      typeArguments: [CAPY_TYPE!], // type of frens
+      typeArguments: [SUIFREN_CAPY_TYPE!], // type of frens
     });
   });
   return txb;
@@ -104,7 +104,7 @@ export const signTransactionClaimPoints = (stacked_ticket_address: string) => {
       tx.pure(FRENS_STAKING_POOL_ID), // staking pool
       tx.pure("0x6"), // time
     ],
-    typeArguments: [CAPY_TYPE!], // type of frens
+    typeArguments: [SUIFREN_CAPY_TYPE!], // type of frens
   });
 
   return tx;
@@ -123,7 +123,7 @@ export const singTransactionsToBatchClaimPoints = (staking_ids: string[]) => {
         txb.object(FRENS_STAKING_POOL_ID!), // staking pool
         txb.object("0x6"), // time
       ],
-      typeArguments: [CAPY_TYPE!], // type of frens
+      typeArguments: [SUIFREN_CAPY_TYPE!], // type of frens
     });
   });
   return txb;

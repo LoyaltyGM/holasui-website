@@ -1,6 +1,9 @@
 // ==== NFT TYPES ====
-export const CAPY_TYPE: string =
+export const SUIFREN_CAPY_TYPE: string =
   "0xee496a0cc04d06a345982ba6697c90c619020de9e274408c7819f787ff66e1a1::suifrens::SuiFren<0xee496a0cc04d06a345982ba6697c90c619020de9e274408c7819f787ff66e1a1::capy::Capy>";
+
+export const CAPY_TYPE: string =
+  "0xee496a0cc04d06a345982ba6697c90c619020de9e274408c7819f787ff66e1a1::capy::Capy";
 
 const ACCESSORY_CAPY_TYPE: string =
   "0x7aee872d77cade27e7d9b79bf9c67ac40bfb1b797e8b7438ee73f0af21bb4664::accessories::Accessory";
@@ -51,6 +54,7 @@ const TOCEN_MASTER_KEY_TYPE: string =
   "0x449d6a4d13e5ddf4392d5fa395cb2a30eeadfe888fbd4656995fcfee142a3121::tocen_collection::MasterKeyNFT";
 
 export const SWAP_TYPES_LIST = [
+  SUIFREN_CAPY_TYPE,
   CAPY_TYPE,
   ACCESSORY_CAPY_TYPE,
   SUINS_TYPE,
