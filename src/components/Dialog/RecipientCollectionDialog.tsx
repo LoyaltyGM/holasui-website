@@ -3,7 +3,7 @@ import { Fragment, useEffect, useState } from "react";
 import { handleSetBatchIdForSwap, ICapy, ISwapRecipientCollectionDialog } from "types";
 import { Montserrat } from "next/font/google";
 import { XMarkIcon } from "@heroicons/react/24/solid";
-import { classNames, convertIPFSUrl, formatSuiAddress, CAPY_TYPE, SWAP_TYPES_LIST } from "utils";
+import { classNames, convertIPFSUrl, formatSuiAddress, SUIFREN_CAPY_TYPE, SWAP_TYPES_LIST } from "utils";
 import Image from "next/image";
 import { fetchNFTObjects, suiProvider } from "services/sui";
 import { LabeledInput } from "components/Forms/Inputs";

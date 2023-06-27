@@ -26,6 +26,12 @@ export const ESCROW_HUB_ID = "0x1f79470adae9a9c6a5908e3deb807330e71cc6ef796048ac
 
 export const PRICE_ESCROW: number = 0.1;
 
+// ==== DAO ====
+// todo: change this to PACKAGE_ID_V2
+export const TEST_DAO_PACKAGE_ID =
+  "0x51704866f5f75cd753c22a07195f7c3438e69dbbb20d9c4f4d91a9f5aeefb8fe";
+export const DAO_HUB_ID = "0xd7d1449c281be576e73c33223a458e10227cf42b2b92b25c0a46d6c39bf75594";
+
 // ==== IPFS ====
 export const IPFS = "ipfs://";
 export const INFURA_IPFS_GATEWAY = process.env.NEXT_PUBLIC_IPFS_DEDICATED_GATEWAY_SUBDOMAIN;
