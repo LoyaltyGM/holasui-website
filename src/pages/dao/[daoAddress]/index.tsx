@@ -58,8 +58,6 @@ const DetailDaoAddress: NextPage<IDaoAddressProps> = ({ daoAddress }) => {
     fetchDao().then();
   }, []);
 
-  console.log(dao);
-
   const InfoDao = () => {
     return (
       <div className={"mt-10"}>
