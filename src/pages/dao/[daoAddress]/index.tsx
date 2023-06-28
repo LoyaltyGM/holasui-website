@@ -46,17 +46,23 @@ const DetailDaoAddress: NextPage<IDaoAddressProps> = ({ daoAddress }) => {
   const [dao, setDao] = useState<IDao>();
   useEffect(() => {
     async function fetchDao() {
-      const dao = await suiProvider.getObject({
+      const daoObject = await suiProvider.getObject({
         id: daoAddress,
         options: {
           showContent: true,
         },
       });
-      setDao(getObjectFields(dao) as IDao);
+      const dao = getObjectFields(daoObject) as IDao;
+      dao.subdaos = (getObjectFields(daoObject) as IDao)?.subdaos?.fields?.contents?.fields?.id?.id;
+      dao.proposals = (getObjectFields(daoObject) as IDao)?.proposals?.fields?.id?.id;
+
+      setDao(getObjectFields(daoObject) as IDao);
     }
 
     fetchDao().then();
   }, []);
+
+  console.log(dao);
 
   const InfoDao = () => {
     return (
