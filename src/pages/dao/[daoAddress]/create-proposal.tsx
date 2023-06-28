@@ -11,14 +11,22 @@ type Inputs = {
   name: string;
   description: string;
   type: string;
+  recipient?: string | null;
+  amount?: number | null;
 };
-const proposalTypes = ["Voting", "Execution"];
+
+const proposalTypes = ["Voting", "Funding"];
+
 const CreateProposal = () => {
   const router = useRouter();
   const { wallet, status } = ethos.useWallet();
   const [waitSui, setWaitSui] = useState(false);
 
-  const { register, setValue, handleSubmit, watch } = useForm<Inputs>();
+  const { register, setValue, handleSubmit, watch } = useForm<Inputs>({
+    defaultValues: {
+      type: proposalTypes[0],
+    },
+  });
 
   const onSubmit: SubmitHandler<Inputs> = async (form) => {
     if (!wallet) return;
@@ -146,13 +154,16 @@ const CreateProposal = () => {
           />
         </div>
 
-        {/* Type Voting or Execution  radio group*/}
         <div>
           <Label label={"Type"} />
           <RadioGroup
             value={watch("type")}
             onChange={(value) => {
               setValue("type", value);
+              if (value === "Voting") {
+                setValue("recipient", null);
+                setValue("amount", null);
+              }
             }}
             className="mt-2"
           >
@@ -176,6 +187,36 @@ const CreateProposal = () => {
             </div>
           </RadioGroup>
         </div>
+
+        {/*Shot recipient and amount inputs if type Funding */}
+        {watch("type") === "Funding" && (
+          <>
+            <div className={"flex flex-col"}>
+              <Label label={"Recipient"} />
+              <input
+                {...register("recipient", { required: true })}
+                className={"mt-1 w-full rounded-md border border-black2Color px-2 py-1"}
+                placeholder={"Recipient"}
+              />
+            </div>
+
+            <div className={"flex flex-col"}>
+              <Label label={"Amount"} />
+
+              <div className="relative mt-1 rounded-md shadow-sm">
+                <input
+                  {...register("amount", { required: true })}
+                  className={"w-full rounded-md border border-black2Color px-2 py-1"}
+                  placeholder={"Amount"}
+                  type={"number"}
+                />
+                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-6">
+                  <span className="text-sm text-gray-500">SUI</span>
+                </div>
+              </div>
+            </div>
+          </>
+        )}
 
         <div className={"flex gap-4"}>
           <button
