@@ -1,11 +1,15 @@
 import { ethos, EthosConnectStatus } from "ethos-connect";
-import { Label, NoConnectWallet } from "components";
+import { AlertErrorMessage, AlertSucceed, Label, NoConnectWallet } from "components";
 import { classNames, formatSuiAddress } from "utils";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { RadioGroup } from "@headlessui/react";
+import { getExecutionStatus, getExecutionStatusError } from "@mysten/sui.js";
+import { fetchCapyStaking, signTransactionCreateCapyDaoProposal } from "../../../services/sui";
+import { ICapy } from "../../../types";
+import toast from "react-hot-toast";
 
 type Inputs = {
   name: string;
@@ -19,14 +23,36 @@ const proposalTypes = ["Voting", "Funding"];
 
 const CreateProposal = () => {
   const router = useRouter();
+  const originDaoAddress = router.query.daoAddress as string;
   const { wallet, status } = ethos.useWallet();
   const [waitSui, setWaitSui] = useState(false);
 
+  const [frens, setFrens] = useState<ICapy[] | null>();
   const { register, setValue, handleSubmit, watch } = useForm<Inputs>({
     defaultValues: {
       type: proposalTypes[0],
     },
   });
+
+  useEffect(() => {
+    async function fetchWalletFrens() {
+      if (!wallet?.address) {
+        setFrens(null);
+        return;
+      }
+      try {
+        const nfts = wallet?.contents?.nfts!;
+        const fetchedFrens = fetchCapyStaking(nfts);
+        if (fetchedFrens && fetchedFrens.length > 0) {
+          setFrens(fetchedFrens);
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    fetchWalletFrens().then();
+  }, [wallet?.address, wallet?.contents?.nfts]);
 
   const onSubmit: SubmitHandler<Inputs> = async (form) => {
     if (!wallet) return;
@@ -34,20 +60,38 @@ const CreateProposal = () => {
     try {
       console.log(form);
 
-      /*
-        const response = await wallet.signAndExecuteTransactionBlock({
-        });
+      if (!frens || frens.length === 0) {
+        toast.error("You don't have Capy Fren");
+        return;
+      }
+      const requiredFren = frens[0];
 
-        const status = getExecutionStatus(response);
+      const response = await wallet.signAndExecuteTransactionBlock({
+        transactionBlock: signTransactionCreateCapyDaoProposal({
+          isSubDao: false,
+          frens_id: requiredFren.id,
+          name: form.name,
+          description: form.description,
+          type: form.type === "Voting" ? 0 : 1,
+          dao_id: originDaoAddress,
+          recipient: form.recipient || null,
+          amount: form.amount || null,
+        }),
+        options: {
+          showEffects: true,
+        },
+      });
 
-        if (status?.status === "failure") {
-          console.log(status.error);
-          const error_status = getExecutionStatusError(response);
-          if (error_status) AlertErrorMessage(error_status);
-        } else {
-          AlertSucceed("CreateDao");
-        }
-      */
+      const status = getExecutionStatus(response);
+
+      if (status?.status === "failure") {
+        console.log(status.error);
+        const error_status = getExecutionStatusError(response);
+        if (error_status) AlertErrorMessage(error_status);
+      } else {
+        AlertSucceed("CreateDao");
+        router.push(`/dao/${originDaoAddress}`).then();
+      }
     } catch (e) {
       console.error(e);
     } finally {
@@ -231,7 +275,7 @@ const CreateProposal = () => {
             type={"submit"}
             disabled={waitSui}
           >
-            Create DAO
+            Create Proposal
           </button>
         </div>
       </form>

@@ -46,7 +46,7 @@ export const signTransactionCreateCapySubDao = ({
 
 export const signTransactionCreateCapyDaoProposal = ({
   isSubDao,
-  subdao_id,
+  dao_id,
   frens_id,
   name,
   description,
@@ -55,7 +55,7 @@ export const signTransactionCreateCapyDaoProposal = ({
   amount,
 }: {
   isSubDao: boolean;
-  subdao_id: string;
+  dao_id: string;
   frens_id: string;
   name: string;
   description: string;
@@ -67,42 +67,45 @@ export const signTransactionCreateCapyDaoProposal = ({
 
   let optionRecipient;
   let optionAmount;
+  console.log(recipient, amount);
   if (recipient && amount) {
     optionRecipient = tx.moveCall({
       target: `0x1::option::some`,
-      arguments: [tx.pure(recipient)],
+      arguments: [tx.pure(recipient, 'address')],
       typeArguments: ["address"], // type of frens
     });
 
     optionAmount = tx.moveCall({
       target: `0x1::option::some`,
-      arguments: [tx.pure(amount)],
+      arguments: [tx.pure(amount * 1e9, 'u64')],
       typeArguments: ["u64"], // type of frens
     });
   } else {
     optionRecipient = tx.moveCall({
       target: `0x1::option::none`,
-      arguments: [tx.pure(recipient)],
+      arguments: [],
       typeArguments: ["address"], // type of frens
     });
 
     optionAmount = tx.moveCall({
       target: `0x1::option::none`,
-      arguments: [tx.pure(amount)],
+      arguments: [],
       typeArguments: ["u64"], // type of frens
     });
   }
 
   tx.moveCall({
-    target: `${TEST_DAO_PACKAGE_ID}::${isSubDao ? "suifren_subdao" : "suifren_dao"}::create_subdao`,
+    target: `${TEST_DAO_PACKAGE_ID}::${
+      isSubDao ? "suifren_subdao" : "suifren_dao"
+    }::create_proposal`,
     arguments: [
-      tx.pure(subdao_id),
+      tx.pure(dao_id),
       tx.pure(frens_id),
       tx.pure(name),
       tx.pure(description),
       tx.pure(type),
-      tx.pure(optionRecipient),
-      tx.pure(optionAmount),
+      optionRecipient,
+      optionAmount,
       tx.pure("0x6"),
     ],
     typeArguments: [CAPY_TYPE!], // type of frens
