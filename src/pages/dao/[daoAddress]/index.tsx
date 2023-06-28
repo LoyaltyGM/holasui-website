@@ -44,25 +44,69 @@ interface IProposalCard {
 const DetailDaoAddress: NextPage<IDaoAddressProps> = ({ daoAddress }) => {
   const { status, wallet } = ethos.useWallet();
   const [dao, setDao] = useState<IDao>();
+  const [subdaos, setSubdaos] = useState<IDao[]>();
+
   useEffect(() => {
     async function fetchDao() {
-      const daoObject = await suiProvider.getObject({
-        id: daoAddress,
-        options: {
-          showContent: true,
-        },
-      });
-      const dao = getObjectFields(daoObject) as IDao;
-      dao.subdaos = (getObjectFields(daoObject) as IDao)?.subdaos?.fields?.contents?.fields?.id?.id;
-      dao.proposals = (getObjectFields(daoObject) as IDao)?.proposals?.fields?.id?.id;
+      try {
+        const daoObject = await suiProvider.getObject({
+          id: daoAddress,
+          options: {
+            showContent: true,
+          },
+        });
+        const dao = getObjectFields(daoObject) as IDao;
+        dao.subdaos = (
+          getObjectFields(daoObject) as IDao
+        )?.subdaos?.fields?.contents?.fields?.id?.id;
+        dao.proposals = (getObjectFields(daoObject) as IDao)?.proposals?.fields?.id?.id;
 
-      setDao(getObjectFields(daoObject) as IDao);
+        setDao(getObjectFields(daoObject) as IDao);
+      } catch (e) {
+        console.log(e);
+      }
     }
 
     fetchDao().then();
   }, []);
 
-  console.log(dao);
+  useEffect(() => {
+    async function fetchSubdaos() {
+      try {
+        if (!dao?.subdaos) return;
+
+        setSubdaos([] as IDao[]);
+
+        const response = await suiProvider.getDynamicFields({
+          parentId: dao?.subdaos,
+        });
+        Promise.all(
+          response?.data?.map(async (df): Promise<IDao> => {
+            const dfObject = getObjectFields(
+              await suiProvider.getObject({
+                id: df?.objectId!,
+                options: { showContent: true },
+              }),
+            );
+
+            const subdao = await suiProvider.getObject({
+              id: dfObject?.value,
+              options: {
+                showContent: true,
+              },
+            });
+            return getObjectFields(subdao) as IDao;
+          }),
+        ).then((subdao) => {
+          setSubdaos([...subdao] as IDao[]);
+        });
+      } catch (e) {
+        console.log(e);
+      }
+    }
+
+    fetchSubdaos().then();
+  }, [dao]);
 
   const InfoDao = () => {
     return (
