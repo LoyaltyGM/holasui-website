@@ -7,8 +7,8 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { RadioGroup } from "@headlessui/react";
 import { getExecutionStatus, getExecutionStatusError } from "@mysten/sui.js";
-import { fetchCapyStaking, signTransactionCreateCapyDaoProposal } from "../../../services/sui";
-import { ICapy } from "../../../types";
+import { fetchCapyStaking, signTransactionCreateCapyDaoProposal } from "services/sui";
+import { ICapy } from "types";
 import toast from "react-hot-toast";
 
 type Inputs = {

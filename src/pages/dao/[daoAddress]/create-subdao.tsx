@@ -17,7 +17,7 @@ import toast from "react-hot-toast";
 import { fetchCapyStaking, signTransactionCreateCapySubDao } from "services/sui";
 import { getExecutionStatus, getExecutionStatusError } from "@mysten/sui.js";
 import { ICapy } from "types";
-import { storeNFT } from "../../../services/ipfs";
+import { storeNFT } from "services/ipfs";
 
 type Inputs = {
   // nftType: string;
@@ -45,7 +45,7 @@ const CreateSubDAO = () => {
     register,
     handleSubmit,
     watch,
-    formState: { errors },
+    formState: {},
   } = useForm<Inputs>();
 
   useEffect(() => {
