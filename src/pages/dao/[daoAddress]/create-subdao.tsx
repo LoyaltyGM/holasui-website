@@ -7,7 +7,7 @@ import {
   NoConnectWallet,
   Tooltip,
 } from "components";
-import { classNames, formatSuiAddress } from "utils";
+import { classNames, formatSuiAddress, ORIGIN_CAPY_DAO_ID } from "utils";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 import Link from "next/link";
@@ -179,7 +179,7 @@ const CreateSubDAO = () => {
 
   return status === EthosConnectStatus.NoConnection ? (
     <NoConnectWallet title={"Create DAO!"} />
-  ) : originDaoAddress === "0xe7299e5325ff89eebc8153fc9cb4cb283e3245f79ed35de9380c4d4891ca8261" ? (
+  ) : originDaoAddress === ORIGIN_CAPY_DAO_ID ? (
     <main
       className={classNames(
         "z-10 mt-20 flex min-h-[100vh] flex-col gap-10 rounded-lg py-6 pl-2 pr-2 md:mt-20 md:min-h-[65vh] md:pl-16 md:pr-10",
