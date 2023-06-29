@@ -10,7 +10,7 @@ import SuiToken from "/public/img/SuiToken.png";
 import Link from "next/link";
 import { suiProvider } from "services/sui";
 import { getObjectFields } from "@mysten/sui.js";
-import { IDao } from "types/daoInterface";
+import { IDao, IProposal } from "types/daoInterface";
 import frensLogo from "/public/img/frens-logo.svg";
 
 interface IDaoAddressProps {
@@ -45,6 +45,7 @@ const DetailDaoAddress: NextPage<IDaoAddressProps> = ({ daoAddress }) => {
   const { status, wallet } = ethos.useWallet();
   const [dao, setDao] = useState<IDao>();
   const [subdaos, setSubdaos] = useState<IDao[]>();
+  const [proposals, setProposals] = useState<IProposal[]>();
 
   useEffect(() => {
     async function fetchDao() {
@@ -105,7 +106,35 @@ const DetailDaoAddress: NextPage<IDaoAddressProps> = ({ daoAddress }) => {
       }
     }
 
+    async function fetchProposals() {
+      try {
+        if (!dao?.proposals) return;
+
+        setProposals([] as IProposal[]);
+
+        const response = await suiProvider.getDynamicFields({
+          parentId: dao?.proposals,
+        });
+        Promise.all(
+          response?.data?.map(async (df): Promise<IProposal> => {
+            const dfObject = getObjectFields(
+              await suiProvider.getObject({
+                id: df?.objectId!,
+                options: { showContent: true },
+              }),
+            );
+            return getObjectFields(dfObject?.value) as IProposal;
+          }),
+        ).then((proposal) => {
+          setProposals([...proposal] as IProposal[]);
+        });
+      } catch (e) {
+        console.log(e);
+      }
+    }
+
     fetchSubdaos().then();
+    fetchProposals().then();
   }, [dao]);
 
   const InfoDao = () => {
