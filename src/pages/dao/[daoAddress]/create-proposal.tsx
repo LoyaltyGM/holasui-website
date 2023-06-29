@@ -89,7 +89,7 @@ const CreateProposal = () => {
         const error_status = getExecutionStatusError(response);
         if (error_status) AlertErrorMessage(error_status);
       } else {
-        AlertSucceed("CreateDao");
+        toast.success("Create proposal success");
         router.push(`/dao/${originDaoAddress}`).then();
       }
     } catch (e) {
