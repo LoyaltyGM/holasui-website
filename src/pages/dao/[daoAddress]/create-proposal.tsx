@@ -131,7 +131,7 @@ const CreateProposal = () => {
                 <path d="M5.555 17.776l8-16 .894.448-8 16-.894-.448z" />
               </svg>
               <span className="ml-1 text-sm font-medium text-gray-300 md:ml-2">
-                {formatSuiAddress(router.query.daoAddress as string)}
+                {formatSuiAddress(originDaoAddress)}
               </span>
             </div>
           </li>
