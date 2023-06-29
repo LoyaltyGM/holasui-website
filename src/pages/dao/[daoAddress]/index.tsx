@@ -114,13 +114,12 @@ const DetailDaoAddress: NextPage<IDaoAddressProps> = ({ daoAddress }) => {
         });
         Promise.all(
           response?.data?.map(async (df): Promise<IProposal> => {
-            const dfObject = getObjectFields(
+            const proposal = getObjectFields(
               await suiProvider.getObject({
                 id: df?.objectId!,
                 options: { showContent: true },
               }),
-            );
-            let proposal = getObjectFields(dfObject?.value)!;
+            )!;
             proposal.id = proposal?.id?.id;
             return proposal as IProposal;
           }),
