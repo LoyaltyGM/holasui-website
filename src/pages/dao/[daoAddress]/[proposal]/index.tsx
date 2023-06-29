@@ -292,6 +292,34 @@ const ProposalPage: NextPage<IProposalProps> = ({ proposalId }) => {
         </div>
       );
     };
+    const StartDate = () => {
+      const [date, setDate] = useState<Date>();
+
+      useEffect(() => {
+        if (!proposal || !proposal?.start_time) return;
+
+        setDate(new Date(proposal?.start_time));
+      }, [proposal]);
+
+      return (
+        <div
+          className={
+            "flex h-[70px] w-full flex-col justify-between rounded-2xl border-2 border-grayColor bg-white px-4 py-2"
+          }
+        >
+          <div className={"flex"}>
+            <p className={"w-full font-medium text-grayColor"}>Starting</p>
+            <p className={"flex w-2/3 justify-end font-semibold text-blackColor"}>
+              {date?.toLocaleDateString()}
+            </p>
+          </div>
+          <div className={"flex justify-end"}>
+            <p className={"text-grayColor"}>{date?.toLocaleTimeString()}</p>
+          </div>
+        </div>
+      );
+    };
+
     const EndDate = () => {
       const [date, setDate] = useState<Date>();
 
@@ -322,6 +350,7 @@ const ProposalPage: NextPage<IProposalProps> = ({ proposalId }) => {
     return (
       <div className={"mt-8 flex w-full gap-4"}>
         <Threshold />
+        <StartDate />
         <EndDate />
       </div>
     );
