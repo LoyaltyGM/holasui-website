@@ -341,7 +341,7 @@ const DetailDaoAddress: NextPage<IDaoAddressProps> = ({ daoAddress }) => {
         </div>
         <div className={"mt-10 flex flex-col gap-2 space-y-4"}>
           {proposals?.map((proposal, index) => (
-            <Link href={`/dao/${daoAddress}/${proposal.id}`}>
+            <Link href={`/dao/${daoAddress}/${proposal.id}`} key={index}>
               <ProposalCard proposal={proposal} index={index + 1} />
             </Link>
           ))}
