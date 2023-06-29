@@ -1,7 +1,7 @@
 import { GetServerSideProps, NextPage } from "next";
 import { ethos, EthosConnectStatus } from "ethos-connect";
 import { NoConnectWallet } from "components";
-import { classNames, formatSuiAddress } from "utils";
+import { classNames, convertIPFSUrl, formatSuiAddress } from "utils";
 import { useEffect, useRef, useState } from "react";
 import { ChevronLeftIcon, ChevronRightIcon, FolderIcon } from "@heroicons/react/24/solid";
 import Image from "next/image";
@@ -35,14 +35,8 @@ export const getServerSideProps: GetServerSideProps<IDaoAddressProps> = async ({
   }
 };
 
-interface IProposalCard {
-  title: string;
-  startDate: string;
-  status: boolean;
-}
-
 const DetailDaoAddress: NextPage<IDaoAddressProps> = ({ daoAddress }) => {
-  const { status, wallet } = ethos.useWallet();
+  const { status } = ethos.useWallet();
   const [dao, setDao] = useState<IDao>();
   const [subdaos, setSubdaos] = useState<IDao[]>();
   const [proposals, setProposals] = useState<IProposal[]>();
@@ -57,10 +51,9 @@ const DetailDaoAddress: NextPage<IDaoAddressProps> = ({ daoAddress }) => {
           },
         });
         const dao = getObjectFields(daoObject) as IDao;
-        dao.subdaos = (
-          getObjectFields(daoObject) as IDao
-        )?.subdaos?.fields?.contents?.fields?.id?.id;
-        dao.proposals = (getObjectFields(daoObject) as IDao)?.proposals?.fields?.id?.id;
+        dao.subdaos = dao.subdaos?.fields?.contents?.fields?.id?.id;
+        dao.proposals = dao.proposals?.fields?.id?.id;
+        dao.image = convertIPFSUrl(dao.image);
 
         setDao(getObjectFields(daoObject) as IDao);
       } catch (e) {
@@ -90,13 +83,17 @@ const DetailDaoAddress: NextPage<IDaoAddressProps> = ({ daoAddress }) => {
               }),
             );
 
-            const subdao = await suiProvider.getObject({
-              id: dfObject?.value,
-              options: {
-                showContent: true,
-              },
-            });
-            return getObjectFields(subdao) as IDao;
+            const subdao = getObjectFields(
+              await suiProvider.getObject({
+                id: dfObject?.value,
+                options: {
+                  showContent: true,
+                },
+              }),
+            )!;
+            subdao.image = convertIPFSUrl(subdao.image);
+
+            return subdao as IDao;
           }),
         ).then((subdao) => {
           setSubdaos([...subdao] as IDao[]);
@@ -123,7 +120,9 @@ const DetailDaoAddress: NextPage<IDaoAddressProps> = ({ daoAddress }) => {
                 options: { showContent: true },
               }),
             );
-            return getObjectFields(dfObject?.value) as IProposal;
+            let proposal = getObjectFields(dfObject?.value)!;
+            proposal.id = proposal?.id?.id;
+            return proposal as IProposal;
           }),
         ).then((proposal) => {
           setProposals([...proposal] as IProposal[]);
@@ -222,7 +221,7 @@ const DetailDaoAddress: NextPage<IDaoAddressProps> = ({ daoAddress }) => {
     );
   };
 
-  const CardScroll = () => {
+  const SubdaosCards = () => {
     const [isLeftVisible, setIsLeftVisible] = useState(false);
     const [isRightVisible, setIsRightVisible] = useState(true);
     const scrollContainer = useRef<any>(null);
@@ -270,80 +269,21 @@ const DetailDaoAddress: NextPage<IDaoAddressProps> = ({ daoAddress }) => {
             className="hide-scroll-bar flex gap-16 overflow-x-scroll"
           >
             {/* Here you would map through your cards. I'm just using a static example */}
-            <div className="mr-4 flex h-[170px] min-w-[256px] max-w-[256px] rounded-xl border border-black2Color bg-yellowColor">
-              <p className="z-10 px-5 py-4 text-xl font-bold text-white">Ear4</p>
-              <Image
-                src="https://api-mainnet.suifrens.sui.io/suifrens/0x211a0715238cba5bd45b0910697b7c7b6058723dee4c35378b7336ccdf1304d1/svg"
-                alt="capy"
-                className="z-[9] h-full"
-                width={200}
-                height={250}
-              />
-            </div>
-            <div
-              className={
-                "flex h-[170px] min-w-[256px] max-w-[256px] rounded-xl border border-black2Color bg-pinkColor"
-              }
-            >
-              <p className={"z-10 px-5 py-4 text-xl font-bold text-white"}>Ear4</p>
-              <Image
-                src={
-                  "https://api-mainnet.suifrens.sui.io/suifrens/0x211a0715238cba5bd45b0910697b7c7b6058723dee4c35378b7336ccdf1304d1/svg"
-                }
-                alt={"capy"}
-                className={"z-[9] h-full"}
-                width={200}
-                height={250}
-              />
-            </div>
-            <div
-              className={
-                "flex h-[170px] min-w-[256px] max-w-[256px] rounded-xl border border-yellowColor bg-orange-300"
-              }
-            >
-              <p className={"z-10 px-5 py-4 text-xl font-bold text-white"}>Ear4</p>
-              <Image
-                src={
-                  "https://api-mainnet.suifrens.sui.io/suifrens/0x211a0715238cba5bd45b0910697b7c7b6058723dee4c35378b7336ccdf1304d1/svg"
-                }
-                alt={"capy"}
-                className={"z-[9] h-full"}
-                width={200}
-                height={250}
-              />
-            </div>
-            <div
-              className={
-                "flex h-[170px] min-w-[256px] max-w-[256px] rounded-xl border border-black2Color bg-yellowColor"
-              }
-            >
-              <p className={"z-10 px-5 py-4 text-xl font-bold text-white"}>Ear4</p>
-              <Image
-                src={
-                  "https://api-mainnet.suifrens.sui.io/suifrens/0x211a0715238cba5bd45b0910697b7c7b6058723dee4c35378b7336ccdf1304d1/svg"
-                }
-                alt={"capy"}
-                className={"z-[9] h-full"}
-                width={200}
-                height={250}
-              />
-            </div>
-            <div
-              className={
-                "flex h-[170px] min-w-[256px] max-w-[256px] rounded-xl border border-yellowColor bg-pinkColor"
-              }
-            >
-              <p className={"z-10 px-5 py-4 text-xl font-bold text-white"}>Ear4</p>
-              <Image
-                src={
-                  "https://api-mainnet.suifrens.sui.io/suifrens/0x211a0715238cba5bd45b0910697b7c7b6058723dee4c35378b7336ccdf1304d1/svg"
-                }
-                alt={"capy"}
-                className={"z-[9] h-full"}
-                width={200}
-                height={250}
-              />
-            </div>
+            {subdaos?.map((subdao, index) => (
+              <div
+                key={index}
+                className="mr-4 flex h-[170px] min-w-[256px] max-w-[256px] rounded-xl border border-black2Color bg-yellowColor"
+              >
+                <p className="z-10 px-5 py-4 text-xl font-bold text-white">{subdao.name}</p>
+                <Image
+                  src={subdao.image}
+                  alt="capy"
+                  className="z-[9] h-full"
+                  width={200}
+                  height={250}
+                />
+              </div>
+            ))}
             {/* Other cards */}
           </div>
           <button
@@ -367,7 +307,7 @@ const DetailDaoAddress: NextPage<IDaoAddressProps> = ({ daoAddress }) => {
     );
   };
 
-  const ProposalCard = () => {
+  const ProposalCard = ({ proposal, index }: { proposal: IProposal; index: string | number }) => {
     return (
       <div
         className={
@@ -375,8 +315,8 @@ const DetailDaoAddress: NextPage<IDaoAddressProps> = ({ daoAddress }) => {
         }
       >
         <div className={"flex content-center items-center gap-10"}>
-          <p className={"text-xl font-bold text-black2Color"}>1</p>
-          <p className={"w-1/2 min-w-[300px] text-xl font-medium"}>Proposal Name</p>
+          <p className={"text-xl font-bold text-black2Color"}>{index}</p>
+          <p className={"w-1/2 min-w-[300px] text-xl font-medium"}>{proposal.name}</p>
         </div>
         <div className={"flex content-center items-center gap-10"}>
           <div className={"text-black2Color"}>Starts in 2 days</div>
@@ -399,12 +339,12 @@ const DetailDaoAddress: NextPage<IDaoAddressProps> = ({ daoAddress }) => {
             </button>
           </Link>
         </div>
-        <div className={"mt-10 space-y-4"}>
-          <Link href={`/dao/${daoAddress}/0x02`}>
-            <ProposalCard />
-          </Link>
-          <ProposalCard />
-          <ProposalCard />
+        <div className={"mt-10 flex flex-col gap-2 space-y-4"}>
+          {proposals?.map((proposal, index) => (
+            <Link href={`/dao/${daoAddress}/${proposal.id}`}>
+              <ProposalCard proposal={proposal} index={index + 1} />
+            </Link>
+          ))}
         </div>
       </div>
     );
@@ -449,7 +389,7 @@ const DetailDaoAddress: NextPage<IDaoAddressProps> = ({ daoAddress }) => {
       <InfoDao />
       <Treasury />
       {/*<SubDAO />*/}
-      <CardScroll />
+      <SubdaosCards />
       <Proposals />
     </main>
   );
