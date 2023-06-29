@@ -13,7 +13,7 @@ import { getExecutionStatus, getExecutionStatusError, getObjectFields } from "@m
 import { useForm } from "react-hook-form";
 import { RadioGroup } from "@headlessui/react";
 import toast from "react-hot-toast";
-import { ICapy } from "../../../../types";
+import { ICapy } from "types";
 
 interface IProposalProps {
   proposalId: string;
@@ -69,8 +69,30 @@ const ProposalPage: NextPage<IProposalProps> = ({ proposalId }) => {
               showContent: true,
             },
           }),
-        );
+        )!;
 
+        proposal.status = +proposal.status;
+        proposal.type = +proposal.type;
+        proposal.end_time = +proposal.end_time;
+        proposal.start_time = +proposal.start_time;
+
+        // let results: any;
+
+        proposal.results.fields.contents.map((field: any) => {
+          // 1: For, 2: Against, 0: Abstain
+          const voteType = field?.fields?.key;
+          const value = field?.fields?.value;
+
+          if (voteType === "1") {
+            proposal.results.for = +value;
+          } else if (voteType === "2") {
+            proposal.results.against = +value;
+          } else if (voteType === "0") {
+            proposal.results.abstain = +value;
+          }
+        });
+
+        // console.log();
         setProposal(proposal as IProposal);
       } catch (e) {
         console.error(e);
@@ -166,45 +188,35 @@ const ProposalPage: NextPage<IProposalProps> = ({ proposalId }) => {
             <div className="flex items-center">
               <p className={"font-semibold text-grayColor md:ml-2 md:mr-2"}>/</p>
               <FolderIcon className={"mr-1.5 h-4 w-4 text-black2Color"} />
-              <span className="text-sm font-medium text-black2Color">Proposal 1</span>
+              <span className="text-sm font-medium text-black2Color">{proposal?.name}</span>
             </div>
           </li>
         </ol>
       </nav>
     );
   };
-  const ProposalTitle = () => {
-    return <div className={"mb-4 mt-16 font-medium text-grayColor"}>Proposal 1</div>;
-  };
 
   const ProposalInfo = () => {
     return (
-      <div className={"mb-10 flex justify-between"}>
-        <p className={"text-4xl font-bold text-blackColor"}>Proposal name</p>
+      <div className={"mb-10 mt-16 flex justify-between"}>
+        <p className={"text-4xl font-bold text-blackColor"}>{proposal?.name}</p>
         <div
           className={
             "flex content-center items-center rounded-xl border border-purpleColor px-5 py-1 text-purpleColor"
           }
         >
-          Active
+          {proposal?.status === 0
+            ? "Active"
+            : proposal?.status === 1
+            ? "Canceled"
+            : proposal?.status === 2
+            ? "Defeated"
+            : "Executed"}
         </div>
       </div>
     );
   };
 
-  const VotingTitle = () => {
-    return (
-      <>
-        <div className={"flex justify-between text-lg"}>
-          <p className={"font-medium text-greenColor"}>For</p>
-          <p className={"font-semibold text-blackColor"}>123</p>
-        </div>
-        <div className={"mt-4 h-[10px] w-full rounded-2xl bg-[#F2F2F2]"}>
-          <div className={"mt-4 h-[10px] w-[150px] rounded-2xl bg-greenColor"}></div>
-        </div>
-      </>
-    );
-  };
   const users = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
   const VotingUsers = () => {
     return (
@@ -230,7 +242,13 @@ const ProposalPage: NextPage<IProposalProps> = ({ proposalId }) => {
         <div
           className={"h-[330px] w-[300px] rounded-3xl border border-black2Color bg-white px-6 py-4"}
         >
-          <VotingTitle />
+          <div className={"flex justify-between text-lg"}>
+            <p className={"font-medium text-redColor"}>For</p>
+            <p className={"font-semibold text-blackColor"}>{proposal?.results?.for || 0}</p>
+          </div>
+          <div className={"mt-4 h-[10px] w-full rounded-2xl bg-[#F2F2F2]"}>
+            <div className={"mt-4 h-[10px] w-[150px] rounded-2xl bg-greenColor"}></div>
+          </div>
           <VotingUsers />
         </div>
         <div
@@ -238,7 +256,7 @@ const ProposalPage: NextPage<IProposalProps> = ({ proposalId }) => {
         >
           <div className={"flex justify-between text-lg"}>
             <p className={"font-medium text-redColor"}>Against</p>
-            <p className={"font-semibold text-blackColor"}>123</p>
+            <p className={"font-semibold text-blackColor"}>{proposal?.results?.against || 0}</p>
           </div>
           <div className={"mt-4 h-[10px] w-full rounded-2xl bg-[#F2F2F2]"}>
             <div className={"mt-4 h-[10px] w-[150px] rounded-2xl bg-redColor"}></div>
@@ -250,7 +268,7 @@ const ProposalPage: NextPage<IProposalProps> = ({ proposalId }) => {
         >
           <div className={"flex justify-between text-lg"}>
             <p className={"font-medium text-black2Color"}>Abstain</p>
-            <p className={"font-semibold text-blackColor"}>123</p>
+            <p className={"font-semibold text-blackColor"}>{proposal?.results?.abstain || 0}</p>
           </div>
           <div className={"mt-4 h-[10px] w-full rounded-2xl bg-[#F2F2F2]"}>
             <div className={"mt-4 h-[10px] w-[150px] rounded-2xl bg-black2Color"}></div>
@@ -275,6 +293,14 @@ const ProposalPage: NextPage<IProposalProps> = ({ proposalId }) => {
       );
     };
     const EndDate = () => {
+      const [date, setDate] = useState<Date>();
+
+      useEffect(() => {
+        if (!proposal || !proposal?.end_time) return;
+
+        setDate(new Date(proposal?.end_time));
+      }, [proposal]);
+
       return (
         <div
           className={
@@ -283,10 +309,12 @@ const ProposalPage: NextPage<IProposalProps> = ({ proposalId }) => {
         >
           <div className={"flex"}>
             <p className={"w-full font-medium text-grayColor"}>Ending</p>
-            <p className={"flex w-2/3 justify-end font-semibold text-blackColor"}>July 1, 2023</p>
+            <p className={"flex w-2/3 justify-end font-semibold text-blackColor"}>
+              {date?.toLocaleDateString()}
+            </p>
           </div>
           <div className={"flex justify-end"}>
-            <p className={"text-grayColor"}>10:00 AM</p>
+            <p className={"text-grayColor"}>{date?.toLocaleTimeString()}</p>
           </div>
         </div>
       );
@@ -365,7 +393,6 @@ const ProposalPage: NextPage<IProposalProps> = ({ proposalId }) => {
         )}
       >
         <BradcrumbsHeader />
-        <ProposalTitle />
         <ProposalInfo />
         <VotingCards />
         <ProposalSettingsInfo />

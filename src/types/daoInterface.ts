@@ -23,7 +23,11 @@ export interface IProposal {
   start_time: number;
   end_time: number;
   // for, against, abstain
-  results: any;
+  results: {
+    for: number;
+    against: number;
+    abstain: number;
+  };
   nft_votes: any;
   address_votes: any;
   address_vote_types: any;
