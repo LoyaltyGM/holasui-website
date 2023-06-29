@@ -1,24 +1,37 @@
 import { GetServerSideProps, NextPage } from "next";
 import { ethos, EthosConnectStatus } from "ethos-connect";
-import { NoConnectWallet } from "components";
-import { classNames } from "utils";
-import { useRef, useState } from "react";
+import { AlertErrorMessage, Label, NoConnectWallet } from "components";
+import { classNames, formatSuiAddress } from "utils";
+import { useEffect, useState } from "react";
 import Image from "next/image";
-import SuiToken from "/public/img/SuiToken.png";
 import Link from "next/link";
 import { FolderIcon } from "@heroicons/react/24/solid";
+import { useRouter } from "next/router";
+import { IProposal } from "types/daoInterface";
+import { fetchCapyStaking, signTransactionVoteCapyDaoProposal, suiProvider } from "services/sui";
+import { getExecutionStatus, getExecutionStatusError, getObjectFields } from "@mysten/sui.js";
+import { useForm } from "react-hook-form";
+import { RadioGroup } from "@headlessui/react";
+import toast from "react-hot-toast";
+import { ICapy } from "../../../../types";
 
 interface IProposalProps {
-  proposal: string;
+  proposalId: string;
 }
+
+type Inputs = {
+  vote: string;
+};
+
+const voteTypes = ["For", "Against", "Abstain"];
 
 export const getServerSideProps: GetServerSideProps<IProposalProps> = async ({ params }) => {
   try {
-    const proposal = params?.proposal as string;
+    const proposalId = params?.proposal as string;
 
     return {
       props: {
-        proposal,
+        proposalId,
       },
     };
   } catch (error) {
@@ -31,8 +44,103 @@ export const getServerSideProps: GetServerSideProps<IProposalProps> = async ({ p
   }
 };
 
-const ProposalPage: NextPage<IProposalProps> = ({ proposal }) => {
+const ProposalPage: NextPage<IProposalProps> = ({ proposalId }) => {
+  const router = useRouter();
+  const originDaoAddress = router.query.daoAddress as string;
+
   const { status, wallet } = ethos.useWallet();
+  const [waitSui, setWaitSui] = useState(false);
+
+  const [frens, setFrens] = useState<ICapy[] | null>();
+  const [proposal, setProposal] = useState<IProposal>();
+  const { setValue, handleSubmit, watch } = useForm<Inputs>({
+    defaultValues: {
+      vote: voteTypes[0],
+    },
+  });
+
+  useEffect(() => {
+    async function fetchProposal() {
+      try {
+        const proposal = getObjectFields(
+          await suiProvider.getObject({
+            id: proposalId,
+            options: {
+              showContent: true,
+            },
+          }),
+        );
+
+        setProposal(proposal as IProposal);
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    fetchProposal().then();
+  }, []);
+
+  useEffect(() => {
+    async function fetchWalletFrens() {
+      if (!wallet?.address) {
+        setFrens(null);
+        return;
+      }
+      try {
+        const nfts = wallet?.contents?.nfts!;
+        const fetchedFrens = fetchCapyStaking(nfts);
+        if (fetchedFrens && fetchedFrens.length > 0) {
+          setFrens(fetchedFrens);
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    fetchWalletFrens().then();
+  }, [wallet?.address, wallet?.contents?.nfts]);
+
+  const onSubmit = async (form: Inputs) => {
+    if (!wallet) return;
+    setWaitSui(true);
+    try {
+      console.log(form);
+
+      if (!frens || frens.length === 0) {
+        toast.error("You don't have Capy Fren");
+        return;
+      }
+      const requiredFren = frens[0];
+
+      const response = await wallet.signAndExecuteTransactionBlock({
+        transactionBlock: signTransactionVoteCapyDaoProposal({
+          isSubDao: false,
+          subdao_id: originDaoAddress,
+          frens_id: requiredFren.id,
+          proposal_id: proposalId,
+          vote: form.vote === "For" ? 1 : form.vote === "Against" ? 2 : 0,
+        }),
+        options: {
+          showEffects: true,
+        },
+      });
+
+      const status = getExecutionStatus(response);
+
+      if (status?.status === "failure") {
+        console.log(status.error);
+        const error_status = getExecutionStatusError(response);
+        if (error_status) AlertErrorMessage(error_status);
+      } else {
+        toast.success("Voted successfully");
+        // router.push(`/dao/${originDaoAddress}`).then();
+      }
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setWaitSui(false);
+    }
+  };
 
   const BradcrumbsHeader = () => {
     return (
@@ -50,13 +158,8 @@ const ProposalPage: NextPage<IProposalProps> = ({ proposal }) => {
           <li aria-current="page">
             <div className="flex items-center text-grayColor">
               <p className={"font-semibold text-grayColor md:ml-2 md:mr-2"}>/</p>
-              <Link
-                href="/dao"
-                className="inline-flex items-center text-sm font-medium text-grayColor hover:text-black2Color"
-              >
-                <FolderIcon className={"mr-1.5 h-4 w-4"} />
-                <span className="text-sm font-medium">Capy DAO</span>
-              </Link>
+              <FolderIcon className={"mr-1.5 h-4 w-4"} />
+              <span className="text-sm font-medium">{formatSuiAddress(originDaoAddress)}</span>
             </div>
           </li>
           <li aria-current="page">
@@ -197,52 +300,45 @@ const ProposalPage: NextPage<IProposalProps> = ({ proposal }) => {
   };
 
   const VotingButtons = () => {
-    const [active, setActive] = useState<Number | null>(null);
-
     return (
-      <div className={"mt-16"}>
+      <form onSubmit={handleSubmit(onSubmit)} className={"mt-16"}>
         <div className={"flex justify-between"}>
-          <p className={"text-4xl font-bold text-blackColor"}>Voting</p>
+          <Label label={"Voting"} />
           <button
-            className={"rounded-xl bg-pinkColor px-12 py-2 text-white disabled:bg-grayColor"}
-            disabled={active === null}
+            type={"submit"}
+            disabled={waitSui}
+            className={"pinkColor-primary-state rounded-2xl px-3 py-2 font-bold md:px-6"}
           >
             Vote
           </button>
         </div>
-        <div className={"mt-10"}>
-          <button
-            className={classNames(
-              "mb-3 flex max-h-[55px] min-h-[55px] w-full content-center items-center justify-start gap-10 rounded-xl border bg-white pl-6",
-              active === 0 ? "border-2 border-yellowColor" : "border-black2Color",
-            )}
-            onClick={() => setActive(0)}
-          >
-            <p>1</p>
-            <p>For</p>
-          </button>
-          <button
-            className={classNames(
-              "mb-3 flex max-h-[55px] min-h-[55px] w-full content-center items-center justify-start gap-10 rounded-xl border bg-white pl-6",
-              active === 1 ? "border-2 border-yellowColor" : "border-black2Color",
-            )}
-            onClick={() => setActive(1)}
-          >
-            <p>2</p>
-            <p>Against</p>
-          </button>
-          <button
-            className={classNames(
-              "mb-3 flex max-h-[55px] min-h-[55px] w-full content-center items-center justify-start gap-10 rounded-xl border  bg-white pl-6",
-              active === 2 ? "border-2 border-yellowColor" : "border-black2Color",
-            )}
-            onClick={() => setActive(2)}
-          >
-            <p>3</p>
-            <p>Abstain</p>
-          </button>
-        </div>
-      </div>
+        <RadioGroup
+          value={watch("vote")}
+          onChange={(value) => {
+            setValue("vote", value);
+          }}
+          className="mt-2"
+        >
+          <div className="flex flex-col gap-3 sm:grid-cols-6">
+            {voteTypes.map((vote) => (
+              <RadioGroup.Option
+                key={vote}
+                value={vote}
+                className={({ checked }) =>
+                  classNames(
+                    checked
+                      ? "bg-pinkColor text-white"
+                      : "bg-white text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50",
+                    "flex cursor-pointer items-center justify-center rounded-xl px-3 py-3 text-sm font-semibold uppercase sm:flex-1",
+                  )
+                }
+              >
+                <RadioGroup.Label as="span">{vote}</RadioGroup.Label>
+              </RadioGroup.Option>
+            ))}
+          </div>
+        </RadioGroup>
+      </form>
     );
   };
 
