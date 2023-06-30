@@ -33,7 +33,7 @@ export function formatNumber(num: number) {
   return shortenedNum + suffixes[suffixNum]; // append the suffix
 }
 
-export function formatSuiAddress(address: string, startLength = 2, endLength = 3): string {
+export function formatSuiAddress(address: string, startLength = 3, endLength = 4): string {
   if (address.length <= startLength + endLength) {
     return address;
   }
