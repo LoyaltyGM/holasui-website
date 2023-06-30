@@ -31,7 +31,7 @@ type Inputs = {
   votingPeriod: number;
 };
 
-const locations = ["RU", "US", "CA", "GB", "AU", "FR", "IT", "ES", "KI"];
+const locations = ["US", "CA", "GB", "AU", "FR", "IT", "ES", "KI", "RU", "RO"];
 
 const CreateSubDAO = () => {
   const router = useRouter();
@@ -175,8 +175,8 @@ const CreateSubDAO = () => {
     >
       <BradcrumbsHeader />
 
-      <h1 className={"text-2xl font-bold"}>New DAO</h1>
-      <form onSubmit={handleSubmit(onSubmit)} className={"flex flex-col gap-6"}>
+      <h1 className={"mt-14 text-2xl font-bold text-blackColor"}>New SubDAO</h1>
+      <form onSubmit={handleSubmit(onSubmit)} className={"mb-20 flex flex-col gap-6"}>
         <DragAndDropImageForm
           label="Image"
           className="h-40 w-40 cursor-pointer"
@@ -186,13 +186,15 @@ const CreateSubDAO = () => {
 
         <div className={"flex flex-col"}>
           <div className={"flex justify-between"}>
-            <Label label={"Name"} />
+            <Label label={"Name"} className={"text-blackColor"} />
             <p className={"text-sm text-black2Color"}>{`${watch("name")?.length}/200`}</p>
           </div>
 
           <input
             {...register("name", { required: true })}
-            className={"mt-1 w-full rounded-md border border-black2Color px-2 py-1"}
+            className={
+              "mt-1 min-h-[40px] w-full rounded-md border border-black2Color bg-basicColor px-2 py-1"
+            }
             maxLength={200}
             placeholder={"DAO Name"}
           />
@@ -200,14 +202,14 @@ const CreateSubDAO = () => {
 
         <div className={"flex flex-col"}>
           <div className={"flex justify-between"}>
-            <Label label={"Description"} />
+            <Label label={"Description"} className={"text-blackColor"} />
             <p className={"text-sm text-black2Color"}>{`${watch("description")?.length}/1000`}</p>
           </div>
 
           <textarea
             {...register("description", { required: true })}
             className={
-              "mt-1 h-28 w-full resize-none rounded-md border border-black2Color px-2 py-1"
+              "mt-1 h-28 w-full resize-none rounded-md border border-black2Color bg-basicColor px-2 py-1"
             }
             maxLength={1000}
             placeholder={"DAO Description"}
@@ -215,16 +217,27 @@ const CreateSubDAO = () => {
         </div>
 
         <div className={"flex flex-col"}>
-          <Label label={"Birth location"} />
+          <div className={"flex content-center items-center gap-1"}>
+            <Label label={"DAO Attribute(Birth location)"} className={"text-blackColor"} />
+            <Tooltip
+              text={
+                "This will be a key feature for SubDAO. Only people with this trait can get in."
+              }
+            >
+              <QuestionMarkCircleIcon className={"h-4 w-4 stroke-2 hover:text-pinkColor"} />
+            </Tooltip>
+          </div>
           {/*  select location */}
           <div className={"flex gap-2"}>
             <select
               {...register("birthLocation", { required: true })}
-              className={"mt-1 w-full rounded-md border border-black2Color px-2 py-1"}
+              className={
+                "mt-1 min-h-[40px] w-full rounded-md border border-black2Color bg-basicColor px-2 py-1"
+              }
             >
               <option value={""}>Select location</option>
               {locations.map((location) => (
-                <option key={location} value={location}>
+                <option key={location} value={location} className={"w-full bg-blue-200"}>
                   {location}
                 </option>
               ))}
@@ -233,16 +246,18 @@ const CreateSubDAO = () => {
         </div>
 
         <div className={"flex flex-col"}>
-          <div className={"flex gap-2"}>
-            <Label label={"Quorum"} />
+          <div className={"flex content-center items-center gap-1"}>
+            <Label label={"Quorum"} className={"text-blackColor"} />
             <Tooltip text={"Votes required for a proposal to pass. (min 50 votes)"}>
-              <QuestionMarkCircleIcon className={"h-5 w-5 hover:text-pinkColor"} />
+              <QuestionMarkCircleIcon className={"h-4 w-4 stroke-2 hover:text-pinkColor"} />
             </Tooltip>
           </div>
 
           <input
             {...register("quorum", { required: true })}
-            className={"mt-1 w-full rounded-md border border-black2Color px-2 py-1"}
+            className={
+              "mt-1 min-h-[40px] w-full rounded-md border border-black2Color bg-basicColor px-2 py-1"
+            }
             placeholder={"100"}
             type={"number"}
             min={50}
@@ -251,16 +266,18 @@ const CreateSubDAO = () => {
         </div>
 
         <div className={"flex flex-col"}>
-          <div className={"flex gap-2"}>
-            <Label label={"Voting Delay"} />
+          <div className={"flex content-center items-center gap-1"}>
+            <Label label={"Voting Delay"} className={"text-blackColor"} />
             <Tooltip text={"Delay since proposal is created until voting starts (1-7 days)"}>
-              <QuestionMarkCircleIcon className={"h-5 w-5 hover:text-pinkColor"} />
+              <QuestionMarkCircleIcon className={"h-4 w-4 stroke-2 hover:text-pinkColor"} />
             </Tooltip>
           </div>
 
           <input
             {...register("votingDelay", { required: true })}
-            className={"mt-1 w-full rounded-md border border-black2Color px-2 py-1"}
+            className={
+              "mt-1 min-h-[40px] w-full rounded-md border border-black2Color bg-basicColor px-2 py-1"
+            }
             placeholder={"1"}
             type={"number"}
             min={1}
@@ -270,16 +287,18 @@ const CreateSubDAO = () => {
         </div>
 
         <div className={"flex flex-col"}>
-          <div className={"flex gap-2"}>
-            <Label label={"Voting Period"} />
+          <div className={"flex content-center items-center gap-1"}>
+            <Label label={"Voting Period"} className={"text-blackColor"} />
             <Tooltip text={"Length of period during which people can vote (1-7 days)"}>
-              <QuestionMarkCircleIcon className={"h-5 w-5 hover:text-pinkColor"} />
+              <QuestionMarkCircleIcon className={"h-4 w-4 stroke-2 hover:text-pinkColor"} />
             </Tooltip>
           </div>
 
           <input
             {...register("votingPeriod", { required: true })}
-            className={"mt-1 w-full rounded-md border border-black2Color px-2 py-1"}
+            className={
+              "mt-1 min-h-[40px] w-full rounded-md border border-black2Color bg-basicColor px-2 py-1"
+            }
             placeholder={"7"}
             type={"number"}
             min={1}
@@ -291,7 +310,9 @@ const CreateSubDAO = () => {
         <div className={"flex gap-4"}>
           <button
             type="button"
-            className={"rounded-2xl border border-pinkColor px-3 py-2 font-bold md:px-6 md:py-4"}
+            className={
+              "rounded-2xl border border-purpleColor px-3 py-2 font-bold text-purpleColor hover:bg-purpleColor hover:text-white md:px-6 md:py-4"
+            }
             onClick={router.back}
           >
             Cancel
@@ -313,8 +334,9 @@ const CreateSubDAO = () => {
       )}
     >
       <BradcrumbsHeader />
-
-      <h1 className={"text-2xl font-semibold"}>SubDAOs currently available only for Capy DAO.</h1>
+      <h1 className={"mt-14 text-2xl font-semibold text-blackColor"}>
+        SubDAOs currently available only for Capy DAO.
+      </h1>
     </main>
   );
 };

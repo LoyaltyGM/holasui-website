@@ -162,7 +162,9 @@ const CreateProposal = () => {
 
           <input
             {...register("name", { required: true })}
-            className={"mt-1 w-full rounded-md border border-black2Color px-2 py-1"}
+            className={
+              "mt-1 min-h-[40px] w-full rounded-md border border-black2Color bg-basicColor px-2 py-1"
+            }
             maxLength={200}
             placeholder={"DAO Name"}
           />
@@ -177,7 +179,7 @@ const CreateProposal = () => {
           <textarea
             {...register("description", { required: true })}
             className={
-              "mt-1 h-28 w-full resize-none rounded-md border border-black2Color px-2 py-1"
+              "mt-1 h-28 w-full resize-none rounded-md border border-black2Color bg-basicColor px-2 py-1"
             }
             maxLength={1000}
             placeholder={"DAO Description"}
@@ -206,8 +208,8 @@ const CreateProposal = () => {
                     classNames(
                       checked
                         ? "bg-pinkColor text-white"
-                        : "bg-white text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50",
-                      "flex cursor-pointer items-center justify-center rounded-full px-3 py-3 text-sm font-semibold uppercase sm:flex-1",
+                        : "bg-gray2Color text-black2Color ring-1 ring-inset ring-gray-300 hover:bg-gray2Color/80",
+                      "flex min-w-[40px] cursor-pointer items-center justify-center rounded-full px-1 py-2 text-xs font-semibold uppercase sm:flex-1",
                     )
                   }
                 >
@@ -225,7 +227,9 @@ const CreateProposal = () => {
               <Label label={"Recipient"} />
               <input
                 {...register("recipient", { required: true })}
-                className={"mt-1 w-full rounded-md border border-black2Color px-2 py-1"}
+                className={
+                  "mt-1 min-h-[40px] w-full rounded-md border border-black2Color bg-basicColor px-2 py-1"
+                }
                 placeholder={"Recipient"}
               />
             </div>
@@ -236,7 +240,9 @@ const CreateProposal = () => {
               <div className="relative mt-1 rounded-md shadow-sm">
                 <input
                   {...register("amount", { required: true })}
-                  className={"w-full rounded-md border border-black2Color px-2 py-1"}
+                  className={
+                    "min-h-[40px] w-full rounded-md border border-black2Color bg-basicColor px-2 py-1"
+                  }
                   placeholder={"Amount"}
                   type={"number"}
                 />
@@ -248,10 +254,12 @@ const CreateProposal = () => {
           </>
         )}
 
-        <div className={"flex gap-4"}>
+        <div className={"mb-20 flex gap-4"}>
           <button
             type="button"
-            className={"rounded-2xl border border-pinkColor px-3 py-2 font-bold md:px-6 md:py-4"}
+            className={
+              "rounded-2xl border border-purpleColor px-3 py-2 font-bold text-purpleColor hover:bg-purpleColor hover:text-white md:px-6 md:py-4"
+            }
             onClick={router.back}
           >
             Cancel

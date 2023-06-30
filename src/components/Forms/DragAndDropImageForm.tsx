@@ -65,27 +65,23 @@ export const DragAndDropImageForm = ({
         >
           <div
             className={classNames(
-              "border-base-200 hover:border-Pink-1 focus:text-Black-1 mt-2 flex max-h-80 flex-col justify-center rounded-xl border-2 border-dashed text-center",
+              "border-base-200 mt-2 flex max-h-80 flex-col justify-center rounded-xl border border-black2Color text-center text-grayColor hover:border-pinkColor focus:text-blackColor",
               className,
             )}
           >
             {error ? (
-              <p className="text-error mt-1">Error: {errorMessages}</p>
+              <p className="text-error mt-1 px-2 text-redColor">Error: {errorMessages}</p>
             ) : (
               <>
                 {file ? (
                   <div className={"flex h-full w-full flex-col p-3"}>
                     <div className={"relative h-full w-full overflow-hidden"}>
-                      <Image alt={""} src={preview} fill={true} />
-                    </div>
-                    <div>
-                      <p className="text-primary mt-1">File is accepted ✅</p>
-                      {/* <p className={"truncate"}>File name: {file?.name}</p> */}
+                      <Image alt={""} src={preview} fill={true} className={"rounded-xl"} />
                     </div>
                   </div>
                 ) : (
                   <div className={"flex flex-col items-center"}>
-                    <PhotoIcon width={"50"} height={"50"} />
+                    <PhotoIcon width={"40"} height={"40"} className={""} />
                   </div>
                 )}
               </>
@@ -96,6 +92,12 @@ export const DragAndDropImageForm = ({
       <div className="flex flex-col justify-center text-grayColor">
         <p>PNG, JPEG and JPG files only.</p>
         <p>Max size 1mb.</p>
+        {file && !error && (
+          <div>
+            <p className="mt-1 font-medium text-greenColor">File is accepted ✅</p>
+            {/* <p className={"truncate"}>File name: {file?.name}</p> */}
+          </div>
+        )}
       </div>
     </div>
   );

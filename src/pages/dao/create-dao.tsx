@@ -114,7 +114,7 @@ const CreateDAO = () => {
     >
       <BradcrumbsHeader />
 
-      <h1 className={"text-2xl font-bold"}>New DAO</h1>
+      <h1 className={"mt-10 text-4xl font-bold"}>New DAO</h1>
       <form onSubmit={handleSubmit(onSubmit)} className={"flex flex-col gap-6"}>
         <DragAndDropImageForm
           label="Image"
@@ -131,7 +131,9 @@ const CreateDAO = () => {
 
           <input
             {...register("name", { required: true })}
-            className={"mt-1 w-full rounded-md border border-black2Color px-2 py-1"}
+            className={
+              "mt-1 min-h-[40px] w-full rounded-md border border-black2Color bg-basicColor px-2 py-1"
+            }
             maxLength={200}
             placeholder={"DAO Name"}
           />
@@ -146,7 +148,7 @@ const CreateDAO = () => {
           <textarea
             {...register("description", { required: true })}
             className={
-              "mt-1 h-28 w-full resize-none rounded-md border border-black2Color px-2 py-1"
+              "mt-1 h-28 w-full resize-none rounded-md border border-black2Color bg-basicColor px-2 py-1"
             }
             maxLength={1000}
             placeholder={"DAO Description"}
@@ -154,16 +156,17 @@ const CreateDAO = () => {
         </div>
 
         <div className={"flex flex-col"}>
-          <div className={"flex gap-2"}>
+          <div className={"flex content-center items-center gap-1"}>
             <Label label={"NFT Type"} />
             <Tooltip text={"You can find the type on explorer.sui.io"}>
-              <QuestionMarkCircleIcon className={"h-5 w-5 hover:text-pinkColor"} />
+              <QuestionMarkCircleIcon className={"h-4 w-4 hover:text-yellowColor"} />
             </Tooltip>
           </div>
-
           <input
             {...register("nftType", { required: true })}
-            className={"mt-1 w-full rounded-md border border-black2Color px-2 py-1"}
+            className={
+              "mt-1 min-h-[40px] w-full rounded-md border border-black2Color bg-basicColor px-2 py-1"
+            }
             placeholder={
               "0xee496a0cc04d06a345982ba6697c90c619020de9e274408c7819f787ff66e1a1::capy::Capy"
             }
@@ -171,16 +174,18 @@ const CreateDAO = () => {
         </div>
 
         <div className={"flex flex-col"}>
-          <div className={"flex gap-2"}>
+          <div className={"flex content-center items-center gap-1"}>
             <Label label={"Quorum"} />
             <Tooltip text={"Votes required for a proposal to pass. (min 50 votes)"}>
-              <QuestionMarkCircleIcon className={"h-5 w-5 hover:text-pinkColor"} />
+              <QuestionMarkCircleIcon className={"h-4 w-4 hover:text-yellowColor"} />
             </Tooltip>
           </div>
 
           <input
             {...register("quorum", { required: true })}
-            className={"mt-1 w-full rounded-md border border-black2Color px-2 py-1"}
+            className={
+              "mt-1 min-h-[40px] w-full rounded-md border border-black2Color bg-basicColor px-2 py-1"
+            }
             placeholder={"100"}
             type={"number"}
             min={50}
@@ -189,16 +194,18 @@ const CreateDAO = () => {
         </div>
 
         <div className={"flex flex-col"}>
-          <div className={"flex gap-2"}>
+          <div className={"flex content-center items-center gap-1"}>
             <Label label={"Voting Delay"} />
             <Tooltip text={"Delay since proposal is created until voting starts (1-7 days)"}>
-              <QuestionMarkCircleIcon className={"h-5 w-5 hover:text-pinkColor"} />
+              <QuestionMarkCircleIcon className={"h-4 w-4 hover:text-yellowColor"} />
             </Tooltip>
           </div>
 
           <input
             {...register("votingDelay", { required: true })}
-            className={"mt-1 w-full rounded-md border border-black2Color px-2 py-1"}
+            className={
+              "mt-1 min-h-[40px] w-full rounded-md border border-black2Color bg-basicColor px-2 py-1"
+            }
             placeholder={"1"}
             type={"number"}
             min={1}
@@ -208,16 +215,18 @@ const CreateDAO = () => {
         </div>
 
         <div className={"flex flex-col"}>
-          <div className={"flex gap-2"}>
+          <div className={"flex content-center items-center gap-1"}>
             <Label label={"Voting Period"} />
             <Tooltip text={"Length of period during which people can vote (1-7 days)"}>
-              <QuestionMarkCircleIcon className={"h-5 w-5 hover:text-pinkColor"} />
+              <QuestionMarkCircleIcon className={"h-4 w-4 hover:text-yellowColor"} />
             </Tooltip>
           </div>
 
           <input
             {...register("votingPeriod", { required: true })}
-            className={"mt-1 w-full rounded-md border border-black2Color px-2 py-1"}
+            className={
+              "mt-1 min-h-[40px] w-full rounded-md border border-black2Color bg-basicColor px-2 py-1"
+            }
             placeholder={"7"}
             type={"number"}
             min={1}
@@ -229,7 +238,9 @@ const CreateDAO = () => {
         <div className={"flex gap-4"}>
           <button
             type="button"
-            className={"rounded-2xl border border-pinkColor px-3 py-2 font-bold md:px-6 md:py-4"}
+            className={
+              "rounded-2xl border border-purpleColor px-3 py-2 font-bold text-purpleColor hover:bg-purpleColor hover:text-white md:px-6 md:py-4"
+            }
             onClick={router.back}
           >
             Cancel
