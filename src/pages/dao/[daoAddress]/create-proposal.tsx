@@ -1,5 +1,5 @@
 import { ethos, EthosConnectStatus } from "ethos-connect";
-import { AlertErrorMessage, AlertSucceed, Label, NoConnectWallet } from "components";
+import { AlertErrorMessage, Label, NoConnectWallet } from "components";
 import { classNames, formatSuiAddress } from "utils";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
@@ -10,6 +10,7 @@ import { getExecutionStatus, getExecutionStatusError } from "@mysten/sui.js";
 import { fetchCapyStaking, signTransactionCreateCapyDaoProposal } from "services/sui";
 import { ICapy } from "types";
 import toast from "react-hot-toast";
+import { FolderIcon } from "@heroicons/react/24/solid";
 
 type Inputs = {
   name: string;
@@ -121,34 +122,19 @@ const CreateProposal = () => {
             </Link>
           </li>
           <li aria-current="page">
-            <div className="flex items-center">
-              <svg
-                className="h-5 w-5 flex-shrink-0 text-gray-300"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-                aria-hidden="true"
-              >
-                <path d="M5.555 17.776l8-16 .894.448-8 16-.894-.448z" />
-              </svg>
-              <span className="ml-1 text-sm font-medium text-gray-300 md:ml-2">
-                {formatSuiAddress(originDaoAddress)}
-              </span>
-            </div>
+            <Link
+              href={`/dao/${originDaoAddress}`}
+              className="inline-flex items-center font-medium text-grayColor hover:text-black2Color"
+            >
+              <p className={"font-semibold text-grayColor md:ml-2 md:mr-2"}>/</p>
+              <FolderIcon className={"mr-1.5 h-4 w-4"} />
+              <span className="text-sm font-medium">{formatSuiAddress(originDaoAddress)}</span>
+            </Link>
           </li>
-
           <li aria-current="page">
-            <div className="flex items-center">
-              <svg
-                className="h-5 w-5 flex-shrink-0 text-gray-300"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-                aria-hidden="true"
-              >
-                <path d="M5.555 17.776l8-16 .894.448-8 16-.894-.448z" />
-              </svg>
-              <span className="ml-1 text-sm font-medium text-gray-300 md:ml-2">
-                Create Proposal
-              </span>
+            <div className="flex items-center text-grayColor">
+              <p className={"font-semibold md:ml-2 md:mr-2"}>/</p>
+              <span className="text-sm font-medium">Create Proposal</span>
             </div>
           </li>
         </ol>
