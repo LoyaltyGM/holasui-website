@@ -185,11 +185,11 @@ const DetailSwapOffer: NextPage<IDetailOfferProps> = ({ offerId }) => {
     userObjectIds: TradeObjectType[];
   }) => {
     return (
-      <div className="md:w-full w-full px-3 md:mb-0 mb-2 ">
-        <div className="h-[45vh] md:h-[30vh] mb-2 flex flex-col cursor-pointer justify-between w-full py-2 px-2 font-normal border-2 rounded-lg bg-white border-lightGrayColor text-purpleColor">
-          <div className={"grid md:grid-cols-4 grid-cols-3 overflow-auto gap-1 h-[27vh] md:gap-4 md:mt-4 md:h-[20vh]"}>
+      <div className="mb-2 w-full px-3 md:mb-0 md:w-full ">
+        <div className="mb-2 flex h-[45vh] w-full cursor-pointer flex-col justify-between rounded-lg border-2 border-lightGrayColor bg-white px-2 py-2 font-normal text-purpleColor md:h-[30vh]">
+          <div className={"grid h-[27vh] grid-cols-3 gap-1 overflow-auto md:mt-4 md:h-[20vh] md:grid-cols-4 md:gap-4"}>
             {coinAmount > 0 && (
-              <div className="text-2xl text-center gap-2 w-24 h-24 border bg-white flex items-center justify-center rounded-md">
+              <div className="flex h-24 w-24 items-center justify-center gap-2 rounded-md border bg-white text-center text-2xl">
                 <Image src={ImageSuiToken} alt="token" className="h-[25px] w-[26px]" aria-hidden="true" />
                 <p>{`${coinAmount}`}</p>
               </div>
@@ -197,10 +197,10 @@ const DetailSwapOffer: NextPage<IDetailOfferProps> = ({ offerId }) => {
             {userObjectIds?.map((object) => {
               return (
                 <div
-                  onClick={() => window.open(`https://suiexplorer.com/object/${object.id}`, "_blank")}
+                  onClick={() => window.open(`https://suivision.xyz/object/${object.id}`, "_blank")}
                   key={object.id}
                   className={classNames(
-                    "border bg-white w-24 h-24 flex flex-col content-center justify-center items-center p-2 rounded-md  cursor-pointer"
+                    "flex h-24 w-24 cursor-pointer flex-col content-center items-center justify-center rounded-md border bg-white  p-2"
                   )}
                 >
                   <Image src={object.url} alt="collection_img" width={90} height={90} className="mt-1" />
@@ -218,19 +218,19 @@ const DetailSwapOffer: NextPage<IDetailOfferProps> = ({ offerId }) => {
   ) : offer ? (
     <main
       className={classNames(
-        "flex flex-col gap-10 min-h-[100vh] md:min-h-[65vh] pl-2 pr-2 md:pl-16 py-6 md:mt-14 mt-18 md:pr-10 z-10 rounded-lg mt-8 "
+        "mt-18 z-10 mt-8 flex min-h-[100vh] flex-col gap-10 rounded-lg py-6 pl-2 pr-2 md:mt-14 md:min-h-[65vh] md:pl-16 md:pr-10 "
       )}
     >
       <button
-        className={"flex gap-2 text-blackColor content-items items-center mt-10 md:mt-5"}
+        className={"content-items mt-10 flex items-center gap-2 text-blackColor md:mt-5"}
         onClick={() => router.back()}
       >
-        <ArrowLeftIcon className={"stroke-[2px] h-5 w-5"} />
+        <ArrowLeftIcon className={"h-5 w-5 stroke-[2px]"} />
         <p className={"text-sm font-medium"}>Back</p>
       </button>
-      <div className={"md:flex justify-between"}>
-        <div className={"gap-4 text-blackColor font-extrabold text-3xl"}>
-          <a href={`https://suiexplorer.com/object/${offerId}`} target="_blank" className={"flex gap-1 items-center"}>
+      <div className={"justify-between md:flex"}>
+        <div className={"gap-4 text-3xl font-extrabold text-blackColor"}>
+          <a href={`https://suivision.xyz/object/${offerId}`} target="_blank" className={"flex items-center gap-1"}>
             Offer
             <LinkIcon className={"h-6"} />
           </a>
@@ -242,7 +242,7 @@ const DetailSwapOffer: NextPage<IDetailOfferProps> = ({ offerId }) => {
           </div>
         </div>
 
-        <div className={"flex gap-2 text-xl mt-10"}>
+        <div className={"mt-10 flex gap-2 text-xl"}>
           <p className={"text-blackColor"}>Status: </p>
           {offer.status == 0 ? (
             <p className={"font-semibold text-redColor"}>Canceled</p>
@@ -254,13 +254,13 @@ const DetailSwapOffer: NextPage<IDetailOfferProps> = ({ offerId }) => {
         </div>
       </div>
 
-      <div className="md:flex gap-10 justify-items-center justify-evenly items-center rounded-2xl md:h-[42vh] h-full">
-        <div className="w-full bg-white rounded-xl border-purpleColor border-2 items-center gap-1 justify-between py-2">
-          <p className={"px-3 mb-4 mt-2 text-blackColor font-medium"}>{formatSuiAddress(offer.creator)} items</p>
+      <div className="h-full items-center justify-evenly justify-items-center gap-10 rounded-2xl md:flex md:h-[42vh]">
+        <div className="w-full items-center justify-between gap-1 rounded-xl border-2 border-purpleColor bg-white py-2">
+          <p className={"mb-4 mt-2 px-3 font-medium text-blackColor"}>{formatSuiAddress(offer.creator)} items</p>
           <OfferInformation userObjectIds={creatorObjects} coinAmount={formatSuiNumber(offer.creator_coin_amount)} />
         </div>
-        <div className="w-full bg-white rounded-xl border-redColor border-2 items-center gap-1 justify-between py-2">
-          <p className={"px-3 mb-4 mt-2 text-blackColor font-medium"}>{formatSuiAddress(offer.recipient)} items</p>
+        <div className="w-full items-center justify-between gap-1 rounded-xl border-2 border-redColor bg-white py-2">
+          <p className={"mb-4 mt-2 px-3 font-medium text-blackColor"}>{formatSuiAddress(offer.recipient)} items</p>
           <OfferInformation
             userObjectIds={recipientObjects}
             coinAmount={formatSuiNumber(offer.recipient_coin_amount)}
@@ -272,7 +272,7 @@ const DetailSwapOffer: NextPage<IDetailOfferProps> = ({ offerId }) => {
         <button
           onClick={acceptOffer}
           disabled={waitSui}
-          className="w-[200px] py-3 bg-white border border-greenColor text-greenColor hover:bg-greenColor hover:text-white font-medium mb-4 rounded-md disabled:opacity-40 disabled:cursor-not-allowed"
+          className="mb-4 w-[200px] rounded-md border border-greenColor bg-white py-3 font-medium text-greenColor hover:bg-greenColor hover:text-white disabled:cursor-not-allowed disabled:opacity-40"
         >
           Accept
         </button>
@@ -282,7 +282,7 @@ const DetailSwapOffer: NextPage<IDetailOfferProps> = ({ offerId }) => {
         <button
           onClick={() => cancelOffer()}
           disabled={waitSui}
-          className="w-[200px] py-3 bg-white text-redColor border border-redColor hover:bg-redColor hover:text-white font-medium rounded-md disabled:opacity-40 disabled:cursor-not-allowed"
+          className="w-[200px] rounded-md border border-redColor bg-white py-3 font-medium text-redColor hover:bg-redColor hover:text-white disabled:cursor-not-allowed disabled:opacity-40"
         >
           Cancel Offer
         </button>
@@ -296,8 +296,8 @@ const DetailSwapOffer: NextPage<IDetailOfferProps> = ({ offerId }) => {
       )}
     </main>
   ) : (
-    <div className={"flex flex-col items-center justify-center mt-40"}>
-      <p className={"text-2xl font-semibold mb-4"}>Offer not found</p>
+    <div className={"mt-40 flex flex-col items-center justify-center"}>
+      <p className={"mb-4 text-2xl font-semibold"}>Offer not found</p>
     </div>
   );
 };
