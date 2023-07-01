@@ -339,11 +339,13 @@ const DetailDaoAddress: NextPage<IDaoAddressProps> = ({ daoAddress }) => {
           </Link>
         </div>
         <div className={"mt-10 flex flex-col gap-2 space-y-4"}>
-          {proposals?.map((proposal, index) => (
-            <Link href={`/dao/${daoAddress}/${proposal.id}`} key={index}>
-              <ProposalCard proposal={proposal} index={index + 1} />
-            </Link>
-          ))}
+          {proposals
+            ?.map((proposal, index) => (
+              <Link href={`/dao/${daoAddress}/${proposal.id}`} key={index}>
+                <ProposalCard proposal={proposal} index={index + 1} />
+              </Link>
+            ))
+            .reverse()}
         </div>
       </div>
     );
@@ -351,7 +353,7 @@ const DetailDaoAddress: NextPage<IDaoAddressProps> = ({ daoAddress }) => {
 
   const BradcrumbsHeader = () => {
     return (
-      <nav className="mt-10 flex" aria-label="Breadcrumb">
+      <nav className="mt-24 flex" aria-label="Breadcrumb">
         <ol className="inline-flex items-center space-x-1">
           <li className="inline-flex items-center">
             <Link
