@@ -4,9 +4,8 @@
 /node_modules
 /.pnp
 .pnp.js
-yarn.lock
 .env
-package_lock.json
+
 
 # webstorm
 /.idea/
