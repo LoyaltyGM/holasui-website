@@ -53,11 +53,6 @@ const ProposalPage: NextPage<IProposalProps> = ({ proposalId }) => {
 
   const [frens, setFrens] = useState<ICapy[] | null>();
   const [proposal, setProposal] = useState<IProposal>();
-  const { setValue, handleSubmit, watch } = useForm<Inputs>({
-    defaultValues: {
-      vote: voteTypes[0],
-    },
-  });
 
   useEffect(() => {
     async function fetchProposal() {
@@ -114,6 +109,7 @@ const ProposalPage: NextPage<IProposalProps> = ({ proposalId }) => {
         if (fetchedFrens && fetchedFrens.length > 0) {
           setFrens(fetchedFrens);
         }
+        console.log("Fetch Frens", fetchedFrens);
       } catch (e) {
         console.error(e);
       }
@@ -237,7 +233,7 @@ const ProposalPage: NextPage<IProposalProps> = ({ proposalId }) => {
       </div>
     );
   };
-
+  console.log("Proposals", proposal);
   const VotingCards = () => {
     return (
       <div className={"flex w-full justify-between"}>
@@ -245,7 +241,7 @@ const ProposalPage: NextPage<IProposalProps> = ({ proposalId }) => {
           className={"h-[330px] w-[300px] rounded-3xl border border-black2Color bg-white px-6 py-4"}
         >
           <div className={"flex justify-between text-lg"}>
-            <p className={"font-medium text-redColor"}>For</p>
+            <p className={"font-medium text-greenColor"}>For</p>
             <p className={"font-semibold text-blackColor"}>{proposal?.results?.for || 0}</p>
           </div>
           <div className={"mt-4 h-[10px] w-full rounded-2xl bg-[#F2F2F2]"}>
@@ -301,7 +297,7 @@ const ProposalPage: NextPage<IProposalProps> = ({ proposalId }) => {
         if (!proposal || !proposal?.start_time) return;
 
         setDate(new Date(proposal?.start_time));
-      }, [proposal]);
+      }, [proposal?.start_time]);
 
       return (
         <div
@@ -327,9 +323,10 @@ const ProposalPage: NextPage<IProposalProps> = ({ proposalId }) => {
 
       useEffect(() => {
         if (!proposal || !proposal?.end_time) return;
+        if (date) return;
 
         setDate(new Date(proposal?.end_time));
-      }, [proposal]);
+      }, [proposal?.end_time, date]);
 
       return (
         <div
@@ -359,10 +356,15 @@ const ProposalPage: NextPage<IProposalProps> = ({ proposalId }) => {
   };
 
   const VotingButtons = () => {
+    const { setValue, handleSubmit, watch } = useForm<Inputs>({
+      defaultValues: {
+        vote: voteTypes[0],
+      },
+    });
     return (
       <form onSubmit={handleSubmit(onSubmit)} className={"mt-16"}>
         <div className={"flex justify-between"}>
-          <Label label={"Voting"} />
+          <Label label={"Voting"} className={"text-2xl text-blackColor"} />
           <button
             type={"submit"}
             disabled={waitSui}
@@ -427,9 +429,9 @@ const ProposalPage: NextPage<IProposalProps> = ({ proposalId }) => {
         <ProposalInfo />
         <VotingCards />
         <ProposalSettingsInfo />
-        <VotingButtons />
-        <ProposedTransactions />
         <ProposalDescription />
+        <ProposedTransactions />
+        <VotingButtons />
       </main>
     </div>
   );
