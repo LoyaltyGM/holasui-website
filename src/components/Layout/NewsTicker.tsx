@@ -15,7 +15,7 @@ export const NewsTicker = () => {
         <span className={dotsClasses}>·</span>
       </div>
 
-      <div className="absolute top-0 animate-marquee2 whitespace-nowrap py-1 uppercase">
+      <div className="absolute top-0 z-20 animate-marquee2 whitespace-nowrap py-1 uppercase">
         <span className="mx-4 text-4xl">SUI X KUCOIN HACK</span>
         <span className={dotsClasses}>·</span>
         <span className="mx-4 text-4xl">ATTRIBUTES DAO</span>

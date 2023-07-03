@@ -102,7 +102,7 @@ export function Sidebar({ children }: ILayoutProps) {
   return (
     <>
       {router.pathname === "/dao" || router.pathname === "/dao/[daoAddress]" ? (
-        <div className={"left-0 top-0 h-[65px] w-full md:fixed"}>
+        <div className={"fixed-header left-0 top-0 h-[65px] w-full md:fixed"}>
           <NewsTicker />
         </div>
       ) : null}
