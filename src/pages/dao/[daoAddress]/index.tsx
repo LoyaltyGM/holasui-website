@@ -1,6 +1,6 @@
 import { GetServerSideProps, NextPage } from "next";
 import { ethos, EthosConnectStatus } from "ethos-connect";
-import { NoConnectWallet } from "components";
+import { NoConnectWallet, ProposalCard } from "components";
 import { classNames, convertIPFSUrl, formatSuiAddress } from "utils";
 import { useEffect, useRef, useState } from "react";
 import { ChevronLeftIcon, ChevronRightIcon, FolderIcon } from "@heroicons/react/24/solid";
@@ -249,6 +249,7 @@ const DetailDaoAddress: NextPage<IDaoAddressProps> = ({ daoAddress }) => {
     const scrollContainer = useRef<any>(null);
 
     const checkScroll = () => {
+      console.log("scrollWidth", scrollContainer.current.scrollWidth);
       setIsLeftVisible(scrollContainer.current.scrollLeft > 0);
       setIsRightVisible(
         scrollContainer.current.scrollWidth >
@@ -270,7 +271,7 @@ const DetailDaoAddress: NextPage<IDaoAddressProps> = ({ daoAddress }) => {
         <Title />
         <div className="mt-10 flex gap-8">
           <button
-            className="z-20 cursor-pointer content-center px-3 py-2"
+            className="z-[9] cursor-pointer content-center px-3 py-2"
             disabled={!isLeftVisible}
             onClick={() => scroll(-335)}
           >
@@ -296,7 +297,7 @@ const DetailDaoAddress: NextPage<IDaoAddressProps> = ({ daoAddress }) => {
                 key={index}
                 className="mr-4 flex h-[170px] min-w-[256px] max-w-[256px] rounded-xl border-2 border-blackColor bg-yellowColor"
               >
-                <p className="z-10 px-5 py-4 text-xl font-bold text-white">{subdao.name}</p>
+                <p className="z-[9] px-5 py-4 text-xl font-bold text-white">{subdao.name}</p>
                 <Image
                   src={subdao.image}
                   alt="capy"
@@ -309,7 +310,7 @@ const DetailDaoAddress: NextPage<IDaoAddressProps> = ({ daoAddress }) => {
             {/* Other cards */}
           </div>
           <button
-            className="z-20 cursor-pointer px-3 py-2"
+            className="z-[9] cursor-pointer px-3 py-2"
             disabled={!isRightVisible}
             onClick={() => scroll(335)}
           >
@@ -329,27 +330,6 @@ const DetailDaoAddress: NextPage<IDaoAddressProps> = ({ daoAddress }) => {
     );
   };
 
-  const ProposalCard = ({ proposal, index }: { proposal: IProposal; index: string | number }) => {
-    return (
-      <div
-        className={
-          "proposal-card proposal-card-shadow flex max-h-[80px] min-h-[80px] w-full cursor-pointer content-center items-center justify-between rounded-3xl border border-[#595959] bg-white px-6 py-4"
-        }
-      >
-        <div className={"flex content-center items-center gap-10"}>
-          <p className={"text-xl font-bold text-black2Color"}>{index}</p>
-          <p className={"w-1/2 min-w-[300px] text-xl font-medium"}>{proposal.name}</p>
-        </div>
-        <div className={"flex content-center items-center gap-10"}>
-          <div className={"text-black2Color"}>Starts in 2 days</div>
-          <div className={"rounded-xl border border-yellowColor px-4 py-2 text-yellowColor"}>
-            Pending
-          </div>
-        </div>
-      </div>
-    );
-  };
-  console.log("proposal", proposals);
   const Proposals = () => {
     return (
       <div className={"mb-10 mt-14"}>
@@ -418,6 +398,7 @@ const DetailDaoAddress: NextPage<IDaoAddressProps> = ({ daoAddress }) => {
         </>
       ) : (
         <>
+          {/*Skeleton Animation*/}
           {/*BradcrumbsHeader*/}
           <div className="mt-24 flex h-8 w-full animate-pulse rounded-2xl bg-gray2Color" />
           {/*InfoDao*/}
