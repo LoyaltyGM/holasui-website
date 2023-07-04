@@ -12,22 +12,25 @@ export const NoConnectWallet = ({ title }: { title: string }) => {
       <div className="w-full max-w-5xl items-center justify-between font-mono text-sm">
         <div
           className={classNames(
-            "flex w-full flex-col content-center items-center justify-center gap-1 pt-12 text-center text-4xl font-bold text-[#5A5A95] md:flex-row md:gap-2 ",
+            "flex w-full flex-col content-center items-center justify-center gap-1 pt-12 text-center text-4xl font-bold leading-[2px] text-[#5A5A95] md:w-full md:flex-row md:gap-1",
             font_montserrat.className,
           )}
         >
           <p>Connect</p>
-          <Image
-            src={ImageSuietIcon}
-            alt={"suiet"}
-            height={350}
-            width={50}
-            className="h-28"
-            priority
-          />
-          <p>Suiet Wallet To Unlock {title}</p>
+          <div className={"flex content-center items-center gap-2"}>
+            <Image
+              src={ImageSuietIcon}
+              alt={"suiet"}
+              height={350}
+              width={50}
+              className="h-28"
+              priority
+            />
+            <p>Suiet Wallet</p>
+          </div>
+          <p>To Unlock {title}</p>
         </div>
-        <div className="mt-4 flex w-full content-center justify-center">
+        <div className="mt-8 flex w-full content-center justify-center">
           <ethos.components.AddressWidget />
         </div>
       </div>
