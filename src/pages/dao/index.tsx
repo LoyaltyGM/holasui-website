@@ -1,12 +1,41 @@
 import { ethos, EthosConnectStatus } from "ethos-connect";
-import { NoConnectWallet } from "../../components";
-import { classNames } from "../../utils";
-import { DaoCard } from "../../components/Dao";
+import { classNames, convertIPFSUrl, ORIGIN_CAPY_DAO_ID } from "utils";
+import { DaoCard, NoConnectWallet } from "components";
 import Link from "next/link";
+import { useEffect, useState } from "react";
+import { suiProvider } from "services/sui";
+import { getObjectFields } from "@mysten/sui.js";
+import { IDao } from "types/daoInterface";
 
 const DAO = () => {
   const { status, wallet } = ethos.useWallet();
+  const [dao, setDao] = useState<IDao>();
+  const [isDaoLoading, setIsDaoLoading] = useState<boolean>(true);
 
+  useEffect(() => {
+    setIsDaoLoading(true);
+    async function fetchCapyDao() {
+      try {
+        const daoObject = await suiProvider.getObject({
+          id: ORIGIN_CAPY_DAO_ID,
+          options: {
+            showContent: true,
+          },
+        });
+        const dao = getObjectFields(daoObject) as IDao;
+        dao.subdaos = dao.subdaos?.fields?.contents?.fields?.id?.id;
+        dao.proposals = dao.proposals?.fields?.id?.id;
+        dao.image = convertIPFSUrl(dao.image);
+        setDao(getObjectFields(daoObject) as IDao);
+      } catch (e) {
+        console.log(e);
+      }
+    }
+
+    fetchCapyDao()
+      .then()
+      .finally(() => setIsDaoLoading(false));
+  }, []);
   const daoCards = [
     {
       title: "DAO Card One",
@@ -64,16 +93,22 @@ const DAO = () => {
         "mt-18 z-10 mt-8 flex min-h-[100vh] flex-col rounded-lg py-6 pl-2 pr-2 md:mt-14 md:min-h-[65vh] md:pl-16 md:pr-10 ",
       )}
     >
-      <div className={"mt-16 flex content-center items-center justify-between"}>
+      <div className={"mt-32 flex content-center items-center justify-between"}>
         <h1 className={"text-2xl font-semibold text-blackColor md:text-4xl"}>Hola, DAOs</h1>
-        <Link
-          href={"dao/create"}
-          className={"pinkColor-primary-state rounded-2xl px-3 py-2 font-bold md:px-6 md:py-4"}
-        >
+        <Link href={"dao/create"} className={"button-primary button-shadow px-5 py-3 font-bold"}>
           Create DAO
         </Link>
       </div>
       <div className={"mb-20 mt-10 grid grid-cols-1 gap-5 md:grid-cols-2"}>
+        <DaoCard
+          key={dao?.id}
+          //@ts-ignore
+          daoAddress={dao?.id?.id!}
+          title={dao?.name!}
+          description={dao?.description!}
+          imageUrl={dao?.image!}
+          twitterUrl={"https://twitter.com/suinsdapp"}
+        />
         {daoCards.map((daoInfo) => {
           return (
             <DaoCard
