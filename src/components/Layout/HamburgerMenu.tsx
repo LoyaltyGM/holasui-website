@@ -13,9 +13,9 @@ const HamburgerMenu = () => {
   const toggleMenu = () => setIsOpen(!isOpen);
 
   return (
-    <div className="relative flex md:hidden">
+    <div className="flex md:hidden">
       <Bars3Icon
-        className="absolute right-2 top-5 z-10 h-10 w-10 cursor-pointer text-3xl text-black"
+        className="z-10 h-10 w-10 cursor-pointer text-3xl text-black"
         onClick={toggleMenu}
       />
       {isOpen && (

@@ -27,7 +27,7 @@ export function Sidebar({ children }: ILayoutProps) {
               : "mt-4",
           )}
         >
-          <div className="flex justify-between md:content-center md:items-center">
+          <div className="flex content-center items-center justify-between">
             <Link href="/">
               <Image src={Logo} height={60} width={140} alt={"logo"} priority unoptimized={true} />
             </Link>
