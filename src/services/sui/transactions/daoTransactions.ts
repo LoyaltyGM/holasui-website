@@ -191,7 +191,7 @@ export const signTransactionExecuteCapyDaoProposal = ({
 // ==== Custom Dao ====
 
 export const signTransactionCreateDao = ({
-  nft_id,
+  nft,
   name,
   description,
   image,
@@ -200,7 +200,11 @@ export const signTransactionCreateDao = ({
   voting_period,
   type,
 }: {
-  nft_id: string;
+  nft: {
+    digest: string;
+    objectId: string;
+    version: string;
+  };
   name: string;
   description: string;
   image: string;
@@ -212,10 +216,10 @@ export const signTransactionCreateDao = ({
   const tx = new TransactionBlock();
 
   tx.moveCall({
-    target: `${TEST_DAO_PACKAGE_ID}::dao::create_dao`,
+    target: `0x4ef629a3070fb1fa0655a59c0864576aa13c48f730df58da3b7c963a12134d24::dao::create_dao`,
     arguments: [
-      tx.pure(DAO_HUB_ID), // staking hub
-      tx.pure(nft_id),
+      tx.pure("0x7b9bdba5eea3a53ce098e06bba60e757d4e5c3dc538ff004a19853b1b593ca25"), // staking hub
+      tx.objectRef(nft),
       tx.pure(name),
       tx.pure(description),
       tx.pure(image),

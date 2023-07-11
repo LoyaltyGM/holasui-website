@@ -38,12 +38,8 @@ const CreateDAO = () => {
     register,
     handleSubmit,
     watch,
-    formState: { errors },
+    formState: {},
   } = useForm<Inputs>();
-
-  // useEffect(() => {
-  //   setWaitSui(false);
-  // }, []);
 
   const onSubmit: SubmitHandler<Inputs> = async (form) => {
     if (!wallet) return;
@@ -71,13 +67,12 @@ const CreateDAO = () => {
 
       const response = await wallet.signAndExecuteTransactionBlock({
         transactionBlock: signTransactionCreateDao({
-          nft_id: nfts?.data[0].data!.objectId,
+          nft: nfts?.data[0].data!,
           name: form.name,
           description: form.description,
           quorum: form.quorum,
           voting_period: form.votingPeriod,
           voting_delay: form.votingDelay,
-          // image: form.imageUrl,
           image: form.imageUrl,
           type: form.nftType,
         }),
@@ -94,6 +89,7 @@ const CreateDAO = () => {
         if (error_status) AlertErrorMessage(error_status);
       } else {
         AlertSucceed("CreateDao");
+        router.push("/dao").then();
       }
     } catch (e) {
       console.error(e);
