@@ -1,5 +1,12 @@
 import { ethos, EthosConnectStatus } from "ethos-connect";
-import { DragAndDropImageForm, Label, NoConnectWallet, Tooltip } from "components";
+import {
+  AlertErrorMessage,
+  AlertSucceed,
+  DragAndDropImageForm,
+  Label,
+  NoConnectWallet,
+  Tooltip,
+} from "components";
 import { classNames } from "utils";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useState } from "react";
@@ -7,6 +14,8 @@ import Link from "next/link";
 import { QuestionMarkCircleIcon } from "@heroicons/react/24/outline";
 import { useRouter } from "next/router";
 import toast from "react-hot-toast";
+import { signTransactionCreateDao, suiProvider } from "services/sui";
+import { getExecutionStatus, getExecutionStatusError } from "@mysten/sui.js";
 import { storeNFT } from "services/ipfs";
 
 type Inputs = {
@@ -32,6 +41,10 @@ const CreateDAO = () => {
     formState: { errors },
   } = useForm<Inputs>();
 
+  // useEffect(() => {
+  //   setWaitSui(false);
+  // }, []);
+
   const onSubmit: SubmitHandler<Inputs> = async (form) => {
     if (!wallet) return;
     setWaitSui(true);
@@ -44,20 +57,44 @@ const CreateDAO = () => {
 
       console.log(form);
 
-      /*
-        const response = await wallet.signAndExecuteTransactionBlock({
-        });
-  
-        const status = getExecutionStatus(response);
-  
-        if (status?.status === "failure") {
-          console.log(status.error);
-          const error_status = getExecutionStatusError(response);
-          if (error_status) AlertErrorMessage(error_status);
-        } else {
-          AlertSucceed("CreateDao");
-        }
-      */
+      const nfts = await suiProvider.getOwnedObjects({
+        owner: wallet.address,
+        filter: {
+          StructType: form.nftType,
+        },
+      });
+
+      if (!nfts.data || nfts.data.length === 0) {
+        toast.error("You don't have any NFT with this type");
+        return;
+      }
+
+      const response = await wallet.signAndExecuteTransactionBlock({
+        transactionBlock: signTransactionCreateDao({
+          nft_id: nfts?.data[0].data!.objectId,
+          name: form.name,
+          description: form.description,
+          quorum: form.quorum,
+          voting_period: form.votingPeriod,
+          voting_delay: form.votingDelay,
+          // image: form.imageUrl,
+          image: form.imageUrl,
+          type: form.nftType,
+        }),
+        options: {
+          showEffects: true,
+        },
+      });
+
+      const status = getExecutionStatus(response);
+
+      if (status?.status === "failure") {
+        console.log(status.error);
+        const error_status = getExecutionStatusError(response);
+        if (error_status) AlertErrorMessage(error_status);
+      } else {
+        AlertSucceed("CreateDao");
+      }
     } catch (e) {
       console.error(e);
     } finally {
