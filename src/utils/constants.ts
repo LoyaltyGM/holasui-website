@@ -32,6 +32,7 @@ export const TEST_DAO_PACKAGE_ID =
   "0xf91b3c9e0b9cdd730004025e22ae85213535070d0dc60f0f1d5d937609a6e4d8";
 export const ORIGIN_CAPY_DAO_ID =
   "0x3aff388a68c3f1fbc6c85823a4623f4d92f67b857adfe3633b092619020256c4";
+export const DAO_HUB_ID = "0xed080fa6d08235d52d3d5bb9d94011e3c8768845f8fe69a0d39c0aea734d34d8";
 
 // ==== IPFS ====
 export const IPFS = "ipfs://";
