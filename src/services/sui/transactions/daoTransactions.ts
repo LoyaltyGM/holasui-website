@@ -1,5 +1,5 @@
 import { TransactionBlock } from "@mysten/sui.js";
-import { CAPY_TYPE, ORIGIN_CAPY_DAO_ID, TEST_DAO_PACKAGE_ID } from "utils";
+import { CAPY_TYPE, DAO_HUB_ID, ORIGIN_CAPY_DAO_ID, TEST_DAO_PACKAGE_ID } from "utils";
 
 // ==== CapyDao ====
 
@@ -71,13 +71,13 @@ export const signTransactionCreateCapyDaoProposal = ({
   if (recipient && amount) {
     optionRecipient = tx.moveCall({
       target: `0x1::option::some`,
-      arguments: [tx.pure(recipient, 'address')],
+      arguments: [tx.pure(recipient, "address")],
       typeArguments: ["address"], // type of frens
     });
 
     optionAmount = tx.moveCall({
       target: `0x1::option::some`,
-      arguments: [tx.pure(amount * 1e9, 'u64')],
+      arguments: [tx.pure(amount * 1e9, "u64")],
       typeArguments: ["u64"], // type of frens
     });
   } else {
@@ -183,6 +183,48 @@ export const signTransactionExecuteCapyDaoProposal = ({
     }::execute_proposal`,
     arguments: [tx.pure(subdao_id), tx.pure(proposal_id), tx.pure("0x6")],
     typeArguments: [CAPY_TYPE!], // type of frens
+  });
+
+  return tx;
+};
+
+// ==== Custom Dao ====
+
+export const signTransactionCreateDao = ({
+  nft_id,
+  name,
+  description,
+  image,
+  quorum,
+  voting_delay,
+  voting_period,
+  type,
+}: {
+  nft_id: string;
+  name: string;
+  description: string;
+  image: string;
+  quorum: number;
+  voting_delay: number;
+  voting_period: number;
+  type: string;
+}) => {
+  const tx = new TransactionBlock();
+
+  tx.moveCall({
+    target: `${TEST_DAO_PACKAGE_ID}::dao::create_dao`,
+    arguments: [
+      tx.pure(DAO_HUB_ID), // staking hub
+      tx.pure(nft_id),
+      tx.pure(name),
+      tx.pure(description),
+      tx.pure(image),
+      tx.pure(quorum),
+      // day to ms
+      tx.pure(voting_delay * 24 * 60 * 60 * 1000),
+      tx.pure(voting_period * 24 * 60 * 60 * 1000),
+    ],
+    typeArguments: [type], // type of dao
   });
 
   return tx;
