@@ -257,4 +257,6 @@ export const signTransactionDepositToTreasury = ({
     arguments: [tx.pure(dao_id), coin],
     typeArguments: [type], // type of dao
   });
+
+  return tx;
 };
