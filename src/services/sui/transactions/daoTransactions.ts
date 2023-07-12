@@ -1,6 +1,6 @@
 import { TransactionBlock } from "@mysten/sui.js";
 import { CAPY_TYPE, DAO_HUB_ID, ORIGIN_CAPY_DAO_ID, TEST_DAO_PACKAGE_ID } from "utils";
-import { DaoType } from "../../../types/daoInterface";
+import { DaoType } from "types/daoInterface";
 
 // ==== CapyDao ====
 
@@ -46,7 +46,7 @@ export const signTransactionCreateCapySubDao = ({
 };
 
 export const signTransactionCreateCapyDaoProposal = ({
-  isSubDao,
+  dao_type,
   dao_id,
   frens_id,
   name,
@@ -55,7 +55,7 @@ export const signTransactionCreateCapyDaoProposal = ({
   recipient,
   amount,
 }: {
-  isSubDao: boolean;
+  dao_type: DaoType;
   dao_id: string;
   frens_id: string;
   name: string;
@@ -95,10 +95,11 @@ export const signTransactionCreateCapyDaoProposal = ({
     });
   }
 
+  const targetModule =
+    dao_type === "dao" ? "dao" : dao_type === "capy_dao" ? "suifren_dao" : "suifren_subdao";
+
   tx.moveCall({
-    target: `${TEST_DAO_PACKAGE_ID}::${
-      isSubDao ? "suifren_subdao" : "suifren_dao"
-    }::create_proposal`,
+    target: `${TEST_DAO_PACKAGE_ID}::${targetModule}::create_proposal`,
     arguments: [
       tx.pure(dao_id),
       tx.pure(frens_id),
@@ -116,20 +117,21 @@ export const signTransactionCreateCapyDaoProposal = ({
 };
 
 export const signTransactionCancelCapyDaoProposal = ({
-  isSubDao,
+  dao_type,
   subdao_id,
   proposal_id,
 }: {
-  isSubDao: boolean;
+  dao_type: DaoType;
   subdao_id: string;
   proposal_id: string;
 }) => {
   const tx = new TransactionBlock();
 
+  const targetModule =
+    dao_type === "dao" ? "dao" : dao_type === "capy_dao" ? "suifren_dao" : "suifren_subdao";
+
   tx.moveCall({
-    target: `${TEST_DAO_PACKAGE_ID}::${
-      isSubDao ? "suifren_subdao" : "suifren_dao"
-    }::cancel_proposal`,
+    target: `${TEST_DAO_PACKAGE_ID}::${targetModule}::cancel_proposal`,
     arguments: [tx.pure(subdao_id), tx.pure(proposal_id), tx.pure("0x6")],
     typeArguments: [CAPY_TYPE!], // type of frens
   });
@@ -138,13 +140,13 @@ export const signTransactionCancelCapyDaoProposal = ({
 };
 
 export const signTransactionVoteCapyDaoProposal = ({
-  isSubDao,
+  dao_type,
   subdao_id,
   frens_id,
   proposal_id,
   vote,
 }: {
-  isSubDao: boolean;
+  dao_type: DaoType;
   subdao_id: string;
   frens_id: string;
   proposal_id: string;
@@ -152,8 +154,11 @@ export const signTransactionVoteCapyDaoProposal = ({
 }) => {
   const tx = new TransactionBlock();
 
+  const targetModule =
+    dao_type === "dao" ? "dao" : dao_type === "capy_dao" ? "suifren_dao" : "suifren_subdao";
+
   tx.moveCall({
-    target: `${TEST_DAO_PACKAGE_ID}::${isSubDao ? "suifren_subdao" : "suifren_dao"}::vote`,
+    target: `${TEST_DAO_PACKAGE_ID}::${targetModule}::vote`,
     arguments: [
       tx.pure(subdao_id),
       tx.pure(frens_id),
@@ -168,20 +173,21 @@ export const signTransactionVoteCapyDaoProposal = ({
 };
 
 export const signTransactionExecuteCapyDaoProposal = ({
-  isSubDao,
+  dao_type,
   subdao_id,
   proposal_id,
 }: {
-  isSubDao: boolean;
+  dao_type: DaoType;
   subdao_id: string;
   proposal_id: string;
 }) => {
   const tx = new TransactionBlock();
 
+  const targetModule =
+    dao_type === "dao" ? "dao" : dao_type === "capy_dao" ? "suifren_dao" : "suifren_subdao";
+
   tx.moveCall({
-    target: `${TEST_DAO_PACKAGE_ID}::${
-      isSubDao ? "suifren_subdao" : "suifren_dao"
-    }::execute_proposal`,
+    target: `${TEST_DAO_PACKAGE_ID}::${targetModule}::execute_proposal`,
     arguments: [tx.pure(subdao_id), tx.pure(proposal_id), tx.pure("0x6")],
     typeArguments: [CAPY_TYPE!], // type of frens
   });
