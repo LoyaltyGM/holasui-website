@@ -1,5 +1,6 @@
 import { TransactionBlock } from "@mysten/sui.js";
 import { CAPY_TYPE, DAO_HUB_ID, ORIGIN_CAPY_DAO_ID, TEST_DAO_PACKAGE_ID } from "utils";
+import { DaoType } from "../../../types/daoInterface";
 
 // ==== CapyDao ====
 
@@ -232,4 +233,28 @@ export const signTransactionCreateDao = ({
   });
 
   return tx;
+};
+
+export const signTransactionDepositToTreasury = ({
+  dao_type,
+  dao_id,
+  amount,
+  type,
+}: {
+  dao_type: DaoType;
+  dao_id: string;
+  type: string;
+  amount: number;
+}) => {
+  const tx = new TransactionBlock();
+
+  const targetModule =
+    dao_type === "dao" ? "dao" : dao_type === "capy_dao" ? "suifren_dao" : "suifren_subdao";
+
+  const [coin] = tx.splitCoins(tx.gas, [tx.pure(amount * 1e9, "u64")]);
+  tx.moveCall({
+    target: `${TEST_DAO_PACKAGE_ID}::${targetModule}::deposit_to_treasury`,
+    arguments: [tx.pure(dao_id), coin],
+    typeArguments: [type], // type of dao
+  });
 };
