@@ -1,3 +1,5 @@
+export type DaoType = "capy_dao" | "capy_subdao" | "dao";
+
 export interface IDao {
   id: string;
   name: string;
