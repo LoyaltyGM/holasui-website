@@ -23,7 +23,7 @@ export function Sidebar({ children }: ILayoutProps) {
           className={classNames(
             "mx-2 rounded-lg border-2 border-blackColor bg-white px-2 py-1 text-white md:mx-8",
             router.pathname === "/dao" || router.pathname === "/dao/[daoAddress]"
-              ? "mt-24 md:mt-20"
+              ? "mt-24 md:mt-24"
               : "mt-4",
           )}
         >
