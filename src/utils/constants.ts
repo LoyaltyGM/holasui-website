@@ -29,9 +29,9 @@ export const PRICE_ESCROW: number = 0.1;
 // ==== DAO ====
 // todo: change this to PACKAGE_ID_V2
 export const TEST_DAO_PACKAGE_ID =
-  "0xf91b3c9e0b9cdd730004025e22ae85213535070d0dc60f0f1d5d937609a6e4d8";
+  "0x2dbcb59040c43f7ac044e3737195c50c45fa4fa31e1343e1f36b33f3c2f0eea0";
 export const ORIGIN_CAPY_DAO_ID =
-  "0x3aff388a68c3f1fbc6c85823a4623f4d92f67b857adfe3633b092619020256c4";
+  "0x2341521bd78278db73a61670a8da3b7b85059ad69d11e9fbb3b52126feb739a8";
 export const DAO_HUB_ID = "0xed080fa6d08235d52d3d5bb9d94011e3c8768845f8fe69a0d39c0aea734d34d8";
 
 // ==== IPFS ====
