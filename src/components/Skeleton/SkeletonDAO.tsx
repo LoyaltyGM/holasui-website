@@ -47,3 +47,7 @@ export const SkeletonDAOMain = () => {
 export const SkeletonSubDAO = () => {
   return <div className={"mt-14 h-56 animate-pulse rounded-xl bg-gray2Color"}></div>;
 };
+
+export const SkeletonProposals = () => {
+  return <div className={"mt-14 h-56 animate-pulse rounded-xl bg-gray2Color"}></div>;
+};

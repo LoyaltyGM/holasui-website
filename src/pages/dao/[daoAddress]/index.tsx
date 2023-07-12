@@ -1,15 +1,16 @@
 import { GetServerSideProps, NextPage } from "next";
 import { ethos, EthosConnectStatus } from "ethos-connect";
 import {
+  DAOInfo,
   NoConnectWallet,
   Proposals,
+  SkeletonDAOMain,
+  SkeletonProposals,
+  SkeletonSubDAO,
   SubdaosCards,
   Treasury,
-  DAOInfo,
-  SkeletonDAOMain,
-  SkeletonSubDAO,
 } from "components";
-import { classNames, convertIPFSUrl, formatSuiAddress } from "utils";
+import { classNames, convertIPFSUrl, formatSuiAddress, ORIGIN_CAPY_DAO_ID } from "utils";
 import { useEffect, useState } from "react";
 import { FolderIcon } from "@heroicons/react/24/solid";
 import Link from "next/link";
@@ -51,8 +52,12 @@ const DetailDaoAddress: NextPage<IDaoAddressProps> = ({ daoAddress }) => {
   const [subdaos, setSubdaos] = useState<IDao[]>();
   const [proposals, setProposals] = useState<IProposal[]>();
 
+  const isCapyDao = daoAddress === ORIGIN_CAPY_DAO_ID;
+  const [nftType, setNftType] = useState<string>("");
+
   useEffect(() => {
     setIsDaoLoading(true);
+
     async function fetchDao() {
       try {
         const daoObject = await suiProvider.getObject({
@@ -61,7 +66,16 @@ const DetailDaoAddress: NextPage<IDaoAddressProps> = ({ daoAddress }) => {
             showContent: true,
           },
         });
-        const dao = getObjectFields(daoObject) as IDao;
+
+        const daoObjectType = (daoObject?.data?.content as any).type!;
+        const nftType = daoObjectType.slice(
+          daoObjectType.indexOf("<") + 1,
+          daoObjectType.lastIndexOf(">"),
+        );
+        setNftType(nftType);
+
+        const dao = getObjectFields(daoObject) as any;
+        dao.id = dao.id.id;
         dao.subdaos = dao.subdaos?.fields?.contents?.fields?.id?.id;
         dao.proposals = dao.proposals?.fields?.id?.id;
         dao.image = convertIPFSUrl(dao.image);
@@ -79,9 +93,10 @@ const DetailDaoAddress: NextPage<IDaoAddressProps> = ({ daoAddress }) => {
 
   useEffect(() => {
     setIsSubdaosLoading(true);
+
     async function fetchSubdaos() {
       try {
-        if (!dao?.subdaos) return;
+        if (!dao?.subdaos || !isCapyDao) return;
         setSubdaos([] as IDao[]);
 
         const response = await suiProvider.getDynamicFields({
@@ -148,6 +163,7 @@ const DetailDaoAddress: NextPage<IDaoAddressProps> = ({ daoAddress }) => {
         console.log(e);
       }
     }
+
     fetchSubdaos().then();
     fetchProposals().then();
   }, [dao]);
@@ -191,9 +207,13 @@ const DetailDaoAddress: NextPage<IDaoAddressProps> = ({ daoAddress }) => {
         <>
           <BradcrumbsHeader />
           <DAOInfo daoAddress={daoAddress} dao={dao!} />
-          <Treasury dao={dao!} />
+          <Treasury dao={dao!} dao_type={isCapyDao ? "capy_dao" : "dao"} nft_type={nftType} />
           {!isSubdaosLoading ? <SubdaosCards subDAOs={subdaos!} /> : <SkeletonSubDAO />}
-          <Proposals daoAddress={daoAddress} proposals={proposals!} />
+          {!isProposalsLoading ? (
+            <Proposals daoAddress={daoAddress} proposals={proposals!} />
+          ) : (
+            <SkeletonProposals />
+          )}
         </>
       ) : (
         <SkeletonDAOMain />

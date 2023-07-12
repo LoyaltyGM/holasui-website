@@ -12,10 +12,7 @@ export const DAOInfo = ({ dao, daoAddress }: { dao: IDao; daoAddress: string }) 
           "mr-2 mt-4 max-h-[100px] min-h-[70px] w-full overflow-hidden text-clip text-base font-bold text-black2Color"
         }
       >
-        <p className={"w-full"}>
-          {dao?.description} askkasks akalsalk asksak sakksa askkasks akalsalk asksak sakksa
-          askkasks akalsalk asksak sakksa
-        </p>
+        <p className={"w-full"}>{dao?.description}</p>
       </div>
     );
   };

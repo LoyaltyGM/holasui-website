@@ -1,6 +1,6 @@
 import { ethos, EthosConnectStatus } from "ethos-connect";
 import { AlertErrorMessage, Label, NoConnectWallet } from "components";
-import { classNames, formatSuiAddress } from "utils";
+import { classNames, formatSuiAddress, ORIGIN_CAPY_DAO_ID } from "utils";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 import Link from "next/link";
@@ -25,6 +25,8 @@ const proposalTypes = ["Voting", "Funding"];
 const CreateProposal = () => {
   const router = useRouter();
   const originDaoAddress = router.query.daoAddress as string;
+  const isCapyDao = originDaoAddress === ORIGIN_CAPY_DAO_ID;
+
   const { wallet, status } = ethos.useWallet();
   const [waitSui, setWaitSui] = useState(false);
 
@@ -69,7 +71,7 @@ const CreateProposal = () => {
 
       const response = await wallet.signAndExecuteTransactionBlock({
         transactionBlock: signTransactionCreateCapyDaoProposal({
-          isSubDao: false,
+          dao_type: isCapyDao ? "capy_dao" : "dao",
           frens_id: requiredFren.id,
           name: form.name,
           description: form.description,

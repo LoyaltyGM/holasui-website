@@ -1,7 +1,7 @@
 import { GetServerSideProps, NextPage } from "next";
 import { ethos, EthosConnectStatus } from "ethos-connect";
 import { AlertErrorMessage, Label, NoConnectWallet } from "components";
-import { classNames, formatSuiAddress } from "utils";
+import { classNames, formatSuiAddress, ORIGIN_CAPY_DAO_ID } from "utils";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
@@ -53,6 +53,7 @@ const ProposalPage: NextPage<IProposalProps> = ({ proposalId }) => {
 
   const [frens, setFrens] = useState<ICapy[] | null>();
   const [proposal, setProposal] = useState<IProposal>();
+  const isCapyDao = originDaoAddress === ORIGIN_CAPY_DAO_ID;
 
   useEffect(() => {
     async function fetchProposal() {
@@ -132,7 +133,7 @@ const ProposalPage: NextPage<IProposalProps> = ({ proposalId }) => {
 
       const response = await wallet.signAndExecuteTransactionBlock({
         transactionBlock: signTransactionVoteCapyDaoProposal({
-          isSubDao: false,
+          dao_type: isCapyDao ? "capy_dao" : "dao",
           subdao_id: originDaoAddress,
           frens_id: requiredFren.id,
           proposal_id: proposalId,
