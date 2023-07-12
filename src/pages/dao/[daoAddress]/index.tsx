@@ -98,7 +98,6 @@ const DetailDaoAddress: NextPage<IDaoAddressProps> = ({ daoAddress }) => {
       try {
         if (!dao?.subdaos || !isCapyDao) return;
         setSubdaos([] as IDao[]);
-
         const response = await suiProvider.getDynamicFields({
           parentId: dao?.subdaos,
         });
@@ -164,7 +163,9 @@ const DetailDaoAddress: NextPage<IDaoAddressProps> = ({ daoAddress }) => {
       }
     }
 
-    fetchSubdaos().then();
+    fetchSubdaos()
+      .then()
+      .finally(() => setIsSubdaosLoading(false));
     fetchProposals().then();
   }, [dao]);
 

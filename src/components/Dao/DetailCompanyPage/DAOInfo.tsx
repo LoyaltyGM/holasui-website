@@ -3,8 +3,17 @@ import frensLogo from "/public/img/frens-logo.svg";
 import ExternalWebsiteIcon from "/public/img/ExternalLinkIcon.svg";
 import Link from "next/link";
 import { IDao } from "types/daoInterface";
+import { classNames } from "../../../utils";
 
-export const DAOInfo = ({ dao, daoAddress }: { dao: IDao; daoAddress: string }) => {
+export const DAOInfo = ({
+  dao,
+  daoAddress,
+  isSubDao = false,
+}: {
+  dao: IDao;
+  daoAddress: string;
+  isSubDao?: boolean;
+}) => {
   const InfoDaoDescription = () => {
     return (
       <div
@@ -48,15 +57,26 @@ export const DAOInfo = ({ dao, daoAddress }: { dao: IDao; daoAddress: string }) 
             </div>
           </div>
 
-          <div className={"flex w-1/4 flex-col justify-center"}>
-            <Link href={`/dao/${daoAddress}/create-subdao`}>
-              <button className={"button-secondary button-shadow"}>
-                <p className={""}>Create SubDAO</p>
-              </button>
-            </Link>
+          <div
+            className={classNames(
+              "flex w-1/4 flex-col",
+              isSubDao
+                ? "justify-center items-center content-start"
+                : "justify-center items-end content-end",
+            )}
+          >
+            {isSubDao ? (
+              <div className={"py-2 px-3 bg-yellowColor/30 text-blackColor rounded-lg"}>SubDAO</div>
+            ) : (
+              <Link href={`/dao/${daoAddress}/create-subdao`}>
+                <button className={"button-secondary button-shadow"}>
+                  <p className={""}>Create SubDAO</p>
+                </button>
+              </Link>
+            )}
             <div
               className={
-                "mt-2 flex w-full cursor-pointer justify-center px-2 text-xs text-black2Color underline underline-offset-4 hover:text-pinkColor "
+                "mt-2 flex justify-center cursor-pointer px-4 text-xs text-black2Color underline underline-offset-4 hover:text-pinkColor "
               }
             >
               What is Sub DAO?

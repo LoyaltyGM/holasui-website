@@ -1,14 +1,14 @@
 import { useRef, useState } from "react";
-import { classNames } from "../../../utils";
+import { classNames, ORIGIN_CAPY_DAO_ID } from "utils";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/solid";
 import Image from "next/image";
-import { IDao } from "../../../types/daoInterface";
-
+import { IDao } from "types/daoInterface";
+import Link from "next/link";
 export const SubdaosCards = ({ subDAOs }: { subDAOs: IDao[] }) => {
   const [isLeftVisible, setIsLeftVisible] = useState(false);
   const [isRightVisible, setIsRightVisible] = useState(true);
   const scrollContainer = useRef<any>(null);
-
+  const capyDaoAddress: string = ORIGIN_CAPY_DAO_ID;
   const checkScroll = () => {
     setIsLeftVisible(scrollContainer.current.scrollLeft > 0);
     setIsRightVisible(
@@ -55,7 +55,8 @@ export const SubdaosCards = ({ subDAOs }: { subDAOs: IDao[] }) => {
                 className="hide-scroll-bar flex w-full cursor-pointer gap-16 overflow-x-scroll"
               >
                 {subDAOs?.map((subdao, index) => (
-                  <div
+                  <Link
+                    href={`/dao/${capyDaoAddress}/subdao/${subdao.id?.id!}`}
                     key={index}
                     className="mr-4 flex h-[170px] min-w-[256px] max-w-[256px] rounded-xl border-2 border-blackColor bg-yellowColor"
                   >
@@ -67,7 +68,7 @@ export const SubdaosCards = ({ subDAOs }: { subDAOs: IDao[] }) => {
                       width={200}
                       height={250}
                     />
-                  </div>
+                  </Link>
                 ))}
               </div>
               <button

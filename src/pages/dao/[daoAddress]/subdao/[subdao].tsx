@@ -1,14 +1,6 @@
 import { GetServerSideProps, NextPage } from "next";
 import { ethos, EthosConnectStatus } from "ethos-connect";
-import {
-  NoConnectWallet,
-  Proposals,
-  SubdaosCards,
-  Treasury,
-  DAOInfo,
-  SkeletonDAOMain,
-  SkeletonSubDAO,
-} from "components";
+import { NoConnectWallet, Proposals, Treasury, DAOInfo, SkeletonDAOMain } from "components";
 import { classNames, convertIPFSUrl, formatSuiAddress } from "utils";
 import { useEffect, useState } from "react";
 import { FolderIcon } from "@heroicons/react/24/solid";
@@ -17,16 +9,19 @@ import { suiProvider } from "services/sui";
 import { getObjectFields } from "@mysten/sui.js";
 import { IDao, IProposal } from "types/daoInterface";
 
-interface IDaoAddressProps {
+interface ISubDaoAddressProps {
   daoAddress: string;
+  subDaoAddress: string;
 }
 
-export const getServerSideProps: GetServerSideProps<IDaoAddressProps> = async ({ params }) => {
+export const getServerSideProps: GetServerSideProps<ISubDaoAddressProps> = async ({ params }) => {
   try {
     const daoAddress = params?.daoAddress as string;
+    const subDaoAddress = params?.subdao as string;
     return {
       props: {
         daoAddress,
+        subDaoAddress,
       },
     };
   } catch (error) {
@@ -39,87 +34,44 @@ export const getServerSideProps: GetServerSideProps<IDaoAddressProps> = async ({
   }
 };
 
-const DetailSubDaoAddress: NextPage<IDaoAddressProps> = ({ daoAddress }) => {
+const DetailSubDaoAddress: NextPage<ISubDaoAddressProps> = ({ daoAddress, subDaoAddress }) => {
   const { status } = ethos.useWallet();
   // Loading for skeleton animation
   const [isDaoLoading, setIsDaoLoading] = useState<boolean>(true);
-  const [isSubdaosLoading, setIsSubdaosLoading] = useState<boolean>(true);
   const [isProposalsLoading, setIsProposalsLoading] = useState<boolean>(true);
 
   // states for data
   const [dao, setDao] = useState<IDao>();
-  const [subdaos, setSubdaos] = useState<IDao[]>();
   const [proposals, setProposals] = useState<IProposal[]>();
 
   useEffect(() => {
     setIsDaoLoading(true);
-    async function fetchDao() {
-      try {
-        const daoObject = await suiProvider.getObject({
-          id: daoAddress,
-          options: {
-            showContent: true,
-          },
-        });
-        const dao = getObjectFields(daoObject) as IDao;
-        dao.subdaos = dao.subdaos?.fields?.contents?.fields?.id?.id;
-        dao.proposals = dao.proposals?.fields?.id?.id;
-        dao.image = convertIPFSUrl(dao.image);
-
-        setDao(getObjectFields(daoObject) as IDao);
-      } catch (e) {
-        console.log(e);
-      }
-    }
-
-    fetchDao()
-      .then()
-      .finally(() => setIsDaoLoading(false));
-  }, []);
-
-  useEffect(() => {
-    setIsSubdaosLoading(true);
     async function fetchSubdaos() {
       try {
-        if (!dao?.subdaos) return;
-        setSubdaos([] as IDao[]);
-
-        const response = await suiProvider.getDynamicFields({
-          parentId: dao?.subdaos,
-        });
-        Promise.all(
-          response?.data?.map(async (df): Promise<IDao> => {
-            const dfObject = getObjectFields(
-              await suiProvider.getObject({
-                id: df?.objectId!,
-                options: { showContent: true },
-              }),
-            );
-
-            const subdao = getObjectFields(
-              await suiProvider.getObject({
-                id: dfObject?.value,
-                options: {
-                  showContent: true,
-                },
-              }),
-            )!;
-            subdao.image = convertIPFSUrl(subdao.image);
-
-            return subdao as IDao;
+        const subdao = getObjectFields(
+          await suiProvider.getObject({
+            id: subDaoAddress,
+            options: {
+              showContent: true,
+            },
           }),
-        )
-          .then((subdao) => {
-            setSubdaos([...subdao] as IDao[]);
-          })
-          .finally(() => setIsSubdaosLoading(false));
+        )!;
+
+        console.log("SubDAO Fields", subdao);
+        subdao.image = convertIPFSUrl(subdao.image);
+
+        return subdao as IDao;
       } catch (e) {
         console.log(e);
       }
     }
-
+    fetchSubdaos()
+      .then((subDao) => setDao(subDao))
+      .finally(() => setIsDaoLoading(false));
+  }, []);
+  useEffect(() => {
+    setIsProposalsLoading(true);
     async function fetchProposals() {
-      setIsProposalsLoading(true);
       try {
         if (!dao?.proposals) return;
 
@@ -139,17 +91,16 @@ const DetailSubDaoAddress: NextPage<IDaoAddressProps> = ({ daoAddress }) => {
             proposal.id = proposal?.id?.id;
             return proposal as IProposal;
           }),
-        )
-          .then((proposal) => {
-            setProposals([...proposal] as IProposal[]);
-          })
-          .finally(() => setIsProposalsLoading(false));
+        ).then((proposal) => {
+          setProposals([...proposal] as IProposal[]);
+        });
       } catch (e) {
         console.log(e);
       }
     }
-    fetchSubdaos().then();
-    fetchProposals().then();
+    fetchProposals()
+      .then()
+      .finally(() => setIsProposalsLoading(false));
   }, [dao]);
 
   const BradcrumbsHeader = () => {
@@ -166,11 +117,23 @@ const DetailSubDaoAddress: NextPage<IDaoAddressProps> = ({ daoAddress }) => {
             </Link>
           </li>
           <li aria-current="page">
+            <Link
+              href={`/dao/${daoAddress}`}
+              className="flex items-center hover:text-black2Color text-grayColor"
+            >
+              <p className={"font-semibold text-grayColor md:ml-2 md:mr-2"}>/</p>
+              <FolderIcon className={"mr-1.5 h-4 w-4 "} />
+              <span className="text-sm font-medium">
+                CapyDAO({formatSuiAddress(daoAddress, 2, 2)})
+              </span>
+            </Link>
+          </li>
+          <li aria-current="page">
             <div className="flex items-center">
               <p className={"font-semibold text-grayColor md:ml-2 md:mr-2"}>/</p>
               <FolderIcon className={"mr-1.5 h-4 w-4 text-black2Color"} />
               <span className="text-sm font-medium text-black2Color">
-                {formatSuiAddress(daoAddress)}
+                SubDAO({formatSuiAddress(subDaoAddress)})
               </span>
             </div>
           </li>
@@ -190,9 +153,14 @@ const DetailSubDaoAddress: NextPage<IDaoAddressProps> = ({ daoAddress }) => {
       {!isDaoLoading ? (
         <>
           <BradcrumbsHeader />
-          <DAOInfo daoAddress={daoAddress} dao={dao!} />
-          <Treasury dao={dao!} />
-          {!isSubdaosLoading ? <SubdaosCards subDAOs={subdaos!} /> : <SkeletonSubDAO />}
+          <DAOInfo daoAddress={daoAddress} dao={dao!} isSubDao={true} />
+          <Treasury
+            dao={dao!}
+            dao_type={"capy_dao"}
+            nft_type={
+              "0xee496a0cc04d06a345982ba6697c90c619020de9e274408c7819f787ff66e1a1::suifrens::SuiFren<0xee496a0cc04d06a345982ba6697c90c619020de9e274408c7819f787ff66e1a1::capy::Capy>"
+            }
+          />
           <Proposals daoAddress={daoAddress} proposals={proposals!} />
         </>
       ) : (
