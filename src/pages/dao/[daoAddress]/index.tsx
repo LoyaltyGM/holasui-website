@@ -53,6 +53,7 @@ const DetailDaoAddress: NextPage<IDaoAddressProps> = ({ daoAddress }) => {
   const [proposals, setProposals] = useState<IProposal[]>();
 
   const isCapyDao = daoAddress === ORIGIN_CAPY_DAO_ID;
+  const [nftType, setNftType] = useState<string>("");
 
   useEffect(() => {
     setIsDaoLoading(true);
@@ -65,7 +66,16 @@ const DetailDaoAddress: NextPage<IDaoAddressProps> = ({ daoAddress }) => {
             showContent: true,
           },
         });
-        const dao = getObjectFields(daoObject) as IDao;
+
+        const daoObjectType = (daoObject?.data?.content as any).type!;
+        const nftType = daoObjectType.slice(
+          daoObjectType.indexOf("<") + 1,
+          daoObjectType.lastIndexOf(">"),
+        );
+        setNftType(nftType);
+
+        const dao = getObjectFields(daoObject) as any;
+        dao.id = dao.id.id;
         dao.subdaos = dao.subdaos?.fields?.contents?.fields?.id?.id;
         dao.proposals = dao.proposals?.fields?.id?.id;
         dao.image = convertIPFSUrl(dao.image);
@@ -197,7 +207,7 @@ const DetailDaoAddress: NextPage<IDaoAddressProps> = ({ daoAddress }) => {
         <>
           <BradcrumbsHeader />
           <DAOInfo daoAddress={daoAddress} dao={dao!} />
-          <Treasury dao={dao!} />
+          <Treasury dao={dao!} dao_type={isCapyDao ? "capy_dao" : "dao"} nft_type={nftType} />
           {!isSubdaosLoading ? <SubdaosCards subDAOs={subdaos!} /> : <SkeletonSubDAO />}
           {!isProposalsLoading ? (
             <Proposals daoAddress={daoAddress} proposals={proposals!} />
