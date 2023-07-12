@@ -1,15 +1,15 @@
 import { GetServerSideProps, NextPage } from "next";
 import { ethos, EthosConnectStatus } from "ethos-connect";
 import {
+  DAOInfo,
   NoConnectWallet,
   Proposals,
-  SubdaosCards,
-  Treasury,
-  DAOInfo,
   SkeletonDAOMain,
   SkeletonSubDAO,
+  SubdaosCards,
+  Treasury,
 } from "components";
-import { classNames, convertIPFSUrl, formatSuiAddress } from "utils";
+import { classNames, convertIPFSUrl, formatSuiAddress, ORIGIN_CAPY_DAO_ID } from "utils";
 import { useEffect, useState } from "react";
 import { FolderIcon } from "@heroicons/react/24/solid";
 import Link from "next/link";
@@ -51,8 +51,11 @@ const DetailDaoAddress: NextPage<IDaoAddressProps> = ({ daoAddress }) => {
   const [subdaos, setSubdaos] = useState<IDao[]>();
   const [proposals, setProposals] = useState<IProposal[]>();
 
+  const isCapyDao = daoAddress === ORIGIN_CAPY_DAO_ID;
+
   useEffect(() => {
     setIsDaoLoading(true);
+
     async function fetchDao() {
       try {
         const daoObject = await suiProvider.getObject({
@@ -79,9 +82,10 @@ const DetailDaoAddress: NextPage<IDaoAddressProps> = ({ daoAddress }) => {
 
   useEffect(() => {
     setIsSubdaosLoading(true);
+
     async function fetchSubdaos() {
       try {
-        if (!dao?.subdaos) return;
+        if (!dao?.subdaos || !isCapyDao) return;
         setSubdaos([] as IDao[]);
 
         const response = await suiProvider.getDynamicFields({
@@ -148,6 +152,7 @@ const DetailDaoAddress: NextPage<IDaoAddressProps> = ({ daoAddress }) => {
         console.log(e);
       }
     }
+
     fetchSubdaos().then();
     fetchProposals().then();
   }, [dao]);
