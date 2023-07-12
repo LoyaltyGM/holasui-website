@@ -10,7 +10,8 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ["var(--montserrat-font)"],
+        montserrat: ["var(--montserrat-font)"],
+        inter: ["var(--inter-font)"],
       },
       screens: {
         sm: "480px",

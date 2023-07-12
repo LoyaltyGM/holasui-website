@@ -4,15 +4,20 @@ import { Chain, EthosConnectProvider } from "ethos-connect";
 import Head from "next/head";
 import { CustomToast, Sidebar } from "components";
 import { SUI_RPC_URL } from "../utils";
-import { Montserrat } from "next/font/google";
+import { Montserrat, Inter } from "next/font/google";
 
 const font_montserrat = Montserrat({
   variable: "--montserrat-font",
   subsets: ["latin"],
 });
+
+const font_inter = Inter({
+  variable: "--inter-font",
+  subsets: ["latin"],
+});
 export default function App({ Component, pageProps }: AppProps) {
   return (
-    <div className={`${font_montserrat.variable} font-sans`}>
+    <div className={`${font_montserrat.variable} ${font_inter.variable}`}>
       <Head>
         <title>¡hola sui! - nft staking platform</title>
         <meta property="og:title" content="hola! ola staking ola!" key="title" />
