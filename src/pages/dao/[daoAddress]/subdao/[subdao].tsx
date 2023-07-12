@@ -40,8 +40,12 @@ const DetailSubDaoAddress: NextPage<ISubDaoAddressProps> = ({ daoAddress, subDao
   const [isDaoLoading, setIsDaoLoading] = useState<boolean>(true);
   const [isProposalsLoading, setIsProposalsLoading] = useState<boolean>(true);
 
+  const nftType: string =
+    "0xee496a0cc04d06a345982ba6697c90c619020de9e274408c7819f787ff66e1a1::capy::Capy";
+
   // states for data
   const [dao, setDao] = useState<IDao>();
+  const [subdao, setSubdao] = useState<IDao>();
   const [proposals, setProposals] = useState<IProposal[]>();
 
   useEffect(() => {
@@ -59,26 +63,26 @@ const DetailSubDaoAddress: NextPage<ISubDaoAddressProps> = ({ daoAddress, subDao
 
         console.log("SubDAO Fields", subdao);
         subdao.image = convertIPFSUrl(subdao.image);
-
+        subdao.id = subdao.id.id;
         return subdao as IDao;
       } catch (e) {
         console.log(e);
       }
     }
     fetchSubdaos()
-      .then((subDao) => setDao(subDao))
+      .then((subDao) => setSubdao(subDao))
       .finally(() => setIsDaoLoading(false));
   }, []);
   useEffect(() => {
     setIsProposalsLoading(true);
     async function fetchProposals() {
       try {
-        if (!dao?.proposals) return;
+        if (!subdao?.proposals) return;
 
         setProposals([] as IProposal[]);
 
         const response = await suiProvider.getDynamicFields({
-          parentId: dao?.proposals,
+          parentId: subdao?.proposals,
         });
         Promise.all(
           response?.data?.map(async (df): Promise<IProposal> => {
@@ -101,7 +105,7 @@ const DetailSubDaoAddress: NextPage<ISubDaoAddressProps> = ({ daoAddress, subDao
     fetchProposals()
       .then()
       .finally(() => setIsProposalsLoading(false));
-  }, [dao]);
+  }, [subdao]);
 
   const BradcrumbsHeader = () => {
     return (
@@ -153,14 +157,8 @@ const DetailSubDaoAddress: NextPage<ISubDaoAddressProps> = ({ daoAddress, subDao
       {!isDaoLoading ? (
         <>
           <BradcrumbsHeader />
-          <DAOInfo daoAddress={daoAddress} dao={dao!} isSubDao={true} />
-          <Treasury
-            dao={dao!}
-            dao_type={"capy_dao"}
-            nft_type={
-              "0xee496a0cc04d06a345982ba6697c90c619020de9e274408c7819f787ff66e1a1::suifrens::SuiFren<0xee496a0cc04d06a345982ba6697c90c619020de9e274408c7819f787ff66e1a1::capy::Capy>"
-            }
-          />
+          <DAOInfo daoAddress={daoAddress} dao={subdao!} isSubDao={true} />
+          <Treasury dao={subdao!} dao_type={"capy_subdao"} nft_type={nftType} />
           <Proposals daoAddress={daoAddress} proposals={proposals!} />
         </>
       ) : (

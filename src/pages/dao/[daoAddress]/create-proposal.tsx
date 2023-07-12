@@ -22,7 +22,7 @@ type Inputs = {
 
 const proposalTypes = ["Voting", "Funding"];
 
-const CreateProposal = () => {
+const CreateProposal = ({ isSubDAO = false }: { isSubDAO?: boolean }) => {
   const router = useRouter();
   const originDaoAddress = router.query.daoAddress as string;
   const isCapyDao = originDaoAddress === ORIGIN_CAPY_DAO_ID;
@@ -71,7 +71,7 @@ const CreateProposal = () => {
 
       const response = await wallet.signAndExecuteTransactionBlock({
         transactionBlock: signTransactionCreateCapyDaoProposal({
-          dao_type: isCapyDao ? "capy_dao" : "dao",
+          dao_type: isCapyDao ? (isSubDAO ? "capy_subdao" : "capy_dao") : "dao",
           frens_id: requiredFren.id,
           name: form.name,
           description: form.description,

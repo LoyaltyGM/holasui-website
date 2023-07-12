@@ -56,7 +56,7 @@ export const SubdaosCards = ({ subDAOs }: { subDAOs: IDao[] }) => {
               >
                 {subDAOs?.map((subdao, index) => (
                   <Link
-                    href={`/dao/${capyDaoAddress}/subdao/${subdao.id?.id!}`}
+                    href={`/dao/${capyDaoAddress}/subdao/${subdao.id!}`}
                     key={index}
                     className="mr-4 flex h-[170px] min-w-[256px] max-w-[256px] rounded-xl border-2 border-blackColor bg-yellowColor"
                   >
