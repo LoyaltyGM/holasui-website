@@ -5,6 +5,7 @@ import {
   NoConnectWallet,
   Proposals,
   SkeletonDAOMain,
+  SkeletonProposals,
   SkeletonSubDAO,
   SubdaosCards,
   Treasury,
@@ -198,7 +199,11 @@ const DetailDaoAddress: NextPage<IDaoAddressProps> = ({ daoAddress }) => {
           <DAOInfo daoAddress={daoAddress} dao={dao!} />
           <Treasury dao={dao!} />
           {!isSubdaosLoading ? <SubdaosCards subDAOs={subdaos!} /> : <SkeletonSubDAO />}
-          <Proposals daoAddress={daoAddress} proposals={proposals!} />
+          {!isProposalsLoading ? (
+            <Proposals daoAddress={daoAddress} proposals={proposals!} />
+          ) : (
+            <SkeletonProposals />
+          )}
         </>
       ) : (
         <SkeletonDAOMain />
