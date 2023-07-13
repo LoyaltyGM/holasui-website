@@ -155,32 +155,7 @@ const ProposalPage: NextPage<IProposalProps> = ({ proposalId }) => {
 
       let response: any;
 
-      if (!isCapyDao) {
-        const nfts = await suiProvider.getOwnedObjects({
-          owner: wallet.address,
-          filter: {
-            StructType: nftType,
-          },
-        });
-
-        if (!nfts.data || nfts.data.length === 0) {
-          toast.error("You don't have any NFT with this type");
-          return;
-        }
-
-        response = await wallet.signAndExecuteTransactionBlock({
-          transactionBlock: signTransactionVoteCustomDaoProposal({
-            dao_id: originDaoAddress,
-            nft: nfts?.data[0].data!,
-            nftType,
-            proposal_id: proposalId,
-            vote: form.vote === "For" ? 1 : form.vote === "Against" ? 2 : 0,
-          }),
-          options: {
-            showEffects: true,
-          },
-        });
-      } else if (isCapyDao) {
+      if (isCapyDao) {
         const fetchedFrens = fetchCapyStaking(wallet?.contents?.nfts!);
         if (!fetchedFrens || fetchedFrens.length === 0) {
           toast.error("You don't have Capy Fren");
@@ -214,6 +189,31 @@ const ProposalPage: NextPage<IProposalProps> = ({ proposalId }) => {
             dao_type: "capy_subdao",
             subdao_id: originDaoAddress,
             frens_id: requiredFren.id,
+            proposal_id: proposalId,
+            vote: form.vote === "For" ? 1 : form.vote === "Against" ? 2 : 0,
+          }),
+          options: {
+            showEffects: true,
+          },
+        });
+      } else {
+        const nfts = await suiProvider.getOwnedObjects({
+          owner: wallet.address,
+          filter: {
+            StructType: nftType,
+          },
+        });
+
+        if (!nfts.data || nfts.data.length === 0) {
+          toast.error("You don't have any NFT with this type");
+          return;
+        }
+
+        response = await wallet.signAndExecuteTransactionBlock({
+          transactionBlock: signTransactionVoteCustomDaoProposal({
+            dao_id: originDaoAddress,
+            nft: nfts?.data[0].data!,
+            nftType,
             proposal_id: proposalId,
             vote: form.vote === "For" ? 1 : form.vote === "Against" ? 2 : 0,
           }),
