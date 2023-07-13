@@ -1,6 +1,6 @@
 import { GetServerSideProps, NextPage } from "next";
 import { ethos, EthosConnectStatus } from "ethos-connect";
-import { NoConnectWallet, Proposals, Treasury, DAOInfo, SkeletonDAOMain } from "components";
+import { DAOInfo, NoConnectWallet, Proposals, SkeletonDAOMain, Treasury } from "components";
 import { classNames, convertIPFSUrl, formatSuiAddress } from "utils";
 import { useEffect, useState } from "react";
 import { FolderIcon } from "@heroicons/react/24/solid";
@@ -50,6 +50,7 @@ const DetailSubDaoAddress: NextPage<ISubDaoAddressProps> = ({ daoAddress, subDao
 
   useEffect(() => {
     setIsDaoLoading(true);
+
     async function fetchSubdaos() {
       try {
         const subdao = getObjectFields(
@@ -70,12 +71,14 @@ const DetailSubDaoAddress: NextPage<ISubDaoAddressProps> = ({ daoAddress, subDao
         console.log(e);
       }
     }
+
     fetchSubdaos()
       .then((subDao) => setSubdao(subDao))
       .finally(() => setIsDaoLoading(false));
   }, []);
   useEffect(() => {
     setIsProposalsLoading(true);
+
     async function fetchProposals() {
       try {
         if (!subdao?.proposals) return;
@@ -103,6 +106,7 @@ const DetailSubDaoAddress: NextPage<ISubDaoAddressProps> = ({ daoAddress, subDao
         console.log(e);
       }
     }
+
     fetchProposals()
       .then()
       .finally(() => setIsProposalsLoading(false));
@@ -160,7 +164,7 @@ const DetailSubDaoAddress: NextPage<ISubDaoAddressProps> = ({ daoAddress, subDao
           <BradcrumbsHeader />
           <DAOInfo daoAddress={subDaoAddress} dao={subdao!} isSubDao={true} />
           <Treasury dao={subdao!} dao_type={"capy_subdao"} nft_type={nftType} />
-          <Proposals daoAddress={subDaoAddress} proposals={proposals!} isSubDao={true} />
+          <Proposals daoAddress={subDaoAddress} proposals={proposals!} />
         </>
       ) : (
         <SkeletonDAOMain />
