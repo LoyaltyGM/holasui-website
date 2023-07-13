@@ -219,7 +219,7 @@ const ProposalPage: NextPage<IProposalProps> = ({ proposalId }) => {
 
   const BradcrumbsHeader = () => {
     return (
-      <nav className="mt-10 flex" aria-label="Breadcrumb">
+      <nav className="mt-10 md:flex hidden" aria-label="Breadcrumb">
         <ol className="inline-flex items-center space-x-1">
           <li className="inline-flex items-center">
             <Link
@@ -293,9 +293,11 @@ const ProposalPage: NextPage<IProposalProps> = ({ proposalId }) => {
   console.log("Proposals", proposal);
   const VotingCards = () => {
     return (
-      <div className={"flex w-full justify-between"}>
+      <div className={"space-y-2 md:space-y-0 md:flex w-full justify-between"}>
         <div
-          className={"h-[330px] w-[300px] rounded-3xl border border-black2Color bg-white px-6 py-4"}
+          className={
+            "h-[120px] w-full md:w-[300px] rounded-3xl border border-black2Color bg-white px-6 py-4"
+          }
         >
           <div className={"flex justify-between text-lg"}>
             <p className={"font-medium text-greenColor"}>For</p>
@@ -304,10 +306,12 @@ const ProposalPage: NextPage<IProposalProps> = ({ proposalId }) => {
           <div className={"mt-4 h-[10px] w-full rounded-2xl bg-[#F2F2F2]"}>
             <div className={"mt-4 h-[10px] w-[150px] rounded-2xl bg-greenColor"}></div>
           </div>
-          <VotingUsers />
+          {/*<VotingUsers />*/}
         </div>
         <div
-          className={"h-[330px] w-[300px] rounded-3xl border border-black2Color bg-white px-6 py-4"}
+          className={
+            "h-[120px] w-full md:w-[300px] rounded-3xl border border-black2Color bg-white px-6 py-4"
+          }
         >
           <div className={"flex justify-between text-lg"}>
             <p className={"font-medium text-redColor"}>Against</p>
@@ -316,10 +320,12 @@ const ProposalPage: NextPage<IProposalProps> = ({ proposalId }) => {
           <div className={"mt-4 h-[10px] w-full rounded-2xl bg-[#F2F2F2]"}>
             <div className={"mt-4 h-[10px] w-[150px] rounded-2xl bg-redColor"}></div>
           </div>
-          <VotingUsers />
+          {/*<VotingUsers />*/}
         </div>
         <div
-          className={"h-[330px] w-[300px] rounded-3xl border border-black2Color bg-white px-6 py-4"}
+          className={
+            "h-[120px] w-full md:w-[300px] rounded-3xl border border-black2Color bg-white px-6 py-4"
+          }
         >
           <div className={"flex justify-between text-lg"}>
             <p className={"font-medium text-black2Color"}>Abstain</p>
@@ -328,7 +334,7 @@ const ProposalPage: NextPage<IProposalProps> = ({ proposalId }) => {
           <div className={"mt-4 h-[10px] w-full rounded-2xl bg-[#F2F2F2]"}>
             <div className={"mt-4 h-[10px] w-[150px] rounded-2xl bg-black2Color"}></div>
           </div>
-          <VotingUsers />
+          {/*<VotingUsers />*/}
         </div>
       </div>
     );
@@ -404,7 +410,7 @@ const ProposalPage: NextPage<IProposalProps> = ({ proposalId }) => {
       );
     };
     return (
-      <div className={"mt-8 flex w-full gap-4"}>
+      <div className={"mt-8 space-y-2 md:space-y-0 md:flex w-full gap-4"}>
         <Threshold />
         <StartDate />
         <EndDate />
@@ -466,11 +472,19 @@ const ProposalPage: NextPage<IProposalProps> = ({ proposalId }) => {
         <p className={"font-bold text-2xl text-blackColor"}>Proposed transactions</p>
         <div
           className={
-            "mt-2 border-grayColor bg-white justify-between flex border  py-4 px-4 rounded-xl"
+            "mt-2 border-grayColor bg-white justify-between flex border py-4 px-4 rounded-xl"
           }
         >
-          <p>Sent to</p>
-          <p>{proposal?.recipient}</p>
+          <div className={"flex gap-3"}>
+            <p>Sent to</p>
+            <a
+              href={`https://suivision.xyz/account/${proposal?.recipient}`}
+              target={"_blank"}
+              className={"underline-blackColor underline"}
+            >
+              {formatSuiAddress(proposal?.recipient)}
+            </a>
+          </div>
           <p>{proposal?.amount / 1e9} SUI</p>
         </div>
       </div>
