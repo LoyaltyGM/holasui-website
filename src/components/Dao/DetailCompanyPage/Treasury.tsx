@@ -85,7 +85,7 @@ export const Treasury = ({
         <div className={"md:w-1/4 w-full"}>
           <button
             className={
-              "button-primary button-shadow w-full md:w-min-[130px] md:w-max-[130px] mt-4 flex max-h-[48px] min-h-[48px] content-center items-center font-bold text-white"
+              "button-primary button-shadow  w-full md:w-min-[130px] md:w-max-[130px] mt-4 flex max-h-[48px] min-h-[48px] justify-center content-center items-center font-bold text-white"
             }
             onClick={() => setOpenedDialog(true)}
           >

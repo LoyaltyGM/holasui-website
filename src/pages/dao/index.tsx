@@ -6,12 +6,13 @@ import { useEffect, useState } from "react";
 import { suiProvider } from "services/sui";
 import { getObjectFields } from "@mysten/sui.js";
 import { IDao } from "types/daoInterface";
+import { SkeletonDAOsPage } from "../../components/Skeleton/SkeletonDAOsPage";
 
 const DAO = () => {
   const { status } = ethos.useWallet();
   const [capyDao, setCapyDao] = useState<IDao>();
   const [daos, setDaos] = useState<IDao[]>([]);
-
+  const [isDaoPageLoading, setIsDaoPageLoading] = useState<boolean>(true);
   useEffect(() => {
     async function fetchCapyDao() {
       try {
@@ -78,7 +79,11 @@ const DAO = () => {
     }
 
     fetchCapyDao().then();
-    fetchDaos().then();
+    fetchDaos()
+      .then()
+      .finally(() => {
+        setIsDaoPageLoading(false);
+      });
   }, []);
 
   return status === EthosConnectStatus.NoConnection ? (
@@ -98,28 +103,35 @@ const DAO = () => {
           Create DAO
         </Link>
       </div>
-      <div className={"mb-20 mt-10 grid grid-cols-1 gap-5 md:grid-cols-2"}>
-        <DaoCard
-          key={capyDao?.id}
-          daoAddress={capyDao?.id!}
-          title={capyDao?.name!}
-          description={capyDao?.description!}
-          imageUrl={capyDao?.image!}
-          twitterUrl={"https://twitter.com/suinsdapp"}
-        />
-        {daos.map((dao) => {
-          return (
-            <DaoCard
-              key={dao.id}
-              daoAddress={dao.id}
-              title={dao.name}
-              description={dao.description}
-              imageUrl={dao.image}
-              twitterUrl={""}
-            />
-          );
-        })}
-      </div>
+      {!isDaoPageLoading ? (
+        <div className={"mb-20 mt-10 grid grid-cols-1 gap-5 md:grid-cols-2"}>
+          <DaoCard
+            key={capyDao?.id}
+            daoAddress={capyDao?.id!}
+            title={capyDao?.name!}
+            description={capyDao?.description!}
+            imageUrl={capyDao?.image!}
+            twitterUrl={"https://twitter.com/suinsdapp"}
+          />
+          {daos.map((dao) => {
+            return (
+              <DaoCard
+                key={dao.id}
+                daoAddress={dao.id}
+                title={dao.name}
+                description={dao.description}
+                imageUrl={dao.image}
+                twitterUrl={""}
+              />
+            );
+          })}
+        </div>
+      ) : (
+        <div className={"mb-20 mt-10 grid grid-cols-1 gap-5 md:grid-cols-2"}>
+          <SkeletonDAOsPage />
+          <SkeletonDAOsPage />
+        </div>
+      )}
     </main>
   );
 };
