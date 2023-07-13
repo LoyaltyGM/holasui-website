@@ -18,6 +18,7 @@ import { getExecutionStatus, getExecutionStatusError, getObjectFields } from "@m
 import { useForm } from "react-hook-form";
 import { RadioGroup } from "@headlessui/react";
 import toast from "react-hot-toast";
+import { SkeletonProposalPage } from "../../../../components/Skeleton/SkeletonDetailProposal";
 
 interface IProposalProps {
   proposalId: string;
@@ -53,7 +54,7 @@ const ProposalPage: NextPage<IProposalProps> = ({ proposalId }) => {
 
   const { status, wallet } = ethos.useWallet();
   const [waitSui, setWaitSui] = useState(false);
-
+  const [isDataLoading, setDataLoading] = useState<boolean>(true);
   const [proposal, setProposal] = useState<IProposal>();
 
   const originDaoAddress = router.query.daoAddress as string;
@@ -260,7 +261,7 @@ const ProposalPage: NextPage<IProposalProps> = ({ proposalId }) => {
             >
               <p className={"font-semibold text-grayColor md:ml-2 md:mr-2"}>/</p>
               <FolderIcon className={"mr-1.5 h-4 w-4"} />
-              <span className="text-sm font-medium">{formatSuiAddress(originDaoAddress)}</span>
+              <span className="text-sm font-medium">{dao?.name}</span>
             </Link>
           </li>
           <li aria-current="page">
@@ -295,24 +296,23 @@ const ProposalPage: NextPage<IProposalProps> = ({ proposalId }) => {
     );
   };
 
-  const users = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
-  const VotingUsers = () => {
-    return (
-      <div className={"my-4 grid grid-cols-4 grid-rows-4 place-items-center"}>
-        {users.map(() => (
-          <Image
-            src={
-              "https://api-mainnet.suifrens.sui.io/suifrens/0x786be7f41c0cccc7c7e2a61044b34c3b4d4cd31a1c444948ef2011161f7ba927/svg"
-            }
-            alt={"voting user"}
-            width={45}
-            height={45}
-            className={"mt-2 rounded-full border-2 object-cover"}
-          />
-        ))}
-      </div>
-    );
-  };
+  // const VotingUsers = () => {
+  //   return (
+  //     <div className={"my-4 grid grid-cols-4 grid-rows-4 place-items-center"}>
+  //       {users.map(() => (
+  //         <Image
+  //           src={
+  //             "https://api-mainnet.suifrens.sui.io/suifrens/0x786be7f41c0cccc7c7e2a61044b34c3b4d4cd31a1c444948ef2011161f7ba927/svg"
+  //           }
+  //           alt={"voting user"}
+  //           width={45}
+  //           height={45}
+  //           className={"mt-2 rounded-full border-2 object-cover"}
+  //         />
+  //       ))}
+  //     </div>
+  //   );
+  // };
 
   const VotingCards = () => {
     return (
@@ -366,7 +366,7 @@ const ProposalPage: NextPage<IProposalProps> = ({ proposalId }) => {
           }
         >
           <p className={"font-medium text-grayColor"}>Threshold</p>
-          <p className={"font-semibold text-blackColor"}>200 Votes</p>
+          <p className={"font-semibold text-blackColor"}>{dao?.quorum} Votes</p>
         </div>
       );
     };

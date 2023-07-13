@@ -190,9 +190,7 @@ const DetailDaoAddress: NextPage<IDaoAddressProps> = ({ daoAddress }) => {
             <div className="flex items-center">
               <p className={"font-semibold text-grayColor md:ml-2 md:mr-2"}>/</p>
               <FolderIcon className={"mr-1.5 h-4 w-4 text-black2Color"} />
-              <span className="text-sm font-medium text-black2Color">
-                {formatSuiAddress(daoAddress)}
-              </span>
+              <span className="text-sm font-medium text-black2Color">{dao?.name}</span>
             </div>
           </li>
         </ol>

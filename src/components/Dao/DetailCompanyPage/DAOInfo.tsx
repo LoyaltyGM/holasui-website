@@ -125,20 +125,29 @@ const WhatIsSubdaoDialog = ({ openDialog, setOpenDialog }: IWhatIsSubdaoDialog) 
 
         <div className="fixed inset-0 z-10 overflow-auto">
           <div className="flex min-h-full items-center justify-center">
-            <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-basicColor px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-sm sm:p-6">
+            <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-basicColor px-10 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-sm sm:p-6">
               <Dialog.Title
                 className={classNames(
                   "mb-2 flex justify-between  text-center text-base font-bold leading-6 text-black2Color",
                 )}
               >
                 <p className="mt-1"></p>
-                <p className={classNames("mt-1")}>What is Subdao?</p>
+                <p className={classNames("mt-1 font-bold text-blackColor")}>What is Subdao?</p>
                 <button onClick={() => setOpenDialog(false)}>
                   <XMarkIcon className="flex h-7 w-7 md:hidden" />
                 </button>
               </Dialog.Title>
               <div className={"flex flex-col gap-6"}>
-                <p>SubDAO is a DAO that is created by another DAO. It is a way to create a DAO</p>
+                <p>
+                  A SubDAO is essentially a miniature version of the main DAO, established around
+                  distinct items or attributes inherent in the main DAO. For example, you can form a
+                  SubDAO focused on specific traits such as hats, glasses, or even the country of
+                  origin (as is the case with Capy). This SubDAO will maintain all the operational
+                  features of the larger DAO but will be specifically catered to these unique
+                  traits. At present, SubDAO capabilities are only accessible for CapyDAO. If you
+                  wish to incorporate your NFT collection into a SubDAO, we welcome you to direct
+                  message us on Twitter or Discord. Availing this service is absolutely free.
+                </p>
               </div>
             </Dialog.Panel>
           </div>
