@@ -23,7 +23,7 @@ export const DAOInfo = ({
     return (
       <div
         className={
-          "mr-2 mt-4 max-h-[100px] min-h-[70px] w-full overflow-hidden text-clip text-base font-bold text-black2Color"
+          "pr-6 mt-4 max-h-[100px] min-h-[70px] w-full overflow-hidden text-clip text-base font-bold text-black2Color"
         }
       >
         <p className={"w-full"}>{dao?.description}</p>

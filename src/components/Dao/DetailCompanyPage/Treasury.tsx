@@ -93,9 +93,12 @@ export const Treasury = ({
           </button>
         </div>
       </div>
-      <p className={"mt-4 max-w-full text-sm text-black2Color"}>
+      <p className={"mt-4 max-w-full text-xs md:text-sm text-black2Color"}>
         This treasury exists for {dao?.name} participants to allocate resources for the long-term
-        growth and prosperity of the project.
+        growth and prosperity of the project. In order to withdraw from the treasury, you need to
+        initiate a proposal for fund withdrawal. Following a successful execution of the proposal,
+        the funds will be transferred directly to the recipient's wallet. The creators of the DAO do
+        not have access to these funds.
       </p>
 
       <FundTreasuryDialog
