@@ -64,6 +64,7 @@ const DetailSubDaoAddress: NextPage<ISubDaoAddressProps> = ({ daoAddress, subDao
         console.log("SubDAO Fields", subdao);
         subdao.image = convertIPFSUrl(subdao.image);
         subdao.id = subdao.id.id;
+        subdao.proposals = subdao.proposals?.fields?.id?.id;
         return subdao as IDao;
       } catch (e) {
         console.log(e);
