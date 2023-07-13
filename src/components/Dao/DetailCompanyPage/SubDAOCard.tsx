@@ -4,6 +4,7 @@ import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/solid";
 import Image from "next/image";
 import { IDao } from "types/daoInterface";
 import Link from "next/link";
+
 export const SubdaosCards = ({ subDAOs }: { subDAOs: IDao[] }) => {
   const [isLeftVisible, setIsLeftVisible] = useState(false);
   const [isRightVisible, setIsRightVisible] = useState(true);
@@ -25,7 +26,6 @@ export const SubdaosCards = ({ subDAOs }: { subDAOs: IDao[] }) => {
   const Title = () => {
     return <p className={"text-2xl font-bold"}>Sub CapyDAO</p>;
   };
-
   return (
     <>
       {subDAOs?.length > 0 && (
@@ -56,7 +56,7 @@ export const SubdaosCards = ({ subDAOs }: { subDAOs: IDao[] }) => {
               >
                 {subDAOs?.map((subdao, index) => (
                   <Link
-                    href={`/dao/${capyDaoAddress}/subdao/${subdao.id!}`}
+                    href={`/dao/${capyDaoAddress}/subdao/${subdao.id.id!}`}
                     key={index}
                     className="mr-4 flex h-[170px] min-w-[256px] max-w-[256px] rounded-xl border-2 border-blackColor bg-yellowColor"
                   >

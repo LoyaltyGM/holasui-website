@@ -29,6 +29,7 @@ const CreateProposal = ({ isSubDAO = false }: { isSubDAO?: boolean }) => {
 
   const { wallet, status } = ethos.useWallet();
   const [waitSui, setWaitSui] = useState(false);
+  const [isSubDAOState, setIsSubDAOState] = useState(isSubDAO);
 
   const [frens, setFrens] = useState<ICapy[] | null>();
   const { register, setValue, handleSubmit, watch } = useForm<Inputs>({
@@ -71,7 +72,7 @@ const CreateProposal = ({ isSubDAO = false }: { isSubDAO?: boolean }) => {
 
       const response = await wallet.signAndExecuteTransactionBlock({
         transactionBlock: signTransactionCreateCapyDaoProposal({
-          dao_type: isCapyDao ? (isSubDAO ? "capy_subdao" : "capy_dao") : "dao",
+          dao_type: isCapyDao ? (isSubDAOState ? "capy_subdao" : "capy_dao") : "dao",
           frens_id: requiredFren.id,
           name: form.name,
           description: form.description,
@@ -143,7 +144,6 @@ const CreateProposal = ({ isSubDAO = false }: { isSubDAO?: boolean }) => {
       </nav>
     );
   };
-
   return status === EthosConnectStatus.NoConnection ? (
     <NoConnectWallet title={"Create DAO!"} />
   ) : (
@@ -154,7 +154,9 @@ const CreateProposal = ({ isSubDAO = false }: { isSubDAO?: boolean }) => {
     >
       <BradcrumbsHeader />
 
-      <h1 className={"text-2xl font-bold"}>New Proposal</h1>
+      <h1 className={"text-2xl font-bold"}>
+        {isSubDAOState ? "New SubDAO Proposal" : "New Proposal"}
+      </h1>
       <form onSubmit={handleSubmit(onSubmit)} className={"flex flex-col gap-6"}>
         <div className={"flex flex-col"}>
           <div className={"flex justify-between"}>
