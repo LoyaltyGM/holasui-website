@@ -124,7 +124,7 @@ const DetailDaoAddress: NextPage<IDaoAddressProps> = ({ daoAddress }) => {
           }),
         )
           .then((subdao) => {
-            setSubdaos([...subdao] as IDao[]);
+            setSubdaos(subdao);
           })
           .finally(() => setIsSubdaosLoading(false));
       } catch (e) {
