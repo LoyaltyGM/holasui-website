@@ -4,6 +4,9 @@ import ExternalWebsiteIcon from "/public/img/ExternalLinkIcon.svg";
 import Link from "next/link";
 import { IDao } from "types/daoInterface";
 import { classNames } from "../../../utils";
+import { Dispatch, Fragment, SetStateAction, useState } from "react";
+import { Dialog, Transition } from "@headlessui/react";
+import { XMarkIcon } from "@heroicons/react/24/solid";
 
 export const DAOInfo = ({
   dao,
@@ -14,6 +17,8 @@ export const DAOInfo = ({
   daoAddress: string;
   isSubDao?: boolean;
 }) => {
+  const [openedDialog, setOpenedDialog] = useState(false);
+
   const InfoDaoDescription = () => {
     return (
       <div
@@ -78,12 +83,67 @@ export const DAOInfo = ({
               className={
                 "mt-2 flex justify-center cursor-pointer md:px-4 text-xs text-black2Color underline underline-offset-4 hover:text-pinkColor "
               }
+              onClick={() => setOpenedDialog(true)}
             >
               What is Sub DAO?
             </div>
           </div>
         </div>
       </div>
+
+      <WhatIsSubdaoDialog openDialog={openedDialog} setOpenDialog={setOpenedDialog} />
     </div>
+  );
+};
+
+interface IWhatIsSubdaoDialog {
+  openDialog: boolean;
+  setOpenDialog: Dispatch<SetStateAction<boolean>>;
+}
+
+const WhatIsSubdaoDialog = ({ openDialog, setOpenDialog }: IWhatIsSubdaoDialog) => {
+  return (
+    <Transition.Root show={openDialog} as={Fragment}>
+      <Dialog
+        as="div"
+        className={classNames("relative z-10")}
+        onClose={() => {
+          setOpenDialog(false);
+        }}
+      >
+        <Transition.Child
+          as={Fragment}
+          enter="ease-out duration-300"
+          enterFrom="opacity-0"
+          enterTo="opacity-100"
+          leave="ease-in duration-200"
+          leaveFrom="opacity-100"
+          leaveTo="opacity-0"
+        >
+          <div className="fixed inset-0 bg-[#5e5e5e] bg-opacity-75 transition-opacity" />
+        </Transition.Child>
+
+        <div className="fixed inset-0 z-10 overflow-auto">
+          <div className="flex min-h-full items-center justify-center">
+            <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-basicColor px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-sm sm:p-6">
+              <Dialog.Title
+                className={classNames(
+                  "mb-2 flex justify-between  text-center text-base font-bold leading-6 text-black2Color",
+                )}
+              >
+                <p className="mt-1"></p>
+                <p className={classNames("mt-1")}>What is Subdao?</p>
+                <button onClick={() => setOpenDialog(false)}>
+                  <XMarkIcon className="flex h-7 w-7 md:hidden" />
+                </button>
+              </Dialog.Title>
+              <div className={"flex flex-col gap-6"}>
+                <p>SubDAO is a DAO that is created by another DAO. It is a way to create a DAO</p>
+              </div>
+            </Dialog.Panel>
+          </div>
+        </div>
+      </Dialog>
+    </Transition.Root>
   );
 };
