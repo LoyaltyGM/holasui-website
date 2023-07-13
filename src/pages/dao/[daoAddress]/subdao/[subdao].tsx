@@ -110,7 +110,7 @@ const DetailSubDaoAddress: NextPage<ISubDaoAddressProps> = ({ daoAddress, subDao
 
   const BradcrumbsHeader = () => {
     return (
-      <nav className="mt-24 flex" aria-label="Breadcrumb">
+      <nav className="mt-24 md:flex hidden" aria-label="Breadcrumb">
         <ol className="inline-flex items-center space-x-1">
           <li className="inline-flex items-center">
             <Link

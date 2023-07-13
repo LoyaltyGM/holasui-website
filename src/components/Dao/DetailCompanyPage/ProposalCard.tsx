@@ -21,7 +21,7 @@ export const ProposalCard = ({
     >
       <div className={"flex content-center items-center gap-10"}>
         <p className={"text-xl font-bold text-black2Color"}>{index}</p>
-        <p className={"w-1/2 min-w-[300px] text-xl font-medium"}>{proposal.name}</p>
+        <p className={"w-1/2 md:min-w-[300px] text-xl font-medium"}>{proposal.name}</p>
       </div>
       <div className={"flex content-center items-center gap-10"}>
         <DateTimeBadge proposal={proposal} />
@@ -38,7 +38,7 @@ const DateTimeBadge = ({ proposal }: { proposal: IProposal }) => {
       ? daysUntil(Number(proposal.end_time))
       : daysUntil(Number(proposal.start_time));
   return (
-    <div className={"text-black2Color"}>
+    <div className={"hidden md:flex text-black2Color"}>
       {status !== undefined && status !== null && status === DAO_PROPOSAL_STATUS_ACTIVE
         ? date
         : status === DAO_PROPOSAL_STATUS_CANCELED ||

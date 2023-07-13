@@ -29,7 +29,7 @@ export const DAOInfo = ({
   return (
     <div className={"mt-10"}>
       <div className={"flex w-full justify-between"}>
-        <div className={"flex w-full justify-between"}>
+        <div className={"md:flex w-full md:justify-between"}>
           <div className={"flex gap-4"}>
             <Image
               src={dao?.image || frensLogo}
@@ -59,10 +59,10 @@ export const DAOInfo = ({
 
           <div
             className={classNames(
-              "flex w-1/4 flex-col",
+              "flex w-full mt-2 md:mt-0 md:w-1/4 flex-col",
               isSubDao
-                ? "justify-center items-center content-start"
-                : "justify-center items-end content-end",
+                ? "justify-start items-start content-start md:justify-center md:items-center md:content-start"
+                : "justify-start items-start content-start md:justify-center md:items-end md:content-end",
             )}
           >
             {isSubDao ? (
@@ -76,7 +76,7 @@ export const DAOInfo = ({
             )}
             <div
               className={
-                "mt-2 flex justify-center cursor-pointer px-4 text-xs text-black2Color underline underline-offset-4 hover:text-pinkColor "
+                "mt-2 flex justify-center cursor-pointer md:px-4 text-xs text-black2Color underline underline-offset-4 hover:text-pinkColor "
               }
             >
               What is Sub DAO?

@@ -161,7 +161,7 @@ const CreateProposal = () => {
 
   const BradcrumbsHeader = () => {
     return (
-      <nav className="mt-10 flex" aria-label="Breadcrumb">
+      <nav className="mt-10 md:flex hidden" aria-label="Breadcrumb">
         <ol className="inline-flex items-center space-x-1 md:space-x-3">
           <li className="inline-flex items-center">
             <Link

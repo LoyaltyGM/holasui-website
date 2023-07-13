@@ -171,7 +171,7 @@ const DetailDaoAddress: NextPage<IDaoAddressProps> = ({ daoAddress }) => {
 
   const BradcrumbsHeader = () => {
     return (
-      <nav className="mt-24 flex" aria-label="Breadcrumb">
+      <nav className="mt-24 md:flex hidden" aria-label="Breadcrumb">
         <ol className="inline-flex items-center space-x-1">
           <li className="inline-flex items-center">
             <Link
@@ -201,7 +201,7 @@ const DetailDaoAddress: NextPage<IDaoAddressProps> = ({ daoAddress }) => {
   ) : (
     <main
       className={classNames(
-        "mt-18 z-10 mt-8 flex min-h-[100vh] flex-col rounded-lg py-6 pl-2 pr-2 md:mt-14 md:min-h-[65vh] md:pl-16 md:pr-10 ",
+        "mt-32 z-10  flex min-h-[100vh] flex-col rounded-lg py-6 pl-2 pr-2 md:mt-14 md:min-h-[65vh] md:pl-16 md:pr-10 ",
       )}
     >
       {!isDaoLoading ? (

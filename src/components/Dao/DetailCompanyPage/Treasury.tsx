@@ -69,7 +69,7 @@ export const Treasury = ({
         "mt-12 min-h-[125px] w-full content-center items-center justify-between rounded-xl border-2 border-grayColor bg-white px-8 py-6"
       }
     >
-      <div className={"flex w-full"}>
+      <div className={"md:flex w-full"}>
         <div className={"w-full"}>
           <p className={"text-lg font-bold text-grayColor"}>Treasury</p>
           <div
@@ -82,10 +82,10 @@ export const Treasury = ({
             <p>SUI</p>
           </div>
         </div>
-        <div className={"w-1/4"}>
+        <div className={"md:w-1/4 w-full"}>
           <button
             className={
-              "button-primary button-shadow w-min-[130px] w-max-[130px] mt-4 flex max-h-[48px] min-h-[48px] content-center items-center font-bold text-white"
+              "button-primary button-shadow w-full md:w-min-[130px] md:w-max-[130px] mt-4 flex max-h-[48px] min-h-[48px] content-center items-center font-bold text-white"
             }
             onClick={() => setOpenedDialog(true)}
           >
