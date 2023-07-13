@@ -407,8 +407,16 @@ const ProposalPage: NextPage<IProposalProps> = ({ proposalId }) => {
   const ProposedTransactions = () => {
     return (
       <div className={"mt-14"}>
-        <p className={"text-2xl font-bold text-blackColor"}>Proposed transactions</p>
-        <div className={"flex"}></div>
+        <p className={"font-bold text-2xl text-blackColor"}>Proposed transactions</p>
+        <div
+          className={
+            "mt-2 border-grayColor bg-white justify-between flex border  py-4 px-4 rounded-xl"
+          }
+        >
+          <p>Sent to</p>
+          <p>{proposal?.recipient}</p>
+          <p>{proposal?.amount / 1e9} SUI</p>
+        </div>
       </div>
     );
   };
@@ -431,7 +439,7 @@ const ProposalPage: NextPage<IProposalProps> = ({ proposalId }) => {
         <VotingCards />
         <ProposalSettingsInfo />
         <ProposalDescription />
-        <ProposedTransactions />
+        {proposal?.type === 1 && <ProposedTransactions />}
         <VotingButtons />
       </main>
     </div>
