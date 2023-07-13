@@ -316,11 +316,9 @@ const ProposalPage: NextPage<IProposalProps> = ({ proposalId }) => {
 
   const VotingCards = () => {
     return (
-      <div className={"space-y-2 md:space-y-0 md:flex w-full justify-between"}>
+      <div className={"space-y-2 gap-4 md:space-y-0 md:flex w-full justify-between"}>
         <div
-          className={
-            "h-[120px] w-full md:w-[300px] rounded-3xl border border-black2Color bg-white px-6 py-4"
-          }
+          className={"h-[120px] w-full rounded-3xl border-2 border-grayColor bg-white px-6 py-4"}
         >
           <div className={"flex justify-between text-lg"}>
             <p className={"font-medium text-greenColor"}>For</p>
@@ -332,9 +330,7 @@ const ProposalPage: NextPage<IProposalProps> = ({ proposalId }) => {
           {/*<VotingUsers />*/}
         </div>
         <div
-          className={
-            "h-[120px] w-full md:w-[300px] rounded-3xl border border-black2Color bg-white px-6 py-4"
-          }
+          className={"h-[120px] w-full rounded-3xl border-2 border-grayColor bg-white px-6 py-4"}
         >
           <div className={"flex justify-between text-lg"}>
             <p className={"font-medium text-redColor"}>Against</p>
@@ -346,9 +342,7 @@ const ProposalPage: NextPage<IProposalProps> = ({ proposalId }) => {
           {/*<VotingUsers />*/}
         </div>
         <div
-          className={
-            "h-[120px] w-full md:w-[300px] rounded-3xl border border-black2Color bg-white px-6 py-4"
-          }
+          className={"h-[120px] w-full rounded-3xl border-2 border-grayColor bg-white px-6 py-4"}
         >
           <div className={"flex justify-between text-lg"}>
             <p className={"font-medium text-black2Color"}>Abstain</p>
@@ -450,7 +444,9 @@ const ProposalPage: NextPage<IProposalProps> = ({ proposalId }) => {
     return (
       <form onSubmit={handleSubmit(onSubmit)} className={"mt-16"}>
         <div className={"flex justify-between"}>
-          <Label label={"Voting"} className={"text-2xl text-blackColor"} />
+          <label className="label">
+            <span className={classNames("font-bold text-2xl text-blackColor")}>{"Voting"}</span>
+          </label>
           <button
             type={"submit"}
             disabled={waitSui}
@@ -474,8 +470,8 @@ const ProposalPage: NextPage<IProposalProps> = ({ proposalId }) => {
                 className={({ checked }) =>
                   classNames(
                     checked
-                      ? "bg-pinkColor text-white"
-                      : "bg-white text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50",
+                      ? "border-pinkColor border-2 bg-white"
+                      : "bg-white border text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50",
                     "flex cursor-pointer items-center justify-center rounded-xl px-3 py-3 text-sm font-semibold uppercase sm:flex-1",
                   )
                 }
@@ -515,7 +511,12 @@ const ProposalPage: NextPage<IProposalProps> = ({ proposalId }) => {
   };
 
   const ProposalDescription = () => {
-    return <div></div>;
+    return (
+      <div>
+        <p className={"font-bold text-2xl text-blackColor mt-4"}>Description</p>
+        <p>{proposal?.description}</p>
+      </div>
+    );
   };
 
   return status === EthosConnectStatus.NoConnection ? (
