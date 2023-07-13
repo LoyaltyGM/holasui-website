@@ -68,7 +68,7 @@ export const signTransactionCreateCapyDaoProposal = ({
 
   let optionRecipient;
   let optionAmount;
-  console.log(recipient, amount);
+
   if (recipient && amount) {
     optionRecipient = tx.moveCall({
       target: `0x1::option::some`,
@@ -262,6 +262,78 @@ export const signTransactionDepositToTreasury = ({
     target: `${TEST_DAO_PACKAGE_ID}::${targetModule}::deposit_to_treasury`,
     arguments: [tx.pure(dao_id), coin],
     typeArguments: [type], // type of dao
+  });
+
+  return tx;
+};
+
+export const signTransactionCreateCustomDaoProposal = ({
+  dao_id,
+  nft,
+  nftType,
+  name,
+  description,
+  type,
+  recipient,
+  amount,
+}: {
+  dao_id: string;
+  nft: {
+    digest: string;
+    objectId: string;
+    version: string;
+  };
+  nftType: string;
+  name: string;
+  description: string;
+  type: number;
+  recipient: string | null;
+  amount: number | null;
+}) => {
+  const tx = new TransactionBlock();
+
+  let optionRecipient;
+  let optionAmount;
+
+  if (recipient && amount) {
+    optionRecipient = tx.moveCall({
+      target: `0x1::option::some`,
+      arguments: [tx.pure(recipient, "address")],
+      typeArguments: ["address"], // type of frens
+    });
+
+    optionAmount = tx.moveCall({
+      target: `0x1::option::some`,
+      arguments: [tx.pure(amount * 1e9, "u64")],
+      typeArguments: ["u64"], // type of frens
+    });
+  } else {
+    optionRecipient = tx.moveCall({
+      target: `0x1::option::none`,
+      arguments: [],
+      typeArguments: ["address"], // type of frens
+    });
+
+    optionAmount = tx.moveCall({
+      target: `0x1::option::none`,
+      arguments: [],
+      typeArguments: ["u64"], // type of frens
+    });
+  }
+
+  tx.moveCall({
+    target: `${TEST_DAO_PACKAGE_ID}::dao::create_proposal`,
+    arguments: [
+      tx.pure(dao_id),
+      tx.objectRef(nft),
+      tx.pure(name),
+      tx.pure(description),
+      tx.pure(type),
+      optionRecipient,
+      optionAmount,
+      tx.pure("0x6"),
+    ],
+    typeArguments: [nftType!], // type of frens
   });
 
   return tx;

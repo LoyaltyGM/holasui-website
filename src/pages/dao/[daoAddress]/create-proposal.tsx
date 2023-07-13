@@ -1,16 +1,21 @@
 import { ethos, EthosConnectStatus } from "ethos-connect";
 import { AlertErrorMessage, Label, NoConnectWallet } from "components";
-import { classNames, formatSuiAddress, ORIGIN_CAPY_DAO_ID } from "utils";
+import { classNames, convertIPFSUrl, formatSuiAddress, ORIGIN_CAPY_DAO_ID } from "utils";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { RadioGroup } from "@headlessui/react";
-import { getExecutionStatus, getExecutionStatusError } from "@mysten/sui.js";
-import { fetchCapyStaking, signTransactionCreateCapyDaoProposal } from "services/sui";
-import { ICapy } from "types";
+import { getExecutionStatus, getExecutionStatusError, getObjectFields } from "@mysten/sui.js";
+import {
+  fetchCapyStaking,
+  signTransactionCreateCapyDaoProposal,
+  signTransactionCreateCustomDaoProposal,
+  suiProvider,
+} from "services/sui";
 import toast from "react-hot-toast";
 import { FolderIcon } from "@heroicons/react/24/solid";
+import { IDao } from "types/daoInterface";
 
 type Inputs = {
   name: string;
@@ -22,16 +27,17 @@ type Inputs = {
 
 const proposalTypes = ["Voting", "Funding"];
 
-const CreateProposal = ({ isSubDAO = false }: { isSubDAO?: boolean }) => {
+const CreateProposal = () => {
   const router = useRouter();
+
   const originDaoAddress = router.query.daoAddress as string;
   const isCapyDao = originDaoAddress === ORIGIN_CAPY_DAO_ID;
+  const [dao, setDao] = useState<IDao>();
+  const [nftType, setNftType] = useState<string>("");
 
   const { wallet, status } = ethos.useWallet();
   const [waitSui, setWaitSui] = useState(false);
-  const [isSubDAOState, setIsSubDAOState] = useState(isSubDAO);
 
-  const [frens, setFrens] = useState<ICapy[] | null>();
   const { register, setValue, handleSubmit, watch } = useForm<Inputs>({
     defaultValues: {
       type: proposalTypes[0],
@@ -39,24 +45,36 @@ const CreateProposal = ({ isSubDAO = false }: { isSubDAO?: boolean }) => {
   });
 
   useEffect(() => {
-    async function fetchWalletFrens() {
-      if (!wallet?.address) {
-        setFrens(null);
-        return;
-      }
+    async function fetchDao() {
       try {
-        const nfts = wallet?.contents?.nfts!;
-        const fetchedFrens = fetchCapyStaking(nfts);
-        if (fetchedFrens && fetchedFrens.length > 0) {
-          setFrens(fetchedFrens);
-        }
+        const daoObject = await suiProvider.getObject({
+          id: originDaoAddress,
+          options: {
+            showContent: true,
+          },
+        });
+
+        const daoObjectType = (daoObject?.data?.content as any).type!;
+        const nftType = daoObjectType.slice(
+          daoObjectType.indexOf("<") + 1,
+          daoObjectType.lastIndexOf(">"),
+        );
+        setNftType(nftType);
+
+        const dao = getObjectFields(daoObject) as any;
+        dao.id = dao.id.id;
+        dao.subdaos = dao.subdaos?.fields?.contents?.fields?.id?.id;
+        dao.proposals = dao.proposals?.fields?.id?.id;
+        dao.image = convertIPFSUrl(dao.image);
+
+        setDao(getObjectFields(daoObject) as IDao);
       } catch (e) {
-        console.error(e);
+        console.log(e);
       }
     }
 
-    fetchWalletFrens().then();
-  }, [wallet?.address, wallet?.contents?.nfts]);
+    fetchDao().then();
+  }, []);
 
   const onSubmit: SubmitHandler<Inputs> = async (form) => {
     if (!wallet) return;
@@ -64,27 +82,65 @@ const CreateProposal = ({ isSubDAO = false }: { isSubDAO?: boolean }) => {
     try {
       console.log(form);
 
-      if (!frens || frens.length === 0) {
-        toast.error("You don't have Capy Fren");
+      if (form.type === "Funding" && form.amount && form.amount * 1e9 > dao?.treasury!) {
+        toast.error("Insufficient funds in treasury");
         return;
       }
-      const requiredFren = frens[0];
 
-      const response = await wallet.signAndExecuteTransactionBlock({
-        transactionBlock: signTransactionCreateCapyDaoProposal({
-          dao_type: isCapyDao ? (isSubDAOState ? "capy_subdao" : "capy_dao") : "dao",
-          frens_id: requiredFren.id,
-          name: form.name,
-          description: form.description,
-          type: form.type === "Voting" ? 0 : 1,
-          dao_id: originDaoAddress,
-          recipient: form.recipient || null,
-          amount: form.amount || null,
-        }),
-        options: {
-          showEffects: true,
-        },
-      });
+      let response: any;
+
+      if (!isCapyDao) {
+        const nfts = await suiProvider.getOwnedObjects({
+          owner: wallet.address,
+          filter: {
+            StructType: nftType,
+          },
+        });
+
+        if (!nfts.data || nfts.data.length === 0) {
+          toast.error("You don't have any NFT with this type");
+          return;
+        }
+
+        response = await wallet.signAndExecuteTransactionBlock({
+          transactionBlock: signTransactionCreateCustomDaoProposal({
+            nft: nfts?.data[0].data!,
+            nftType: nftType,
+            name: form.name,
+            description: form.description,
+            type: form.type === "Voting" ? 0 : 1,
+            dao_id: originDaoAddress,
+            recipient: form.recipient || null,
+            amount: form.amount || null,
+          }),
+          options: {
+            showEffects: true,
+          },
+        });
+      } else {
+        const fetchedFrens = fetchCapyStaking(wallet?.contents?.nfts!);
+        if (!fetchedFrens || fetchedFrens.length === 0) {
+          toast.error("You don't have Capy Fren");
+          return;
+        }
+        const requiredFren = fetchedFrens[0];
+
+        response = await wallet.signAndExecuteTransactionBlock({
+          transactionBlock: signTransactionCreateCapyDaoProposal({
+            dao_type: "capy_dao",
+            frens_id: requiredFren.id,
+            name: form.name,
+            description: form.description,
+            type: form.type === "Voting" ? 0 : 1,
+            dao_id: originDaoAddress,
+            recipient: form.recipient || null,
+            amount: form.amount || null,
+          }),
+          options: {
+            showEffects: true,
+          },
+        });
+      }
 
       const status = getExecutionStatus(response);
 
@@ -154,9 +210,7 @@ const CreateProposal = ({ isSubDAO = false }: { isSubDAO?: boolean }) => {
     >
       <BradcrumbsHeader />
 
-      <h1 className={"text-2xl font-bold"}>
-        {isSubDAOState ? "New SubDAO Proposal" : "New Proposal"}
-      </h1>
+      <h1 className={"text-2xl font-bold"}>New Proposal</h1>
       <form onSubmit={handleSubmit(onSubmit)} className={"flex flex-col gap-6"}>
         <div className={"flex flex-col"}>
           <div className={"flex justify-between"}>
@@ -227,6 +281,11 @@ const CreateProposal = ({ isSubDAO = false }: { isSubDAO?: boolean }) => {
         {/*Shot recipient and amount inputs if type Funding */}
         {watch("type") === "Funding" && (
           <>
+            <div className={"flex gap-2"}>
+              <Label label={"Current treasury balance:"} />
+              <p className={"text-black2Color"}>{dao?.treasury! / 1e9} SUI</p>
+            </div>
+
             <div className={"flex flex-col"}>
               <Label label={"Recipient"} />
               <input
@@ -249,6 +308,8 @@ const CreateProposal = ({ isSubDAO = false }: { isSubDAO?: boolean }) => {
                   }
                   placeholder={"Amount"}
                   type={"number"}
+                  min={0.0001}
+                  step={0.0001}
                 />
                 <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-6">
                   <span className="text-sm text-gray-500">SUI</span>

@@ -11,6 +11,7 @@ export interface IDao {
   voting_period: number;
   subdaos: any;
   proposals: any;
+  birth_location?: string;
 }
 
 export interface IProposal {
