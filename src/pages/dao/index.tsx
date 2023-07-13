@@ -1,5 +1,5 @@
 import { ethos, EthosConnectStatus } from "ethos-connect";
-import { classNames, convertIPFSUrl, ORIGIN_CAPY_DAO_ID } from "utils";
+import { classNames, convertIPFSUrl, DAO_HUB_ID, ORIGIN_CAPY_DAO_ID } from "utils";
 import { DaoCard, NoConnectWallet } from "components";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -8,12 +8,11 @@ import { getObjectFields } from "@mysten/sui.js";
 import { IDao } from "types/daoInterface";
 
 const DAO = () => {
-  const { status, wallet } = ethos.useWallet();
-  const [dao, setDao] = useState<IDao>();
-  const [isDaoLoading, setIsDaoLoading] = useState<boolean>(true);
+  const { status } = ethos.useWallet();
+  const [capyDao, setCapyDao] = useState<IDao>();
+  const [daos, setDaos] = useState<IDao[]>([]);
 
   useEffect(() => {
-    setIsDaoLoading(true);
     async function fetchCapyDao() {
       try {
         const daoObject = await suiProvider.getObject({
@@ -22,68 +21,65 @@ const DAO = () => {
             showContent: true,
           },
         });
-        const dao = getObjectFields(daoObject) as IDao;
-        dao.subdaos = dao.subdaos?.fields?.contents?.fields?.id?.id;
-        dao.proposals = dao.proposals?.fields?.id?.id;
+        const dao = getObjectFields(daoObject) as any;
+        dao.id = dao.id?.id;
         dao.image = convertIPFSUrl(dao.image);
-        setDao(getObjectFields(daoObject) as IDao);
+
+        setCapyDao(getObjectFields(daoObject) as IDao);
       } catch (e) {
         console.log(e);
       }
     }
 
-    fetchCapyDao()
-      .then()
-      .finally(() => setIsDaoLoading(false));
+    async function fetchDaos() {
+      try {
+        setDaos([]);
+
+        const daoHubObject = await suiProvider.getObject({
+          id: DAO_HUB_ID,
+          options: {
+            showContent: true,
+          },
+        });
+
+        const daosId = getObjectFields(daoHubObject)!.daos!.fields!.contents!.fields!.id.id;
+
+        const response = await suiProvider.getDynamicFields({
+          parentId: daosId,
+        });
+        Promise.all(
+          response?.data?.map(async (df): Promise<IDao> => {
+            const dfObject = getObjectFields(
+              await suiProvider.getObject({
+                id: df?.objectId!,
+                options: { showContent: true },
+              }),
+            );
+
+            const dao = getObjectFields(
+              await suiProvider.getObject({
+                id: dfObject?.value,
+                options: {
+                  showContent: true,
+                },
+              }),
+            )!;
+            dao.id = dao.id?.id;
+            dao.image = convertIPFSUrl(dao.image);
+
+            return dao as IDao;
+          }),
+        ).then((daos) => {
+          setDaos(daos);
+        });
+      } catch (e) {
+        console.log(e);
+      }
+    }
+
+    fetchCapyDao().then();
+    fetchDaos().then();
   }, []);
-  const daoCards = [
-    {
-      title: "DAO Card One",
-      description: "This is the first DAO Card for your application.",
-      twitterUrl: "https://twitter.com/dao_card_one",
-      imageUrl: "https://pbs.twimg.com/profile_images/1659268735792816136/cKluYy4N_400x400.jpg",
-      daoAddress: "0x3D980E50508CFd41a13837A60149927a11c03731",
-    },
-    {
-      title: "DAO Card Two",
-      description: "This is the second DAO Card for your application.",
-      twitterUrl: "https://twitter.com/dao_card_two",
-      imageUrl: "https://pbs.twimg.com/profile_images/1666614102737797122/6E0poPYm_400x400.jpg",
-      daoAddress: "0x7c2C195CD6D34B8F845992d380aADB2730bB9C6F",
-    },
-    {
-      title: "DAO Card Three",
-      description:
-        "Description Description Description Description Description Description Description Description Description\n" +
-        'Description Description Description Description Description{" "}',
-      twitterUrl: "https://twitter.com/suinsdapp",
-      imageUrl: "https://pbs.twimg.com/profile_images/1643318976037142528/pIak4NCj_400x400.jpg",
-      daoAddress: "0xA72dE5b3F6388d2A10D6114a9B6389BDA6278E0C",
-    },
-    {
-      title: "DAO Card Four",
-      description: "This is the fourth DAO Card for your application.",
-      twitterUrl: "https://twitter.com/hola_sui",
-      imageUrl: "https://pbs.twimg.com/profile_images/1643318976037142528/pIak4NCj_400x400.jpg",
-      daoAddress: "0x52C5317c848ba20C75000F455F153e6F10665221",
-    },
-    {
-      title: "DAO Card Three",
-      description:
-        "Description Description Description Description Description Description Description Description Description\n" +
-        'Description Description Description Description Description{" "}',
-      twitterUrl: "https://twitter.com/suinsdapp",
-      imageUrl: "https://pbs.twimg.com/profile_images/1643318976037142528/pIak4NCj_400x400.jpg",
-      daoAddress: "0xA72dE5b3F6388d2A10D6114a9B6389BDA6278E0C",
-    },
-    {
-      title: "DAO Card Four",
-      description: "This is the fourth DAO Card for your application.",
-      twitterUrl: "https://twitter.com/hola_sui",
-      imageUrl: "https://pbs.twimg.com/profile_images/1643318976037142528/pIak4NCj_400x400.jpg",
-      daoAddress: "0x52C5317c848ba20C75000F455F153e6F10665221",
-    },
-  ];
 
   return status === EthosConnectStatus.NoConnection ? (
     <NoConnectWallet title={"DAO!"} />
@@ -95,29 +91,31 @@ const DAO = () => {
     >
       <div className={"mt-32 flex content-center items-center justify-between"}>
         <h1 className={"text-2xl font-semibold text-blackColor md:text-4xl"}>Hola, DAOs</h1>
-        <Link href={"dao/create"} className={"button-primary button-shadow px-5 py-3 font-bold"}>
+        <Link
+          href={"dao/create-dao"}
+          className={"button-primary button-shadow px-5 py-3 font-bold"}
+        >
           Create DAO
         </Link>
       </div>
       <div className={"mb-20 mt-10 grid grid-cols-1 gap-5 md:grid-cols-2"}>
         <DaoCard
-          key={dao?.id}
-          //@ts-ignore
-          daoAddress={dao?.id?.id!}
-          title={dao?.name!}
-          description={dao?.description!}
-          imageUrl={dao?.image!}
+          key={capyDao?.id}
+          daoAddress={capyDao?.id!}
+          title={capyDao?.name!}
+          description={capyDao?.description!}
+          imageUrl={capyDao?.image!}
           twitterUrl={"https://twitter.com/suinsdapp"}
         />
-        {daoCards.map((daoInfo) => {
+        {daos.map((dao) => {
           return (
             <DaoCard
-              key={daoInfo.daoAddress}
-              daoAddress={daoInfo.daoAddress}
-              title={daoInfo.title}
-              description={daoInfo.description}
-              imageUrl={daoInfo.imageUrl}
-              twitterUrl={daoInfo.twitterUrl}
+              key={dao.id}
+              daoAddress={dao.id}
+              title={dao.name}
+              description={dao.description}
+              imageUrl={dao.image}
+              twitterUrl={""}
             />
           );
         })}
