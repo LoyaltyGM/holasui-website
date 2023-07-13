@@ -5,6 +5,7 @@ import Head from "next/head";
 import { CustomToast, Sidebar } from "components";
 import { SUI_RPC_URL } from "../utils";
 import { Montserrat, Inter } from "next/font/google";
+import NextNProgress from "nextjs-progressbar";
 
 const font_montserrat = Montserrat({
   variable: "--montserrat-font",
@@ -22,7 +23,7 @@ export default function App({ Component, pageProps }: AppProps) {
         <title>¡hola sui! - nft staking platform</title>
         <meta property="og:title" content="hola! ola staking ola!" key="title" />
       </Head>
-
+      <NextNProgress color={"#E15A8C"} height={3} />
       <EthosConnectProvider
         ethosConfiguration={{
           chain: Chain.SUI_MAINNET, // Optional. Defaults to sui:devnet and sui:testnet - permanent testnet

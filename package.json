@@ -25,6 +25,7 @@
     "ethos-connect": "^0.0.179",
     "ipfs-http-client": "^60.0.1",
     "next": "^13.4.9",
+    "nextjs-progressbar": "^0.0.16",
     "postcss": "8.4.25",
     "prettier": "^3.0.0",
     "prettier-plugin-tailwindcss": "^0.3.0",
