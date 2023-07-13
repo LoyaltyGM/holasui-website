@@ -141,6 +141,15 @@ const ProposalPage: NextPage<IProposalProps> = ({ proposalId }) => {
     setWaitSui(true);
     try {
       console.log(form);
+      console.log(Date.now());
+      if (Date.now() < proposal?.start_time!) {
+        toast.error("Proposal is not started yet");
+        return;
+      }
+      if (Date.now() > proposal?.end_time!) {
+        toast.error("Proposal is already ended");
+        return;
+      }
 
       let response: any;
 
