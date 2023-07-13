@@ -1,15 +1,13 @@
 import Link from "next/link";
 import { ProposalCard } from "./ProposalCard";
-import { IProposal } from "../../../types/daoInterface";
+import { IProposal } from "types/daoInterface";
 
 export const Proposals = ({
   daoAddress,
   proposals,
-  isSubDao = false,
 }: {
   daoAddress: string;
   proposals: IProposal[];
-  isSubDao?: boolean;
 }) => {
   const TextWhenNoProposals = () => {
     return (
@@ -28,16 +26,8 @@ export const Proposals = ({
     <div className={"mb-10 mt-14"}>
       <div className={"mt-10 flex content-center items-center justify-between"}>
         <p className={"text-2xl font-bold"}>Proposals</p>
-        <Link
-          href={
-            isSubDao
-              ? `/dao/${daoAddress}/subdao/create-proposal`
-              : `/dao/${daoAddress}/create-proposal`
-          }
-        >
-          <button className={"button-primary button-shadow px-5 py-3"}>
-            {isSubDao ? "Submit Proposal" : "Submit Proposal"}
-          </button>
+        <Link href={`/dao/${daoAddress}/create-proposal`}>
+          <button className={"button-primary button-shadow px-5 py-3"}>Submit Proposal</button>
         </Link>
       </div>
       <div className={"mt-10 flex flex-col gap-2 space-y-4"}>
