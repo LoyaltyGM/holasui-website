@@ -14,7 +14,7 @@ export const DaoCard = (props: IDaoCard) => {
   const ImageDao = () => {
     return (
       <Image
-        src={props.imageUrl}
+        src={props.imageUrl || "/img/frens-logo.svg"}
         alt={"DAO Image"}
         className={"min-w-[160px] rounded-[11px] border border-black2Color bg-white object-cover"}
         width={160}
