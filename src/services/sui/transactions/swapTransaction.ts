@@ -1,5 +1,5 @@
 import { TransactionBlock } from "@mysten/sui.js";
-import { ESCROW_HUB_ID, CAPY_TYPE, PACKAGE_ID_ESCROW, PRICE_ESCROW } from "utils";
+import { ESCROW_HUB_ID, SUIFREN_CAPY_TYPE, PACKAGE_ID_ESCROW, PRICE_ESCROW } from "utils";
 
 export const signTransactionCreateEscrow = ({
   creator_objects,

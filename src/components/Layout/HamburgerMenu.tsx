@@ -13,50 +13,55 @@ const HamburgerMenu = () => {
   const toggleMenu = () => setIsOpen(!isOpen);
 
   return (
-    <div className="flex md:hidden relative">
+    <div className="flex md:hidden">
       <Bars3Icon
-        className="text-black h-10 w-10 text-3xl absolute top-5 right-2 z-10 cursor-pointer"
+        className="z-10 h-10 w-10 cursor-pointer text-3xl text-black"
         onClick={toggleMenu}
       />
       {isOpen && (
         <div
           className={classNames(
-            "fixed z-10 top-0 left-0 w-screen font-medium px-2 h-screen bg-black/90 bg-opacity-90 overflow-x-hidden transition-all duration-500 ease-in-out",
-            font_montserrat.className
+            "fixed left-0 top-0 z-10 h-screen w-screen overflow-x-hidden bg-black/90 bg-opacity-90 px-2 font-medium transition-all duration-500 ease-in-out",
+            font_montserrat.className,
           )}
         >
           <XMarkIcon
-            className="text-white text-3xl h-10 w-10 absolute top-5 right-5 cursor-pointer"
+            className="absolute right-5 top-5 h-10 w-10 cursor-pointer text-3xl text-white"
             onClick={toggleMenu}
           />
-          <div className="pt-24 w-full text-center">
+          <div className="w-full pt-24 text-center">
             <Link href="/">
-              <div className="block text-white bg-redColor py-3 rounded-md text-2xl my-3 transition-all duration-300 ease-in-out hover:text-gray-300">
+              <div className="my-3 block rounded-md bg-pinkColor py-3 text-2xl text-white transition-all duration-300 ease-in-out hover:text-gray-300">
                 Staking
               </div>
             </Link>
             <Link href="/swap">
-              <div className="block text-white bg-yellowColor py-3 rounded-md text-2xl my-3 transition-all duration-300 ease-in-out hover:text-gray-300">
+              <div className="my-3 block rounded-md bg-yellowColor py-3 text-2xl text-white transition-all duration-300 ease-in-out hover:text-gray-300">
                 P2P Swap
               </div>
             </Link>
+            <Link href="/dao">
+              <div className="my-3 block rounded-md bg-purpleColor py-3 text-2xl text-white transition-all duration-300 ease-in-out hover:text-gray-300">
+                DAO Hack
+              </div>
+            </Link>
 
-            <div className="block text-white bg-transparent py-3 rounded-md text-2xl my-3 transition-all duration-300 ease-in-out hover:text-gray-300"></div>
+            <div className="my-3 block rounded-md bg-transparent py-3 text-2xl text-white transition-all duration-300 ease-in-out hover:text-gray-300"></div>
             <a
               href="https://discord.gg/X8SXejkVHs"
               target="_black"
-              className="block text-white bg-purple-500 py-3 rounded-md text-2xl my-3 transition-all duration-300 ease-in-out hover:text-gray-300"
+              className="my-3 block rounded-md bg-purple-500 py-3 text-2xl text-white transition-all duration-300 ease-in-out hover:text-gray-300"
             >
               Discord
             </a>
             <a
               href="https://twitter.com/Hola_Sui"
               target="_black"
-              className="block text-white bg-blue-400 py-3 rounded-md text-2xl my-3 transition-all duration-300 ease-in-out hover:text-gray-300"
+              className="my-3 block rounded-md bg-blue-400 py-3 text-2xl text-white transition-all duration-300 ease-in-out hover:text-gray-300"
             >
               Twitter
             </a>
-            <div className="block text-white text-2xl my-3">
+            <div className="my-3 block text-2xl text-white">
               <ethos.components.AddressWidget />
             </div>
           </div>

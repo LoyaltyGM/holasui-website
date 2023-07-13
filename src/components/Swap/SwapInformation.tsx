@@ -13,15 +13,24 @@ export const SwapInformation = ({
   isRecipient = false,
 }: ISwapInformation) => {
   return (
-    <div className="md:w-full w-full px-3 md:mb-0 mb-2 ">
+    <div className="mb-2 w-full px-3 md:mb-0 md:w-full ">
       <div
-        className="h-[45vh] md:h-[30vh] mb-2 flex flex-col cursor-pointer justify-between w-full py-2 px-2 font-normal border-2 rounded-lg bg-white border-lightGrayColor text-purpleColor"
+        className="mb-2 flex h-[45vh] w-full cursor-pointer flex-col justify-between rounded-lg border-2 border-grayColor bg-white px-2 py-2 font-normal text-purpleColor md:h-[30vh]"
         onClick={() => setShowCollection(true)}
       >
-        <div className={"grid md:grid-cols-4 grid-cols-3 overflow-auto gap-1 h-[27vh] md:gap-4 md:mt-4 md:h-[20vh]"}>
+        <div
+          className={
+            "grid h-[27vh] grid-cols-3 gap-1 overflow-auto md:mt-4 md:h-[20vh] md:grid-cols-4 md:gap-4"
+          }
+        >
           {coinAmount !== 0 && coinAmount !== null ? (
-            <div className="text-2xl text-center gap-2 w-24 h-24 border bg-white flex items-center justify-center rounded-md">
-              <Image src={ImageSuiToken} alt="token" className="h-[25px] w-[26px]" aria-hidden="true" />
+            <div className="flex h-24 w-24 items-center justify-center gap-2 rounded-md border bg-white text-center text-2xl">
+              <Image
+                src={ImageSuiToken}
+                alt="token"
+                className="h-[25px] w-[26px]"
+                aria-hidden="true"
+              />
               <p>{`${coinAmount}`}</p>
             </div>
           ) : (
@@ -32,20 +41,26 @@ export const SwapInformation = ({
               <div
                 key={object.id}
                 className={classNames(
-                  "border bg-white w-24 h-24 flex flex-col content-center justify-center items-center p-2 rounded-md  cursor-pointer",
-                  ""
+                  "flex h-24 w-24 cursor-pointer flex-col content-center items-center justify-center rounded-md border bg-white  p-2",
+                  "",
                 )}
               >
-                <Image src={object.url} alt="collection_img" width={90} height={90} className="mt-1" />
+                <Image
+                  src={object.url}
+                  alt="collection_img"
+                  width={90}
+                  height={90}
+                  className="mt-1"
+                />
               </div>
             );
           })}
         </div>
-        <div className="flex justify-center text-center content-center items-center">
+        <div className="flex content-center items-center justify-center text-center">
           <button
             className={classNames(
-              " text-center content-center items-center rounded-md font-medium text-white w-full flex justify-between px-3 py-2",
-              isRecipient ? "bg-redColor" : "bg-purpleColor"
+              " flex w-full content-center items-center justify-between rounded-md px-3 py-2 text-center font-medium text-white",
+              isRecipient ? "bg-pinkColor" : "bg-purpleColor",
             )}
           >
             {isRecipient ? <p>Specify NFTs</p> : <p>Select NFTs</p>}
@@ -55,13 +70,18 @@ export const SwapInformation = ({
       {/* Your Sui Value */}
       <LabeledInput>
         <div className="relative">
-          <div className="pointer-events-none border-lightGrayColor absolute inset-y-0 left-0 flex items-center pl-3 pr-3">
-            <Image src={ImageSuiToken} alt="token" className="h-[25px] w-[26px]" aria-hidden="true" />
+          <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center border-grayColor pl-3 pr-3">
+            <Image
+              src={ImageSuiToken}
+              alt="token"
+              className="h-[25px] w-[26px]"
+              aria-hidden="true"
+            />
           </div>
           <input
             type={"text"}
             name="sui_amount"
-            className={"input-field border-lightGrayColor w-full pl-12 bg-white"}
+            className={"input-field w-full border-grayColor bg-white pl-12"}
             placeholder="Sui Amount Send"
             pattern={"[0-9]*"}
             onChange={(e) => setCoinAmount(Number(e.target.value))}

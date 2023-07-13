@@ -76,7 +76,7 @@ const Home = () => {
                 options: { showDisplay: true },
               });
               staked.url = (response.data?.display?.data! as Record<string, string>)?.image_url!;
-            })
+            }),
           ).then(() => setStakedFrens(stakingTickets));
         }
       } catch (e) {
@@ -330,22 +330,24 @@ const Home = () => {
     return (
       <button
         onClick={() => {
-          batchMode ? handleSetBatchIdStake(capy.id, batchIdStake, setBatchIdStake) : setOpenedFrend(true);
+          batchMode
+            ? handleSetBatchIdStake(capy.id, batchIdStake, setBatchIdStake)
+            : setOpenedFrend(true);
           setSelectedFrend(capy);
         }}
       >
         <div
           className={classNames(
-            "flex flex-col items-center gap-2 bg-[#FFFFFF] rounded-xl py-8 border-2",
+            "flex flex-col items-center gap-2 rounded-xl border-2 bg-[#FFFFFF] py-8",
             batchMode
               ? batchIdStake.includes(capy.id)
                 ? "border-yellowColor"
-                : "border-grayColor"
-              : "border-[#FFFFFF]"
+                : "border-black2Color"
+              : "border-[#FFFFFF]",
           )}
         >
           <div className="relative">
-            <div className="w-40 h-40">
+            <div className="h-40 w-40">
               <Image src={capy.url} alt={capy.description} fill={true} />
             </div>
           </div>
@@ -354,22 +356,34 @@ const Home = () => {
     );
   };
 
-  const StakedTicketCard = ({ staking, batchMode }: { staking: IStakingTicket; batchMode: boolean }) => {
+  const StakedTicketCard = ({
+    staking,
+    batchMode,
+  }: {
+    staking: IStakingTicket;
+    batchMode: boolean;
+  }) => {
     return (
       <button
         onClick={() => {
-          batchMode ? handleSetBatchIdStake(staking.id, batchIdUnstake, setBatchIdUnstake) : setOpenedUnstaked(true);
+          batchMode
+            ? handleSetBatchIdStake(staking.id, batchIdUnstake, setBatchIdUnstake)
+            : setOpenedUnstaked(true);
           setSelectedStaked(staking);
         }}
       >
         <div
           className={classNames(
-            "flex flex-col items-center gap-2 bg-white rounded-xl py-8 border-2",
-            batchMode ? (batchIdUnstake.includes(staking.id) ? "border-redColor" : "border-grayColor") : "border-white"
+            "flex flex-col items-center gap-2 rounded-xl border-2 bg-white py-8",
+            batchMode
+              ? batchIdUnstake.includes(staking.id)
+                ? "border-pinkColor"
+                : "border-black2Color"
+              : "border-white",
           )}
         >
           <div className="relative">
-            <div className={"w-40 h-40"}>
+            <div className={"h-40 w-40"}>
               <Image src={staking.url} alt={"staking"} fill={true} className="rounded-md" />
             </div>
           </div>
@@ -381,7 +395,7 @@ const Home = () => {
   return status === EthosConnectStatus.NoConnection ? (
     <NoConnectWallet title={"Staking!"} />
   ) : (
-    <main className="flex min-h-[85vh] flex-col pl-2 pr-2 md:pl-16 py-6 mt-20 md:pr-10 z-10 rounded-lg bg-bgMain">
+    <main className="z-10 mt-20 flex min-h-[85vh] flex-col rounded-lg bg-basicColor py-6 pl-2 pr-2 md:pl-16 md:pr-10">
       {stakedFrens ? (
         <ProjectCard
           availablePointsToClaim={availablePointsToClaim}
@@ -399,12 +413,19 @@ const Home = () => {
         <>
           <div className="flex justify-between">
             <h1
-              className={classNames("mt-8 md:text-4xl text-xl font-semibold text-grayColor", font_montserrat.className)}
+              className={classNames(
+                "mt-8 text-xl font-semibold text-black2Color md:text-4xl",
+                font_montserrat.className,
+              )}
             >
               My Staked Frens
             </h1>
             <div className="md:flex">
-              <p className={classNames("md:mt-10 mt-9 w-full text-xs md:px-4 md:text-sm font-normal")}>
+              <p
+                className={classNames(
+                  "mt-9 w-full text-xs font-normal md:mt-10 md:px-4 md:text-sm",
+                )}
+              >
                 {batchUnstakeMode ? (
                   batchIdUnstake.length === 0 ? (
                     "Select capy for unstaking"
@@ -417,7 +438,7 @@ const Home = () => {
               </p>
               <button
                 className={classNames(
-                  "md:mt-8 text-sm min-w-[220px] md:text-lg border-2 px-3 py-4 md:py-2 md:px-8 w-full rounded-xl bg-white border-redColor text-redColor hover:bg-[#cc5480] hover:text-gray-50 hover:border-transparent"
+                  "w-full min-w-[220px] rounded-xl border-2 border-pinkColor bg-white px-3 py-4 text-sm text-pinkColor hover:border-transparent hover:bg-[#cc5480] hover:text-gray-50 md:mt-8 md:px-8 md:py-2 md:text-lg",
                 )}
                 onClick={() => {
                   batchUnstakeMode
@@ -427,11 +448,19 @@ const Home = () => {
                     : setBatchUnstakeMode(true);
                 }}
               >
-                {batchUnstakeMode ? batchIdUnstake.length === 0 ? "Cancel" : "Confirm" : <p>Batch Unstaking</p>}
+                {batchUnstakeMode ? (
+                  batchIdUnstake.length === 0 ? (
+                    "Cancel"
+                  ) : (
+                    "Confirm"
+                  )
+                ) : (
+                  <p>Batch Unstaking</p>
+                )}
               </button>
             </div>
           </div>
-          <div className={"grid md:grid-cols-4 grid-cols-2 gap-2 md:gap-10 mt-8"}>
+          <div className={"mt-8 grid grid-cols-2 gap-2 md:grid-cols-4 md:gap-10"}>
             {stakedFrens?.map((stack) => (
               <StakedTicketCard staking={stack} key={stack.id} batchMode={batchUnstakeMode} />
             ))}
@@ -440,13 +469,22 @@ const Home = () => {
       )}
 
       <div className="flex justify-between">
-        <h1 className={classNames("mt-8 md:text-4xl text-xl font-semibold text-grayColor", font_montserrat.className)}>
+        <h1
+          className={classNames(
+            "mt-8 text-xl font-semibold text-black2Color md:text-4xl",
+            font_montserrat.className,
+          )}
+        >
           My Frens
         </h1>
         {frens?.length !== 0 ? (
           <>
             <div className="md:flex">
-              <p className={classNames("md:mt-10 mt-9 w-full text-xs md:px-4 md:text-sm font-normal")}>
+              <p
+                className={classNames(
+                  "mt-9 w-full text-xs font-normal md:mt-10 md:px-4 md:text-sm",
+                )}
+              >
                 {batchStakeMode ? (
                   batchIdStake.length === 0 ? (
                     "Select capy for staking"
@@ -459,7 +497,7 @@ const Home = () => {
               </p>
               <button
                 className={classNames(
-                  "md:mt-8 md:min-w-[220px] text-sm md:text-lg bg-white border-yellowColor border-2 px-3 py-4 md:py-2 md:px-8 w-full rounded-xl text-yellowColor hover:bg-yellowColor hover:text-gray-50 hover:border-transparent"
+                  "w-full rounded-xl border-2 border-yellowColor bg-white px-3 py-4 text-sm text-yellowColor hover:border-transparent hover:bg-yellowColor hover:text-gray-50 md:mt-8 md:min-w-[220px] md:px-8 md:py-2 md:text-lg",
                 )}
                 onClick={() => {
                   batchStakeMode
@@ -469,7 +507,11 @@ const Home = () => {
                     : setBatchStakeMode(true);
                 }}
               >
-                {batchStakeMode ? (batchIdStake.length === 0 ? "Cancel" : "Confirm") : "Batch Staking"}
+                {batchStakeMode
+                  ? batchIdStake.length === 0
+                    ? "Cancel"
+                    : "Confirm"
+                  : "Batch Staking"}
               </button>
             </div>
           </>
@@ -478,7 +520,7 @@ const Home = () => {
         )}
       </div>
       {frens?.length !== 0 ? (
-        <div className={"grid md:grid-cols-4 grid-cols-2 gap-2 md:gap-10 mt-8"}>
+        <div className={"mt-8 grid grid-cols-2 gap-2 md:grid-cols-4 md:gap-10"}>
           {frens?.map((capy) => (
             <SuifrensCard capy={capy} key={capy.id} batchMode={batchStakeMode} />
           ))}
@@ -488,7 +530,10 @@ const Home = () => {
           {stakedFrens?.length !== 0 ? (
             <div className="mt-8 text-center">
               <div
-                className={classNames(font_montserrat.className, "md:text-4xl text-2xl font-semibold text-grayColor")}
+                className={classNames(
+                  font_montserrat.className,
+                  "text-2xl font-semibold text-black2Color md:text-4xl",
+                )}
               >
                 All your capies are staked
               </div>
@@ -496,7 +541,9 @@ const Home = () => {
             </div>
           ) : (
             <div className={classNames("mt-8 text-center", font_montserrat.className)}>
-              <div className={classNames("text-4xl font-semibold text-grayColor")}>You don't have capy :(</div>
+              <div className={classNames("text-4xl font-semibold text-black2Color")}>
+                You don't have capy :(
+              </div>
               <BlueMoveButton text={"Get one Capy on"} />
             </div>
           )}

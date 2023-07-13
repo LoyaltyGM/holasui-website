@@ -33,17 +33,15 @@ export function formatNumber(num: number) {
   return shortenedNum + suffixes[suffixNum]; // append the suffix
 }
 
-
-export function formatSuiAddress(address: string, startLength = 2, endLength = 3): string {
+export function formatSuiAddress(address: string, startLength = 3, endLength = 4): string {
   if (address.length <= startLength + endLength) {
     return address;
   }
-
   const start = address.slice(0, startLength + 2); // Include the "0x" prefix
   const end = address.slice(-endLength);
   return `${start}...${end}`;
 }
 
-export function formatSuiNumber(num: number): number {
+export function formatSuiNumber(num: any): number {
   return num / 1000000000;
 }

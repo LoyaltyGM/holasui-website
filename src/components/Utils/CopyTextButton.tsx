@@ -16,7 +16,10 @@ export const CopyTextButton = ({ showText, copyText }: { showText: string; copyT
   };
 
   return (
-    <div className={"flex items-center hover:text-base-content/50 hover:cursor-pointer"} onClick={handleClick}>
+    <div
+      className={"hover:text-base-content/50 flex items-center hover:cursor-pointer"}
+      onClick={handleClick}
+    >
       {showText}
       {isCopied ? <CheckIcon className="h-6" /> : <ClipboardDocumentIcon className="h-6" />}
     </div>

@@ -13,6 +13,43 @@
   }
 }
 
+@layer components {
+  .fixed-header {
+    @apply fixed left-[0] top-[0] z-10;
+  }
+
+  .pinkColor-primary-state {
+    @apply bg-pinkColor text-white hover:bg-[#B63364] active:bg-[#D6447A] disabled:cursor-not-allowed disabled:bg-gray2Color disabled:text-[#AAAAAA];
+  }
+
+  .pinkColor-second-state {
+    @apply cursor-pointer border-2 border-pinkColor bg-white text-blackColor hover:border-blackColor hover:text-blackColor active:border-[#D6447A] active:text-[#D6447A] disabled:cursor-not-allowed disabled:border-gray2Color disabled:text-gray2Color;
+  }
+
+  .loader-container {
+    @apply relative inline-flex items-center justify-center;
+  }
+
+  .loader-circle {
+    @apply border-b-transparent border-l-transparent;
+  }
+
+  .button-primary {
+    @apply z-[9] rounded-md border-2 border-blackColor bg-pinkColor px-[2em] py-[0.8em] font-semibold text-white shadow-md shadow-blackColor transition-all duration-200 ease-in-out hover:bg-[#cf4c7c] hover:text-blackColor disabled:cursor-not-allowed disabled:bg-gray2Color disabled:text-gray2Color;
+  }
+
+  .button-secondary {
+    @apply button-primary border-pinkColor bg-white text-blackColor hover:bg-white hover:text-pinkColor disabled:cursor-not-allowed disabled:bg-gray2Color disabled:text-gray2Color;
+  }
+
+  .proposal-card {
+    @apply max-h-[80px] min-h-[80px] w-full rounded-md border border-blackColor bg-white;
+  }
+}
+
+@layer utilities {
+}
+
 @keyframes gradient {
   0% {
     background-position: 0% 50%;
@@ -25,23 +62,41 @@
   }
 }
 
-@layer components {
-  .fixed-header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 10;
-    width: 100%; /* adjust the padding value as needed */
-  }
-
-  .loader-container {
-    @apply relative inline-flex items-center justify-center;
-  }
-
-  .loader-circle {
-    @apply border-l-transparent border-b-transparent;
-  }
+.hide-scroll-bar::-webkit-scrollbar {
+  display: none;
 }
 
-@layer utilities {
+.hide-scroll-bar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.button-shadow {
+  transition: 0.2s;
+  transform: translate(-0.25rem, -0.25rem);
+  box-shadow: 0.25rem 0.25rem #000;
+  z-index: 9;
+}
+
+.button-shadow:active {
+  transform: translate(0);
+  box-shadow: none;
+}
+
+.proposal-card-shadow {
+  --black: #171717;
+  transition: 0.2s;
+  padding: 0.8em 2em;
+}
+
+.proposal-card-shadow:hover {
+  color: var(--black);
+  transform: translate(-0.25rem, -0.25rem);
+  background: #fef7ec;
+  box-shadow: 0.25rem 0.25rem var(--black);
+}
+
+.proposal-card-shadow:active {
+  transform: translate(0);
+  box-shadow: none;
 }

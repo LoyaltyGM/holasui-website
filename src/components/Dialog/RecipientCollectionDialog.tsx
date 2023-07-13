@@ -3,7 +3,7 @@ import { Fragment, useEffect, useState } from "react";
 import { handleSetBatchIdForSwap, ICapy, ISwapRecipientCollectionDialog } from "types";
 import { Montserrat } from "next/font/google";
 import { XMarkIcon } from "@heroicons/react/24/solid";
-import { classNames, convertIPFSUrl, formatSuiAddress, CAPY_TYPE, SWAP_TYPES_LIST } from "utils";
+import { classNames, convertIPFSUrl, formatSuiAddress, SUIFREN_CAPY_TYPE, SWAP_TYPES_LIST } from "utils";
 import Image from "next/image";
 import { fetchNFTObjects, suiProvider } from "services/sui";
 import { LabeledInput } from "components/Forms/Inputs";
@@ -33,7 +33,7 @@ export const RecipientCollectionDialog = ({
   typeSwap,
 }: ISwapRecipientCollectionDialog) => {
   if (!wallet) return <></>;
-  console.log("creator", creatorBatchIdTrade)
+  console.log("creator", creatorBatchIdTrade);
   const [frens, setFrens] = useState<ICapy[] | null>();
   const [tempSearchState, setTempSearchState] = useState<string>("");
 
@@ -94,44 +94,49 @@ export const RecipientCollectionDialog = ({
 
         <div className="fixed inset-0 z-10 overflow-auto">
           <div className="flex min-h-full items-center justify-center">
-            <Dialog.Panel className="max-w-2xl  md:h-[65vh] h-[70vh] w-full relative transform overflow-auto rounded-lg bg-bgMain px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:p-6">
+            <Dialog.Panel className="relative  h-[70vh] w-full max-w-2xl transform overflow-auto rounded-lg bg-basicColor px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:p-6 md:h-[65vh]">
               <Dialog.Title
                 as="h3"
                 className={classNames(
-                  "flex justify-between items-center content-center text-base leading-6 text-grayColor text-center mb-2 font-bold",
-                  font_montserrat.className
+                  "mb-2 flex content-center items-center justify-between text-center text-base font-bold leading-6 text-black2Color",
+                  font_montserrat.className,
                 )}
               >
-                <p className="md:text-xs hidden md:flex mt-1 font-light">Selected ({batchIdTrade.length})</p>
-                <p className="mt-1 md:text-xl text-sm">Select NFTs you want</p>
+                <p className="mt-1 hidden font-light md:flex md:text-xs">
+                  Selected ({batchIdTrade.length})
+                </p>
+                <p className="mt-1 text-sm md:text-xl">Select NFTs you want</p>
 
                 <button onClick={() => setOpened(false)}>
                   <XMarkIcon className="flex h-7 w-7" />
                 </button>
               </Dialog.Title>
               <div className="flex  w-full flex-col items-center justify-center">
-                <div className={"mt-2 flex flex-col items-center gap-2 w-full"}>
-                  <div className={classNames("w-full mt-2 bg-white", font_montserrat.className)}>
+                <div className={"mt-2 flex w-full flex-col items-center gap-2"}>
+                  <div className={classNames("mt-2 w-full bg-white", font_montserrat.className)}>
                     <LabeledInput>
-                      <div className="relative bg-white px-2 my-1">
+                      <div className="relative my-1 bg-white px-2">
                         <input
                           type={"text"}
                           name="wallet_address"
-                          className={"input-field w-full text-sm mr-4"}
+                          className={"input-field mr-4 w-full text-sm"}
                           placeholder="Sui Wallet"
                           onChange={(e) => setTempSearchState(e.target.value)}
                         />
                       </div>
                     </LabeledInput>
                   </div>
-                  <div className={"py-2 w-full gap-1 flex content-center items-center"}>
+                  <div className={"flex w-full content-center items-center gap-1 py-2"}>
                     {walletAddressToSearch && (
                       <>
                         <p
-                          className={classNames("text-sm text-grayColor", font_montserrat.className)}
+                          className={classNames(
+                            "text-sm text-black2Color",
+                            font_montserrat.className,
+                          )}
                         >{`Wallet Collection: ${formatSuiAddress(walletAddressToSearch)}`}</p>
                         <XMarkIcon
-                          className="w-5 h-5 text-grayColor cursor-pointer"
+                          className="h-5 w-5 cursor-pointer text-black2Color"
                           onClick={() => {
                             setWalletAddressToSearch("");
                             setBatchIdTrade([]);
@@ -141,9 +146,13 @@ export const RecipientCollectionDialog = ({
                       </>
                     )}
                   </div>
-                  <div className="flex flex-col min-h-[32vh]">
+                  <div className="flex min-h-[32vh] flex-col">
                     {suifrens ? (
-                      <div className={"grid md:grid-cols-5 grid-cols-3 gap-2 md:gap-[1.25rem] md:mt-4 overflow-auto"}>
+                      <div
+                        className={
+                          "grid grid-cols-3 gap-2 overflow-auto md:mt-4 md:grid-cols-5 md:gap-[1.25rem]"
+                        }
+                      >
                         {frens?.map((fren) => {
                           return (
                             <button
@@ -156,24 +165,30 @@ export const RecipientCollectionDialog = ({
                                   batchIdTrade,
                                   setBatchIdTrade,
                                   creatorBatchIdTrade,
-                                  typeSwap
+                                  typeSwap,
                                 );
                               }}
                               key={fren.id}
                             >
                               <div
                                 className={classNames(
-                                  "border-2 bg-white flex flex-col content-center max-h-[160px] min-h-[160px] justify-center items-center p-2 rounded-md cursor-pointer",
+                                  "flex max-h-[160px] min-h-[160px] cursor-pointer flex-col content-center items-center justify-center rounded-md border-2 bg-white p-2",
                                   batchIdTrade.some((item) => item.id === fren.id)
                                     ? "border-yellowColor"
-                                    : "border-grayColor"
+                                    : "border-black2Color",
                                 )}
                               >
-                                <Image src={fren.url} alt="collection_img" width={90} height={130} className="mt-1" />
+                                <Image
+                                  src={fren.url}
+                                  alt="collection_img"
+                                  width={90}
+                                  height={130}
+                                  className="mt-1"
+                                />
                                 <p
                                   className={classNames(
-                                    "mt-1 text-xs min-h-[40px] max-h-[40px]",
-                                    font_montserrat.className
+                                    "mt-1 max-h-[40px] min-h-[40px] text-xs",
+                                    font_montserrat.className,
                                   )}
                                 >
                                   {classNames(fren.description ? `${fren.description}` : "")}
@@ -190,14 +205,16 @@ export const RecipientCollectionDialog = ({
 
                   <button
                     className={classNames(
-                      "w-full block mx-auto mt-2 px-3 text-sm py-2 text-white font-black rounded-md  cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed",
+                      "mx-auto mt-2 block w-full cursor-pointer rounded-md px-3 py-2 text-sm font-black  text-white disabled:cursor-not-allowed disabled:opacity-50",
                       font_montserrat.className,
                       batchIdTrade?.length === 0
-                        ? "bg-redColor hover:bg-redColor/95"
-                        : "bg-yellowColor hover:bg-[#e5a44a]"
+                        ? "bg-pinkColor hover:bg-pinkColor/95"
+                        : "bg-yellowColor hover:bg-[#e5a44a]",
                     )}
                     onClick={() => {
-                      batchIdTrade?.length === 0 ? fetchRecipientWallet(tempSearchState) : setOpened(false);
+                      batchIdTrade?.length === 0
+                        ? fetchRecipientWallet(tempSearchState)
+                        : setOpened(false);
                     }}
                   >
                     {batchIdTrade?.length === 0 ? "Search" : "Confirm Items"}

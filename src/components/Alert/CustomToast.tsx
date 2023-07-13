@@ -7,11 +7,37 @@ import { AlertMessageType } from "../../types";
  */
 export const CustomToast = () => {
   return (
-    <Toaster position="bottom-center" reverseOrder={false}>
+    <Toaster
+      position="bottom-center"
+      reverseOrder={false}
+      toastOptions={{
+        error: {
+          duration: 9000,
+          icon: "❌",
+          style: {
+            borderRadius: "25px",
+            background: "#EF423D",
+            color: "#fff",
+          },
+        },
+        success: {
+          duration: 9000,
+          icon: "🚀",
+          style: {
+            borderRadius: "50px",
+            background: "#62D450",
+            color: "#fff",
+          },
+        },
+      }}
+    >
       {(t) => (
         <ToastBar toast={t} style={{}}>
           {({ icon, message }) => (
-            <button className={"bg-primary/25 p-2 rounded-md flex items-center"} onClick={() => toast.dismiss(t.id)}>
+            <button
+              className={"bg-primary/25 flex items-center rounded-md p-2"}
+              onClick={() => toast.dismiss(t.id)}
+            >
               {icon}
               {message}
             </button>
@@ -42,6 +68,9 @@ export function AlertSucceed(success_type: AlertMessageType) {
       break;
     case "AcceptOffer":
       successTitle = "You have exchanged items!";
+      break;
+    case "CreateDao":
+      successTitle = "You have successfully created a DAO!";
       break;
     default:
       successTitle = "Something went wrong";
@@ -74,6 +103,7 @@ export function AlertErrorMessage(errorCode: string) {
       errorMessage = "Something went wrong";
       break;
   }
+
   return toast.error(errorMessage, {
     duration: 9000,
     icon: "❌",
