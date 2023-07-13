@@ -27,7 +27,9 @@ export const Proposals = ({
       <div className={"mt-10 flex content-center items-center justify-between"}>
         <p className={"text-2xl font-bold"}>Proposals</p>
         <Link href={`/dao/${daoAddress}/create-proposal`}>
-          <button className={"button-primary button-shadow px-5 py-3"}>Submit Proposal</button>
+          <button className={"button-primary font-bold button-shadow px-5 py-3"}>
+            Submit Proposal
+          </button>
         </Link>
       </div>
       <div className={"mt-10 flex flex-col gap-2 space-y-4"}>

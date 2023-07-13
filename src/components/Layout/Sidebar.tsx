@@ -61,6 +61,16 @@ export function Sidebar({ children }: ILayoutProps) {
                   P2P Swap
                 </div>
               </Link>
+              <Link href="/dao">
+                <div
+                  className={classNames(
+                    "my-3 block rounded-md py-2",
+                    router.pathname === "/dao" ? "font-bold text-redColor" : "hover:text-redColor",
+                  )}
+                >
+                  DAO Hack
+                </div>
+              </Link>
             </div>
 
             <div className="mt-2 hidden h-12 items-center gap-8 md:flex">
