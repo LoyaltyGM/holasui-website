@@ -338,3 +338,37 @@ export const signTransactionCreateCustomDaoProposal = ({
 
   return tx;
 };
+
+export const signTransactionVoteCustomDaoProposal = ({
+  nft,
+  nftType,
+  dao_id,
+  proposal_id,
+  vote,
+}: {
+  nft: {
+    digest: string;
+    objectId: string;
+    version: string;
+  };
+  nftType: string;
+  dao_id: string;
+  proposal_id: string;
+  vote: number;
+}) => {
+  const tx = new TransactionBlock();
+
+  tx.moveCall({
+    target: `${TEST_DAO_PACKAGE_ID}::dao::vote`,
+    arguments: [
+      tx.pure(dao_id),
+      tx.objectRef(nft),
+      tx.pure(proposal_id),
+      tx.pure(vote),
+      tx.pure("0x6"),
+    ],
+    typeArguments: [nftType], // type of frens
+  });
+
+  return tx;
+};

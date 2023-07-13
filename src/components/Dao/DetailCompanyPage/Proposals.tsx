@@ -44,7 +44,7 @@ export const Proposals = ({
         {proposals?.length > 0 ? (
           proposals
             .map((proposal, index) => (
-              <Link href={`/dao/${daoAddress}/${proposal.id}`} key={index}>
+              <Link href={`/dao/${daoAddress}/proposals/${proposal.id}`} key={index}>
                 <ProposalCard proposal={proposal} index={index + 1} />
               </Link>
             ))

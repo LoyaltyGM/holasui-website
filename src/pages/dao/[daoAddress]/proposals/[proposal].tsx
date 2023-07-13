@@ -1,19 +1,23 @@
 import { GetServerSideProps, NextPage } from "next";
 import { ethos, EthosConnectStatus } from "ethos-connect";
 import { AlertErrorMessage, Label, NoConnectWallet } from "components";
-import { classNames, formatSuiAddress, ORIGIN_CAPY_DAO_ID } from "utils";
+import { classNames, convertIPFSUrl, formatSuiAddress, ORIGIN_CAPY_DAO_ID } from "utils";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { FolderIcon } from "@heroicons/react/24/solid";
 import { useRouter } from "next/router";
-import { IProposal } from "types/daoInterface";
-import { fetchCapyStaking, signTransactionVoteCapyDaoProposal, suiProvider } from "services/sui";
+import { IDao, IProposal } from "types/daoInterface";
+import {
+  fetchCapyStaking,
+  signTransactionVoteCapyDaoProposal,
+  signTransactionVoteCustomDaoProposal,
+  suiProvider,
+} from "services/sui";
 import { getExecutionStatus, getExecutionStatusError, getObjectFields } from "@mysten/sui.js";
 import { useForm } from "react-hook-form";
 import { RadioGroup } from "@headlessui/react";
 import toast from "react-hot-toast";
-import { ICapy } from "types";
 
 interface IProposalProps {
   proposalId: string;
@@ -46,14 +50,16 @@ export const getServerSideProps: GetServerSideProps<IProposalProps> = async ({ p
 
 const ProposalPage: NextPage<IProposalProps> = ({ proposalId }) => {
   const router = useRouter();
-  const originDaoAddress = router.query.daoAddress as string;
 
   const { status, wallet } = ethos.useWallet();
   const [waitSui, setWaitSui] = useState(false);
 
-  const [frens, setFrens] = useState<ICapy[] | null>();
   const [proposal, setProposal] = useState<IProposal>();
+
+  const originDaoAddress = router.query.daoAddress as string;
   const isCapyDao = originDaoAddress === ORIGIN_CAPY_DAO_ID;
+  const [dao, setDao] = useState<IDao>();
+  const [nftType, setNftType] = useState<string>("");
 
   useEffect(() => {
     async function fetchProposal() {
@@ -99,50 +105,100 @@ const ProposalPage: NextPage<IProposalProps> = ({ proposalId }) => {
   }, []);
 
   useEffect(() => {
-    async function fetchWalletFrens() {
-      if (!wallet?.address) {
-        setFrens(null);
-        return;
-      }
+    async function fetchDao() {
       try {
-        const nfts = wallet?.contents?.nfts!;
-        const fetchedFrens = fetchCapyStaking(nfts);
-        if (fetchedFrens && fetchedFrens.length > 0) {
-          setFrens(fetchedFrens);
-        }
-        console.log("Fetch Frens", fetchedFrens);
+        const daoObject = await suiProvider.getObject({
+          id: originDaoAddress,
+          options: {
+            showContent: true,
+          },
+        });
+
+        const daoObjectType = (daoObject?.data?.content as any).type!;
+        const nftType = daoObjectType.slice(
+          daoObjectType.indexOf("<") + 1,
+          daoObjectType.lastIndexOf(">"),
+        );
+        setNftType(nftType);
+
+        const dao = getObjectFields(daoObject) as any;
+        dao.id = dao.id.id;
+        dao.subdaos = dao.subdaos?.fields?.contents?.fields?.id?.id;
+        dao.proposals = dao.proposals?.fields?.id?.id;
+        dao.image = convertIPFSUrl(dao.image);
+
+        setDao(getObjectFields(daoObject) as IDao);
       } catch (e) {
-        console.error(e);
+        console.log(e);
       }
     }
 
-    fetchWalletFrens().then();
-  }, [wallet?.address, wallet?.contents?.nfts]);
+    fetchDao().then();
+  }, []);
 
   const onSubmit = async (form: Inputs) => {
     if (!wallet) return;
     setWaitSui(true);
     try {
       console.log(form);
-
-      if (!frens || frens.length === 0) {
-        toast.error("You don't have Capy Fren");
+      console.log(Date.now());
+      if (Date.now() < proposal?.start_time!) {
+        toast.error("Proposal is not started yet");
         return;
       }
-      const requiredFren = frens[0];
+      if (Date.now() > proposal?.end_time!) {
+        toast.error("Proposal is already ended");
+        return;
+      }
 
-      const response = await wallet.signAndExecuteTransactionBlock({
-        transactionBlock: signTransactionVoteCapyDaoProposal({
-          dao_type: isCapyDao ? "capy_dao" : "dao",
-          subdao_id: originDaoAddress,
-          frens_id: requiredFren.id,
-          proposal_id: proposalId,
-          vote: form.vote === "For" ? 1 : form.vote === "Against" ? 2 : 0,
-        }),
-        options: {
-          showEffects: true,
-        },
-      });
+      let response: any;
+
+      if (!isCapyDao) {
+        const nfts = await suiProvider.getOwnedObjects({
+          owner: wallet.address,
+          filter: {
+            StructType: nftType,
+          },
+        });
+
+        if (!nfts.data || nfts.data.length === 0) {
+          toast.error("You don't have any NFT with this type");
+          return;
+        }
+
+        response = await wallet.signAndExecuteTransactionBlock({
+          transactionBlock: signTransactionVoteCustomDaoProposal({
+            dao_id: originDaoAddress,
+            nft: nfts?.data[0].data!,
+            nftType,
+            proposal_id: proposalId,
+            vote: form.vote === "For" ? 1 : form.vote === "Against" ? 2 : 0,
+          }),
+          options: {
+            showEffects: true,
+          },
+        });
+      } else {
+        const fetchedFrens = fetchCapyStaking(wallet?.contents?.nfts!);
+        if (!fetchedFrens || fetchedFrens.length === 0) {
+          toast.error("You don't have Capy Fren");
+          return;
+        }
+        const requiredFren = fetchedFrens[0];
+
+        response = await wallet.signAndExecuteTransactionBlock({
+          transactionBlock: signTransactionVoteCapyDaoProposal({
+            dao_type: "capy_dao",
+            subdao_id: originDaoAddress,
+            frens_id: requiredFren.id,
+            proposal_id: proposalId,
+            vote: form.vote === "For" ? 1 : form.vote === "Against" ? 2 : 0,
+          }),
+          options: {
+            showEffects: true,
+          },
+        });
+      }
 
       const status = getExecutionStatus(response);
 
@@ -407,8 +463,16 @@ const ProposalPage: NextPage<IProposalProps> = ({ proposalId }) => {
   const ProposedTransactions = () => {
     return (
       <div className={"mt-14"}>
-        <p className={"text-2xl font-bold text-blackColor"}>Proposed transactions</p>
-        <div className={"flex"}></div>
+        <p className={"font-bold text-2xl text-blackColor"}>Proposed transactions</p>
+        <div
+          className={
+            "mt-2 border-grayColor bg-white justify-between flex border  py-4 px-4 rounded-xl"
+          }
+        >
+          <p>Sent to</p>
+          <p>{proposal?.recipient}</p>
+          <p>{proposal?.amount / 1e9} SUI</p>
+        </div>
       </div>
     );
   };
@@ -431,7 +495,7 @@ const ProposalPage: NextPage<IProposalProps> = ({ proposalId }) => {
         <VotingCards />
         <ProposalSettingsInfo />
         <ProposalDescription />
-        <ProposedTransactions />
+        {proposal?.type === 1 && <ProposedTransactions />}
         <VotingButtons />
       </main>
     </div>
