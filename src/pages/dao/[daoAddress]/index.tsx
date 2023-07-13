@@ -153,6 +153,8 @@ const DetailDaoAddress: NextPage<IDaoAddressProps> = ({ daoAddress }) => {
               }),
             )!;
             proposal.id = proposal?.id?.id;
+            if (proposal.start_time > Date.now()) proposal.status = -1;
+
             return proposal as IProposal;
           }),
         )
