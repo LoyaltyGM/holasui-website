@@ -58,6 +58,7 @@ const ProposalPage: NextPage<IProposalProps> = ({ proposalId }) => {
 
   const originDaoAddress = router.query.daoAddress as string;
   const isCapyDao = originDaoAddress === ORIGIN_CAPY_DAO_ID;
+  const [isSubDao, setIsSubDao] = useState<boolean>(false);
   const [dao, setDao] = useState<IDao>();
   const [nftType, setNftType] = useState<string>("");
 
@@ -115,6 +116,8 @@ const ProposalPage: NextPage<IProposalProps> = ({ proposalId }) => {
         });
 
         const daoObjectType = (daoObject?.data?.content as any).type!;
+        setIsSubDao(daoObjectType.includes("::suifren_subdao::SubDao"));
+
         const nftType = daoObjectType.slice(
           daoObjectType.indexOf("<") + 1,
           daoObjectType.lastIndexOf(">"),
@@ -141,7 +144,6 @@ const ProposalPage: NextPage<IProposalProps> = ({ proposalId }) => {
     setWaitSui(true);
     try {
       console.log(form);
-      console.log(Date.now());
       if (Date.now() < proposal?.start_time!) {
         toast.error("Proposal is not started yet");
         return;
@@ -178,7 +180,7 @@ const ProposalPage: NextPage<IProposalProps> = ({ proposalId }) => {
             showEffects: true,
           },
         });
-      } else {
+      } else if (isCapyDao) {
         const fetchedFrens = fetchCapyStaking(wallet?.contents?.nfts!);
         if (!fetchedFrens || fetchedFrens.length === 0) {
           toast.error("You don't have Capy Fren");
@@ -189,6 +191,27 @@ const ProposalPage: NextPage<IProposalProps> = ({ proposalId }) => {
         response = await wallet.signAndExecuteTransactionBlock({
           transactionBlock: signTransactionVoteCapyDaoProposal({
             dao_type: "capy_dao",
+            subdao_id: originDaoAddress,
+            frens_id: requiredFren.id,
+            proposal_id: proposalId,
+            vote: form.vote === "For" ? 1 : form.vote === "Against" ? 2 : 0,
+          }),
+          options: {
+            showEffects: true,
+          },
+        });
+      } else if (isSubDao) {
+        const frens = fetchCapyStaking(wallet?.contents?.nfts!);
+
+        const requiredFren = frens?.find((fren) => fren.birth_location === dao?.birth_location!);
+        if (!requiredFren) {
+          toast.error("You don't have Capy Fren with this birth location");
+          return;
+        }
+
+        response = await wallet.signAndExecuteTransactionBlock({
+          transactionBlock: signTransactionVoteCapyDaoProposal({
+            dao_type: "capy_subdao",
             subdao_id: originDaoAddress,
             frens_id: requiredFren.id,
             proposal_id: proposalId,
@@ -290,7 +313,7 @@ const ProposalPage: NextPage<IProposalProps> = ({ proposalId }) => {
       </div>
     );
   };
-  console.log("Proposals", proposal);
+
   const VotingCards = () => {
     return (
       <div className={"space-y-2 md:space-y-0 md:flex w-full justify-between"}>
