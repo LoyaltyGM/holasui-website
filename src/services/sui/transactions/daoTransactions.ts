@@ -1,5 +1,5 @@
 import { TransactionBlock } from "@mysten/sui.js";
-import { CAPY_TYPE, DAO_HUB_ID, ORIGIN_CAPY_DAO_ID, TEST_DAO_PACKAGE_ID } from "utils";
+import { CAPY_TYPE, DAO_HUB_ID, ORIGIN_CAPY_DAO_ID, PACKAGE_ID_V2 } from "utils";
 import { DaoType } from "types/daoInterface";
 
 // ==== CapyDao ====
@@ -26,7 +26,7 @@ export const signTransactionCreateCapySubDao = ({
   const tx = new TransactionBlock();
 
   tx.moveCall({
-    target: `${TEST_DAO_PACKAGE_ID}::suifren_subdao::create_subdao`,
+    target: `${PACKAGE_ID_V2}::suifren_subdao::create_subdao`,
     arguments: [
       tx.pure(ORIGIN_CAPY_DAO_ID), // staking hub
       tx.pure(frens_id),
@@ -99,7 +99,7 @@ export const signTransactionCreateCapyDaoProposal = ({
     dao_type === "dao" ? "dao" : dao_type === "capy_dao" ? "suifren_dao" : "suifren_subdao";
 
   tx.moveCall({
-    target: `${TEST_DAO_PACKAGE_ID}::${targetModule}::create_proposal`,
+    target: `${PACKAGE_ID_V2}::${targetModule}::create_proposal`,
     arguments: [
       tx.pure(dao_id),
       tx.pure(frens_id),
@@ -131,7 +131,7 @@ export const signTransactionCancelCapyDaoProposal = ({
     dao_type === "dao" ? "dao" : dao_type === "capy_dao" ? "suifren_dao" : "suifren_subdao";
 
   tx.moveCall({
-    target: `${TEST_DAO_PACKAGE_ID}::${targetModule}::cancel_proposal`,
+    target: `${PACKAGE_ID_V2}::${targetModule}::cancel_proposal`,
     arguments: [tx.pure(subdao_id), tx.pure(proposal_id), tx.pure("0x6")],
     typeArguments: [CAPY_TYPE!], // type of frens
   });
@@ -158,7 +158,7 @@ export const signTransactionVoteCapyDaoProposal = ({
     dao_type === "dao" ? "dao" : dao_type === "capy_dao" ? "suifren_dao" : "suifren_subdao";
 
   tx.moveCall({
-    target: `${TEST_DAO_PACKAGE_ID}::${targetModule}::vote`,
+    target: `${PACKAGE_ID_V2}::${targetModule}::vote`,
     arguments: [
       tx.pure(subdao_id),
       tx.pure(frens_id),
@@ -187,7 +187,7 @@ export const signTransactionExecuteCapyDaoProposal = ({
     dao_type === "dao" ? "dao" : dao_type === "capy_dao" ? "suifren_dao" : "suifren_subdao";
 
   tx.moveCall({
-    target: `${TEST_DAO_PACKAGE_ID}::${targetModule}::execute_proposal`,
+    target: `${PACKAGE_ID_V2}::${targetModule}::execute_proposal`,
     arguments: [tx.pure(subdao_id), tx.pure(proposal_id), tx.pure("0x6")],
     typeArguments: [CAPY_TYPE!], // type of frens
   });
@@ -223,7 +223,7 @@ export const signTransactionCreateDao = ({
   const tx = new TransactionBlock();
 
   tx.moveCall({
-    target: `${TEST_DAO_PACKAGE_ID}::dao::create_dao`,
+    target: `${PACKAGE_ID_V2}::dao::create_dao`,
     arguments: [
       tx.pure(DAO_HUB_ID), // staking hub
       tx.objectRef(nft),
@@ -259,7 +259,7 @@ export const signTransactionDepositToTreasury = ({
 
   const [coin] = tx.splitCoins(tx.gas, [tx.pure(amount * 1e9, "u64")]);
   tx.moveCall({
-    target: `${TEST_DAO_PACKAGE_ID}::${targetModule}::deposit_to_treasury`,
+    target: `${PACKAGE_ID_V2}::${targetModule}::deposit_to_treasury`,
     arguments: [tx.pure(dao_id), coin],
     typeArguments: [type], // type of dao
   });
@@ -322,7 +322,7 @@ export const signTransactionCreateCustomDaoProposal = ({
   }
 
   tx.moveCall({
-    target: `${TEST_DAO_PACKAGE_ID}::dao::create_proposal`,
+    target: `${PACKAGE_ID_V2}::dao::create_proposal`,
     arguments: [
       tx.pure(dao_id),
       tx.objectRef(nft),
@@ -359,7 +359,7 @@ export const signTransactionVoteCustomDaoProposal = ({
   const tx = new TransactionBlock();
 
   tx.moveCall({
-    target: `${TEST_DAO_PACKAGE_ID}::dao::vote`,
+    target: `${PACKAGE_ID_V2}::dao::vote`,
     arguments: [
       tx.pure(dao_id),
       tx.objectRef(nft),
