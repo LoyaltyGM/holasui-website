@@ -10,7 +10,7 @@ import {
   SubdaosCards,
   Treasury,
 } from "components";
-import { classNames, convertIPFSUrl, formatSuiAddress, ORIGIN_CAPY_DAO_ID } from "utils";
+import { classNames, convertIPFSUrl, ORIGIN_CAPY_DAO_ID } from "utils";
 import { useEffect, useState } from "react";
 import { FolderIcon } from "@heroicons/react/24/solid";
 import Link from "next/link";
@@ -92,7 +92,7 @@ const DetailDaoAddress: NextPage<IDaoAddressProps> = ({ daoAddress }) => {
       .then()
       .finally(() => setIsDaoLoading(false));
   }, []);
-
+  console.log(proposals);
   useEffect(() => {
     setIsSubdaosLoading(true);
 
@@ -153,7 +153,7 @@ const DetailDaoAddress: NextPage<IDaoAddressProps> = ({ daoAddress }) => {
               }),
             )!;
             proposal.id = proposal?.id?.id;
-            if (proposal.start_time > Date.now()) proposal.status = -1;
+            proposal.status = proposal.start_time > Date.now() ? -1 : +proposal.status;
 
             return proposal as IProposal;
           }),

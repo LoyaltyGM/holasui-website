@@ -1,9 +1,8 @@
 import { GetServerSideProps, NextPage } from "next";
 import { ethos, EthosConnectStatus } from "ethos-connect";
-import { AlertErrorMessage, Label, NoConnectWallet } from "components";
+import { AlertErrorMessage, NoConnectWallet } from "components";
 import { classNames, convertIPFSUrl, formatSuiAddress, ORIGIN_CAPY_DAO_ID } from "utils";
 import { useEffect, useState } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { FolderIcon } from "@heroicons/react/24/solid";
 import { useRouter } from "next/router";
@@ -18,7 +17,6 @@ import { getExecutionStatus, getExecutionStatusError, getObjectFields } from "@m
 import { useForm } from "react-hook-form";
 import { RadioGroup } from "@headlessui/react";
 import toast from "react-hot-toast";
-import { SkeletonProposalPage } from "../../../../components/Skeleton/SkeletonDetailProposal";
 
 interface IProposalProps {
   proposalId: string;
@@ -54,7 +52,6 @@ const ProposalPage: NextPage<IProposalProps> = ({ proposalId }) => {
 
   const { status, wallet } = ethos.useWallet();
   const [waitSui, setWaitSui] = useState(false);
-  const [isDataLoading, setDataLoading] = useState<boolean>(true);
   const [proposal, setProposal] = useState<IProposal>();
 
   const originDaoAddress = router.query.daoAddress as string;
@@ -75,7 +72,7 @@ const ProposalPage: NextPage<IProposalProps> = ({ proposalId }) => {
           }),
         )!;
 
-        proposal.status = +proposal.status;
+        proposal.status = proposal.start_time > Date.now() ? -1 : +proposal.status;
         proposal.type = +proposal.type;
         proposal.end_time = +proposal.end_time;
         proposal.start_time = +proposal.start_time;
@@ -284,7 +281,9 @@ const ProposalPage: NextPage<IProposalProps> = ({ proposalId }) => {
             "flex content-center items-center rounded-xl border border-purpleColor px-5 py-1 text-purpleColor"
           }
         >
-          {proposal?.status === 0
+          {proposal?.status === -1
+            ? "Pending"
+            : proposal?.status === 0
             ? "Active"
             : proposal?.status === 1
             ? "Canceled"
