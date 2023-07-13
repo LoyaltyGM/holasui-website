@@ -27,8 +27,7 @@ export const ESCROW_HUB_ID = "0x1f79470adae9a9c6a5908e3deb807330e71cc6ef796048ac
 export const PRICE_ESCROW: number = 0.1;
 
 // ==== DAO ====
-export const PACKAGE_ID_V2 =
-  "0x4164dcc89e0b20d9b30754596e9118381cf8ccf03155528f9f43da21c81195dd";
+export const PACKAGE_ID_V2 = "0x4164dcc89e0b20d9b30754596e9118381cf8ccf03155528f9f43da21c81195dd";
 export const ORIGIN_CAPY_DAO_ID =
   "0xa4b0851e9c356afe86945bd36f15f0fb7d91b819078613047572c3b419ab3a0c";
 export const DAO_HUB_ID = "0x72caf5bcb54146520e4c5a435edf1d76d09e319157c31ced9154bbc2ea2fa313";
