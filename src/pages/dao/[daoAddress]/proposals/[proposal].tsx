@@ -53,6 +53,7 @@ const ProposalPage: NextPage<IProposalProps> = ({ proposalId }) => {
   const { status, wallet } = ethos.useWallet();
   const [waitSui, setWaitSui] = useState(false);
   const [proposal, setProposal] = useState<IProposal>();
+  const [loadingData, setLoadingData] = useState(true);
 
   const originDaoAddress = router.query.daoAddress as string;
   const isCapyDao = originDaoAddress === ORIGIN_CAPY_DAO_ID;
@@ -134,7 +135,9 @@ const ProposalPage: NextPage<IProposalProps> = ({ proposalId }) => {
       }
     }
 
-    fetchDao().then();
+    fetchDao()
+      .then()
+      .finally(() => setLoadingData(false));
   }, []);
 
   const onSubmit = async (form: Inputs) => {
@@ -274,8 +277,12 @@ const ProposalPage: NextPage<IProposalProps> = ({ proposalId }) => {
 
   const ProposalInfo = () => {
     return (
-      <div className={"mb-10 mt-16 flex justify-between"}>
-        <p className={"text-4xl font-bold text-blackColor"}>{proposal?.name}</p>
+      <div className={"mb-10 mt-16 flex content-center items-center justify-between"}>
+        {!loadingData ? (
+          <p className={"text-4xl font-bold text-blackColor"}>{proposal?.name}</p>
+        ) : (
+          <div className={"h-10 w-56 bg-gray2Color rounded-2xl animate-pulse"}></div>
+        )}
         <div
           className={
             "flex content-center items-center rounded-xl border border-purpleColor px-5 py-1 text-purpleColor"
@@ -319,9 +326,13 @@ const ProposalPage: NextPage<IProposalProps> = ({ proposalId }) => {
         <div
           className={"h-[120px] w-full rounded-3xl border-2 border-grayColor bg-white px-6 py-4"}
         >
-          <div className={"flex justify-between text-lg"}>
+          <div className={"flex content-center items-center justify-between text-lg"}>
             <p className={"font-medium text-greenColor"}>For</p>
-            <p className={"font-semibold text-blackColor"}>{proposal?.results?.for || 0}</p>
+            {!loadingData ? (
+              <p className={"font-semibold text-blackColor"}>{proposal?.results?.for || 0}</p>
+            ) : (
+              <div className={"h-5 w-12 bg-gray2Color rounded-2xl animate-pulse"}></div>
+            )}
           </div>
           <div className={"mt-4 h-[10px] w-full rounded-2xl bg-[#F2F2F2]"}>
             <div className={"mt-4 h-[10px] w-[150px] rounded-2xl bg-greenColor"}></div>
@@ -331,9 +342,13 @@ const ProposalPage: NextPage<IProposalProps> = ({ proposalId }) => {
         <div
           className={"h-[120px] w-full rounded-3xl border-2 border-grayColor bg-white px-6 py-4"}
         >
-          <div className={"flex justify-between text-lg"}>
+          <div className={"flex content-center items-center justify-between text-lg"}>
             <p className={"font-medium text-redColor"}>Against</p>
-            <p className={"font-semibold text-blackColor"}>{proposal?.results?.against || 0}</p>
+            {!loadingData ? (
+              <p className={"font-semibold text-blackColor"}>{proposal?.results?.against || 0}</p>
+            ) : (
+              <div className={"h-5 w-12 bg-gray2Color rounded-2xl animate-pulse"}></div>
+            )}
           </div>
           <div className={"mt-4 h-[10px] w-full rounded-2xl bg-[#F2F2F2]"}>
             <div className={"mt-4 h-[10px] w-[150px] rounded-2xl bg-redColor"}></div>
@@ -343,9 +358,13 @@ const ProposalPage: NextPage<IProposalProps> = ({ proposalId }) => {
         <div
           className={"h-[120px] w-full rounded-3xl border-2 border-grayColor bg-white px-6 py-4"}
         >
-          <div className={"flex justify-between text-lg"}>
+          <div className={"flex content-center items-center justify-between text-lg"}>
             <p className={"font-medium text-black2Color"}>Abstain</p>
-            <p className={"font-semibold text-blackColor"}>{proposal?.results?.abstain || 0}</p>
+            {!loadingData ? (
+              <p className={"font-semibold text-blackColor"}>{proposal?.results?.abstain || 0}</p>
+            ) : (
+              <div className={"h-5 w-12 bg-gray2Color rounded-2xl animate-pulse"}></div>
+            )}
           </div>
           <div className={"mt-4 h-[10px] w-full rounded-2xl bg-[#F2F2F2]"}>
             <div className={"mt-4 h-[10px] w-[150px] rounded-2xl bg-black2Color"}></div>
@@ -527,7 +546,7 @@ const ProposalPage: NextPage<IProposalProps> = ({ proposalId }) => {
           "mt-18 z-10 flex min-h-[100vh] max-w-6xl flex-col justify-center rounded-lg py-6 pl-2 pr-2 md:mt-14 md:min-h-[65vh] ",
         )}
       >
-        <BradcrumbsHeader />
+        {<BradcrumbsHeader />}
         <ProposalInfo />
         <VotingCards />
         <ProposalSettingsInfo />
