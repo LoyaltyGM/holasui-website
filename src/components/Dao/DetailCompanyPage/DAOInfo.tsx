@@ -64,18 +64,22 @@ export const DAOInfo = ({
 
           <div
             className={classNames(
-              "flex w-full mt-2 md:mt-0 md:w-1/4 flex-col",
+              "flex w-full mt-2 md:mt-0 md:w-1/3 flex-col",
               isSubDao
                 ? "justify-start items-start content-start md:justify-center md:items-center md:content-start"
-                : "justify-start items-start content-start md:justify-center md:items-end md:content-end",
+                : "justify-start items-start content-start md:justify-center md:items-center md:content-center",
             )}
           >
             {isSubDao ? (
               <div className={"py-2 px-3 bg-yellowColor/30 text-blackColor rounded-lg"}>SubDAO</div>
             ) : (
               <Link href={`/dao/${daoAddress}/create-subdao`}>
-                <button className={"button-secondary button-shadow"}>
-                  <p className={""}>Create SubDAO</p>
+                <button
+                  className={
+                    "button-secondary button-shadow content-center items-center justify-center max-h-[48px] min-h-[48px]"
+                  }
+                >
+                  Create SubDAO
                 </button>
               </Link>
             )}

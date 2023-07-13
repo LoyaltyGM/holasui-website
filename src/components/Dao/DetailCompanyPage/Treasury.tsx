@@ -124,7 +124,7 @@ const FundTreasuryDialog = ({
   fundTreasuryFunction,
   waitSui,
 }: IFundTreasuryDialog) => {
-  const [amount, setAmount] = useState(0);
+  const [amount, setAmount] = useState(-1);
 
   return (
     <Transition.Root show={openDialog} as={Fragment}>
@@ -156,7 +156,9 @@ const FundTreasuryDialog = ({
                 )}
               >
                 <p className="mt-1"></p>
-                <p className={classNames("mt-1")}>Fund Treasury</p>
+                <p className={classNames("mt-1 font-bold text-blackColor text-xl")}>
+                  Fund Treasury
+                </p>
                 <button onClick={() => setOpenDialog(false)}>
                   <XMarkIcon className="flex h-7 w-7 md:hidden" />
                 </button>
@@ -180,7 +182,7 @@ const FundTreasuryDialog = ({
                 <div className={"flex gap-4"}>
                   <button
                     className={
-                      "pinkColor-primary-state rounded-2xl px-3 py-2 font-bold md:px-6 md:py-4"
+                      "button-primary button-shadow pinkColor-primary-state rounded-2xl px-3 py-2 font-bold md:px-6 md:py-4 disabled:bg-gray2Color"
                     }
                     type={"submit"}
                     disabled={waitSui}
