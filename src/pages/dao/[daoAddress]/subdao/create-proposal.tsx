@@ -81,7 +81,7 @@ const CreateSubDaoProposal = () => {
 
       const response = await wallet.signAndExecuteTransactionBlock({
         transactionBlock: signTransactionCreateCapyDaoProposal({
-          dao_type: isCapyDao ? "capy_dao" : "dao",
+          dao_type: "capy_subdao",
           frens_id: requiredFren.id,
           name: form.name,
           description: form.description,
