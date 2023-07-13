@@ -159,7 +159,7 @@ const DetailSubDaoAddress: NextPage<ISubDaoAddressProps> = ({ daoAddress, subDao
           <BradcrumbsHeader />
           <DAOInfo daoAddress={daoAddress} dao={subdao!} isSubDao={true} />
           <Treasury dao={subdao!} dao_type={"capy_subdao"} nft_type={nftType} />
-          <Proposals daoAddress={daoAddress} proposals={proposals!} />
+          <Proposals daoAddress={daoAddress} proposals={proposals!} isSubDao={true} />
         </>
       ) : (
         <SkeletonDAOMain />
