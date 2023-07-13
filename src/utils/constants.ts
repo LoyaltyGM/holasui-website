@@ -61,6 +61,7 @@ export const DAO_PROPOSAL_TYPE_VOTING: number = 0;
 export const DAO_PROPOSAL_TYPE_FUNDING: number = 1;
 
 // Proposal status
+export const DAO_PROPOSAL_STATUS_PENDING: number = -1;
 export const DAO_PROPOSAL_STATUS_ACTIVE: number = 0;
 export const DAO_PROPOSAL_STATUS_CANCELED: number = 1;
 export const DAO_PROPOSAL_STATUS_DEFEATED: number = 2;

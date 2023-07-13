@@ -4,8 +4,10 @@ import {
   DAO_PROPOSAL_STATUS_CANCELED,
   DAO_PROPOSAL_STATUS_DEFEATED,
   DAO_PROPOSAL_STATUS_EXECUTED,
+  DAO_PROPOSAL_STATUS_PENDING,
 } from "utils";
 import classNames from "classnames";
+
 export const ProposalCard = ({
   proposal,
   index,
@@ -72,6 +74,8 @@ const BadgeStatus = ({ status }: { status: number }) => {
         "rounded-xl border px-4 py-2 text-center text-sm",
         status !== undefined && status !== null && status === DAO_PROPOSAL_STATUS_ACTIVE
           ? "border-purpleColor text-purpleColor"
+          : status === DAO_PROPOSAL_STATUS_PENDING
+          ? "border-grayColor text-grayColor"
           : status === DAO_PROPOSAL_STATUS_CANCELED
           ? "border-redColor text-redColor"
           : status === DAO_PROPOSAL_STATUS_DEFEATED
