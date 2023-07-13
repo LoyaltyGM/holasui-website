@@ -33,7 +33,7 @@ export function Sidebar({ children }: ILayoutProps) {
             </Link>
             <div
               className={classNames(
-                "mx-3 mt-1 hidden gap-10 font-semibold text-blackColor md:flex md:items-center md:justify-evenly",
+                "mx-3 mt-1 hidden gap-10 font-semibold text-blackColor md:mt-0 md:flex md:items-center md:justify-evenly",
                 font_montserrat.className,
               )}
             >
@@ -73,7 +73,7 @@ export function Sidebar({ children }: ILayoutProps) {
               </Link>
             </div>
 
-            <div className="mt-2 hidden h-12 items-center gap-8 md:flex">
+            <div className="mt-2 hidden h-12 items-center gap-8 md:mt-0 md:flex">
               <div
                 className={classNames(
                   "flex flex-col items-center justify-center",
