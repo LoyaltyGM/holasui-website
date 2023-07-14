@@ -12,7 +12,7 @@ export const NoConnectWallet = ({ title }: { title: string }) => {
       <div className="w-full max-w-5xl items-center justify-between font-mono text-sm">
         <div
           className={classNames(
-            "flex w-full flex-col content-center items-center justify-center gap-1 pt-12 text-center text-4xl font-bold leading-[2px] text-[#5A5A95] md:w-full md:flex-row md:gap-1",
+            "w-full content-center items-center justify-center gap-1 pt-12 text-center text-4xl font-bold text-[#5A5A95] md:w-full md:flex-row md:gap-1",
             font_montserrat.className,
           )}
         >
