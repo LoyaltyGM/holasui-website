@@ -126,9 +126,7 @@ export function Sidebar({ children }: ILayoutProps) {
         <Header />
         <div className="flex flex-1 flex-col">
           <main className="h-full flex-1 bg-basicColor">
-            <div className="mx-auto w-full max-w-7xl px-0 sm:pl-[5rem] sm:pr-[1.5rem] md:px-8">
-              {children}
-            </div>
+            <div className="mx-auto w-full max-w-7xl px-0 md:px-8">{children}</div>
           </main>
         </div>
       </div>

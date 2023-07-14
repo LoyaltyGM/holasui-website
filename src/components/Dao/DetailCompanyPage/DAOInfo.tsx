@@ -64,7 +64,7 @@ export const DAOInfo = ({
 
           <div
             className={classNames(
-              "flex w-full mt-2 md:mt-0 md:w-1/3 flex-col",
+              "flex w-full mt-6 ml-1 md:ml-0 md:mt-0 md:w-1/3 flex-col",
               isSubDao
                 ? "justify-start items-start content-start md:justify-center md:items-center md:content-start"
                 : "justify-start items-start content-start md:justify-center md:items-center md:content-center",
@@ -76,7 +76,7 @@ export const DAOInfo = ({
               <Link href={`/dao/${daoAddress}/create-subdao`}>
                 <button
                   className={
-                    "button-secondary button-shadow content-center items-center justify-center max-h-[48px] min-h-[48px]"
+                    "button-secondary button-shadow w-full content-center items-center justify-center min-w-[220px] max-w-[220px] max-h-[48px] min-h-[48px]"
                   }
                 >
                   Create SubDAO
