@@ -2,14 +2,16 @@
 
 ## Introduction
 
-HolaSui is a platform for builders that allows the creation of gamification experiences on the Sui blockchain using our tools and services, thereby boosting community interest and engagement.
+HolaSui is a platform for builders that allows the creation of gamification experiences on the Sui blockchain using our
+tools and services, thereby boosting community interest and engagement.
 
 ## Features
 
-This website allows users to interact [`holasui-contract`](https://github.com/LoyaltyGM/holasui-contract). It provides a user-friendly interface for interacting with the smart contract functionalities.
-
+This website allows users to interact with [`holasui-contract`](https://github.com/LoyaltyGM/holasui-contract). It
+provides a user-friendly interface for interacting with the smart contract functionalities.
 
 ## Getting Started
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped
 with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
@@ -56,4 +58,5 @@ from the creators of Next.js.
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
 
 ## License
+
 MIT License. Copyright (c) 2023 Hola Sui
